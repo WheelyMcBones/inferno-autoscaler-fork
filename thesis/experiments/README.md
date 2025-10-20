@@ -6,7 +6,7 @@ This directory contains organized results from WVA (Workload-Variant-Autoscaler)
 
 Each experiment run creates a timestamped directory with the following structure:
 
-```
+```bash
 experiments/
 └── YYYYMMDD_HHMMSS/          # Experiment timestamp
     ├── manifest.txt           # Experiment metadata and configuration
@@ -30,20 +30,23 @@ experiments/
 ## File Descriptions
 
 ### Metadata
+
 - **manifest.txt**: Experiment configuration, timestamp, duration, and directory structure
 
 ### Data Files
+
 - **extracted_metrics.csv**: Raw metrics extracted from WVA controller logs
   - Columns: timestamp, itlAverage, ttftAverage, rate, inTk, outTk, numRep, itl, ttft, slo_itl, slo_ttft
 - **processed_metrics.csv**: Enhanced data with time calculations and derived fields
 - **original_log.txt**: Backup copy of the original WVA controller log file
 
 ### Plots (6 Visualizations)
+
 1. **itl_analysis.png**: Inter-Token Latency (ITL) performance over time
    - Shows actual vs predicted ITL
    - Highlights warmup gaps (SLO violations)
    - Marks scaling events
-   
+
 2. **ttft_analysis.png**: Time to First Token (TTFT) performance over time
    - Shows actual vs predicted TTFT
    - Highlights warmup gaps
@@ -68,6 +71,7 @@ experiments/
    - Synchronized time axis for easy comparison
 
 ### Analysis Files
+
 - **summary.txt**: Statistical summary including:
   - Experiment duration and data points
   - ITL and TTFT compliance rates
