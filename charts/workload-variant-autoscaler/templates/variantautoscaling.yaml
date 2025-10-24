@@ -1,18 +1,18 @@
-{{- if .Values.wva.va.enabled }}
+{{- if .Values.va.enabled }}
 apiVersion: llmd.ai/v1alpha1
 # Optimizing a variant, create only when the model is deployed and serving traffic
 # this is for the collector the collect existing (previous) running metrics of the variant.
 kind: VariantAutoscaling
 metadata:
   # Unique name of the variant
-  name: {{ printf "%s-decode" .Values.wva.modelName }}
+  name: {{ printf "%s-decode" .Values.llmd.modelName }}
   namespace: {{ .Values.llmd.namespace }}
   labels:
-    inference.optimization/acceleratorName: {{ .Values.variantAutoscaling.accelerator }}
+    inference.optimization/acceleratorName: {{ .Values.va.accelerator }}
 # This is essentially static input to the optimizer
 spec:
   # OpenAI API compatible name of the model
-  modelID: {{ .Values.variantAutoscaling.modelID | quote }}
+  modelID: {{ .Values.llmd.modelID | quote }}
   # Add SLOs in configmap, add reference to this per model data
   # to avoid duplication and Move to ISOs when available
   sloClassRef:
@@ -39,11 +39,23 @@ spec:
         perfParms: 
           decodeParms:
             # Decode parameters for ITL equation: itl = alpha + beta * maxBatchSize
-            alpha: "6.958"
-            beta: "0.042"
+            alpha: "7.470"
+            beta: "0.044"
+          # Prefill parameters for TTFT equation: ttft = gamma + delta * tokens * maxBatchSize  
+          prefillParms:
+            gamma: "15.415"
+            delta: "0.000337"
+        maxBatchSize: 512
+      - acc: "A100"
+        accCount: 1
+        perfParms: 
+          decodeParms:
+            # Decode parameters for ITL equation: itl = alpha + beta * maxBatchSize
+            alpha: "20.58"
+            beta: "0.41"
           # Prefill parameters for TTFT equation: ttft = gamma + delta * tokens * maxBatchSize  
           prefillParms:
             gamma: "5.2"
             delta: "0.1"
-        maxBatchSize: 512
+        maxBatchSize: 4
 {{- end }}
