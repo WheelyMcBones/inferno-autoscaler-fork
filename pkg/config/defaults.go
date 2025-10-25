@@ -34,3 +34,18 @@ const DefaultServiceClassPriority int = DefaultLowPriority
 
 // default option for allocation under saturated condition
 var DefaultSaturatedAllocationPolicy SaturatedAllocationPolicy = None
+
+// Queue model type selection
+type QueueModelType string
+
+const (
+	// MM1K uses M/M/1/K model (Markovian arrivals, exponential service times)
+	MM1K QueueModelType = "MM1K"
+	// MD1K uses M/D/1/K model (Markovian arrivals, deterministic service times)
+	MD1K QueueModelType = "MD1K"
+)
+
+// Default queue model type
+// MD1K is more accurate for LLM inference because service times are deterministic
+// (same input/output lengths always take the same GPU computation time)
+var DefaultQueueModelType QueueModelType = MD1K

@@ -69,8 +69,8 @@ func BinarySearch(xMin float32, xMax float32, yTarget float32,
 	return xStar, 0, nil
 }
 
-// model as global variable, accesses by eval functions
-var Model *MM1ModelStateDependent
+// model as global variable, accessed by eval functions
+var Model QueueModelInterface
 
 // Function used in binary search (target service time)
 func EvalServTime(x float32) (float32, error) {

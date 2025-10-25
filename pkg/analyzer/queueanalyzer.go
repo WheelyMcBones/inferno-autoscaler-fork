@@ -2,6 +2,9 @@ package analyzer
 
 import (
 	"fmt"
+
+	"github.com/llm-d-incubation/workload-variant-autoscaler/internal/logger"
+	"github.com/llm-d-incubation/workload-variant-autoscaler/pkg/config"
 )
 
 // small disturbance around a value
@@ -10,21 +13,36 @@ const Epsilon = float32(0.001)
 // fraction of maximum server throughput to provide stability (running this fraction below the maximum)
 const StabilitySafetyFraction = float32(0.1)
 
+// QueueModelInterface defines common interface for queue models
+type QueueModelInterface interface {
+	Solve(lambda float32, mu float32)
+	IsValid() bool
+	GetThroughput() float32
+	GetAvgRespTime() float32
+	GetAvgWaitTime() float32
+	GetAvgServTime() float32
+	GetAvgNumInSystem() float32
+	GetAvgNumInServers() float32
+	GetRho() float32
+}
+
 // Analyzer of inference server queue
 type QueueAnalyzer struct {
-	MaxBatchSize int                     // maximum batch size
-	MaxQueueSize int                     // maximum queue size
-	ServiceParms *ServiceParms           // request processing parameters
-	RequestSize  *RequestSize            // number of input and output tokens per request
-	Model        *MM1ModelStateDependent // queueing model
-	RateRange    *RateRange              // range of request rates for model stability
+	MaxBatchSize int                   // maximum batch size
+	MaxQueueSize int                   // maximum queue size
+	ServiceParms *ServiceParms         // request processing parameters
+	RequestSize  *RequestSize          // number of input and output tokens per request
+	Model        QueueModelInterface   // queueing model (can be MM1 or MD1)
+	ModelType    config.QueueModelType // type of model being used
+	RateRange    *RateRange            // range of request rates for model stability
 }
 
 // queue configuration parameters
 type Configuration struct {
-	MaxBatchSize int           // maximum batch size (limit on the number of requests concurrently receiving service >0)
-	MaxQueueSize int           // maximum queue size (limit on the number of requests queued for servive >=0)
-	ServiceParms *ServiceParms // request processing parameters
+	MaxBatchSize int                   // maximum batch size (limit on the number of requests concurrently receiving service >0)
+	MaxQueueSize int                   // maximum queue size (limit on the number of requests queued for servive >=0)
+	ServiceParms *ServiceParms         // request processing parameters
+	ModelType    config.QueueModelType // type of queue model to use (MM1K or MD1K)
 }
 
 // request processing parameters
@@ -117,15 +135,48 @@ func BuildModel(qConfig *Configuration, requestSize *RequestSize) (modelData *Qu
 	lambdaMax := servRate[qConfig.MaxBatchSize-1] * (1 - Epsilon)
 	rateRange := &RateRange{Min: lambdaMin * 1000, Max: lambdaMax * 1000}
 
-	// create and solve model
+	// create and solve model based on configured type
 	occupancyUpperBound := qConfig.MaxQueueSize + qConfig.MaxBatchSize
-	model := NewMM1ModelStateDependent(occupancyUpperBound, servRate)
+
+	// Use configured model type, default to MD1K if not specified
+	modelType := qConfig.ModelType
+	if modelType == "" {
+		modelType = config.DefaultQueueModelType
+	}
+
+	var model QueueModelInterface
+	switch modelType {
+	case config.MD1K:
+		logger.Log.Debugw("[QUEUE_MODEL] Creating MD1K model",
+			"occupancy", occupancyUpperBound,
+			"servRate_len", len(servRate))
+		model = NewMD1ModelStateDependent(occupancyUpperBound, servRate)
+	case config.MM1K:
+		logger.Log.Debugw("[QUEUE_MODEL] Creating MM1K model",
+			"occupancy", occupancyUpperBound,
+			"servRate_len", len(servRate))
+		model = NewMM1ModelStateDependent(occupancyUpperBound, servRate)
+	default:
+		// Default to MD1K (more accurate for deterministic service times)
+		logger.Log.Debugw("[QUEUE_MODEL] Creating MD1K model (DEFAULT)",
+			"occupancy", occupancyUpperBound,
+			"servRate_len", len(servRate))
+		model = NewMD1ModelStateDependent(occupancyUpperBound, servRate)
+		modelType = config.MD1K
+	}
+
+	logger.Log.Debugw("[QUEUE_MODEL] Model created",
+		"type", modelType,
+		"maxBatch", qConfig.MaxBatchSize,
+		"maxQueue", qConfig.MaxQueueSize)
+
 	return &QueueAnalyzer{
 		MaxBatchSize: qConfig.MaxBatchSize,
 		MaxQueueSize: qConfig.MaxQueueSize,
 		ServiceParms: parms,
 		RequestSize:  requestSize,
 		Model:        model,
+		ModelType:    modelType,
 		RateRange:    rateRange,
 	}
 }

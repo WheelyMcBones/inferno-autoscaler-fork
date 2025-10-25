@@ -90,6 +90,7 @@ func CreateAllocation(serverName string, gName string) *Allocation {
 	qConfig := &analyzer.Configuration{
 		MaxBatchSize: N,
 		MaxQueueSize: maxQueue,
+		ModelType:    config.DefaultQueueModelType, // Use MD1K by default for more accurate deterministic service times
 		ServiceParms: &analyzer.ServiceParms{
 			Prefill: &analyzer.PrefillParms{
 				Gamma: perf.PrefillParms.Gamma,

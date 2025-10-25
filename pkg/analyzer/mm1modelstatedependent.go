@@ -3,6 +3,8 @@ package analyzer
 import (
 	"bytes"
 	"math"
+
+	"github.com/llm-d-incubation/workload-variant-autoscaler/internal/logger"
 )
 
 // M/M/1 model with state dependent service rate
@@ -39,6 +41,9 @@ func (m *MM1ModelStateDependent) computeStatistics() {
 	if !m.isValid {
 		return
 	}
+	logger.Log.Debugw("[MM1K_COMPUTE] Computing statistics",
+		"lambda", m.lambda,
+		"mu", m.mu)
 	m.computeProbabilities()
 
 	// calculate avgNumInServers
@@ -64,6 +69,11 @@ func (m *MM1ModelStateDependent) computeStatistics() {
 		m.avgWaitTime = 0
 	}
 	m.avgQueueLength = m.throughput * m.avgWaitTime
+	logger.Log.Debugw("[MM1K_COMPUTE] Final metrics",
+		"avgWaitTime_ms", m.avgWaitTime*1000,
+		"avgRespTime_ms", m.avgRespTime*1000,
+		"avgServTime_ms", m.avgServTime*1000,
+		"avgQueueLength", m.avgQueueLength)
 }
 
 // Compute state probabilities

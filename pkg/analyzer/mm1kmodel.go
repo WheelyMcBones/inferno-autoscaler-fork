@@ -99,6 +99,11 @@ func (m *MM1KModel) GetThroughput() float32 {
 	return m.throughput
 }
 
+// GetAvgNumInServers returns average number in service (for base MM1K, same as utilization)
+func (m *MM1KModel) GetAvgNumInServers() float32 {
+	return m.rho
+}
+
 func (m *MM1KModel) String() string {
 	var b bytes.Buffer
 	b.WriteString("MM1KModel: ")
