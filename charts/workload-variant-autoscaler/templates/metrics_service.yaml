@@ -6,6 +6,19 @@ metadata:
     app.kubernetes.io/name: workload-variant-autoscaler
   name: workload-variant-autoscaler-controller-manager-metrics-service
   namespace: {{ .Release.Namespace }}
+  {{- if .Values.wva.prometheus.tls }}
+  {{- if not .Values.wva.prometheus.tls.insecureSkipVerify }}
+  annotations:
+    {{- if eq .Values.platform "openshift" }}
+    # OpenShift: Use service CA to auto-generate certificate
+    service.beta.openshift.io/serving-cert-secret-name: workload-variant-autoscaler-metrics-tls
+    {{- else if eq .Values.platform "kubernetes" }}
+    # Kubernetes: Use cert-manager to generate certificate
+    cert-manager.io/issuer: {{ .Values.wva.prometheus.tls.certManager.issuer | default "selfsigned-issuer" }}
+    cert-manager.io/issuer-kind: {{ .Values.wva.prometheus.tls.certManager.issuerKind | default "Issuer" }}
+    {{- end }}
+  {{- end }}
+  {{- end }}
 spec:
   ports:
   - name: https

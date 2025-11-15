@@ -1,0 +1,12 @@
+{{- if and .Values.wva.prometheus.tls (not .Values.wva.prometheus.tls.insecureSkipVerify) (eq .Values.platform "kubernetes") .Values.wva.prometheus.tls.certManager.createIssuer }}
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ .Values.wva.prometheus.tls.certManager.issuer | default "selfsigned-issuer" }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    control-plane: controller-manager
+    app.kubernetes.io/name: workload-variant-autoscaler
+spec:
+  selfSigned: {}
+{{- end }}

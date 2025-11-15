@@ -56,6 +56,11 @@ spec:
           {{- if .Values.wva.metrics.enabled }}
           - --metrics-bind-address=:{{ .Values.wva.metrics.port }}
           - --metrics-secure={{ .Values.wva.metrics.secure }}
+          {{- if .Values.wva.prometheus.tls }}
+          {{- if not .Values.wva.prometheus.tls.insecureSkipVerify }}
+          - --metrics-cert-path=/etc/metrics-tls
+          {{- end }}
+          {{- end }}
           {{- end }}
         image: "{{ .Values.wva.image.repository }}:{{ .Values.wva.image.tag }}"
         imagePullPolicy: "{{ .Values.wva.imagePullPolicy }}"
@@ -125,10 +130,25 @@ spec:
           mountPath: /etc/ssl/certs/prometheus-ca.crt
           subPath: ca.crt
           readOnly: true
+        {{- if .Values.wva.prometheus.tls }}
+        {{- if not .Values.wva.prometheus.tls.insecureSkipVerify }}
+        - name: metrics-tls
+          mountPath: /etc/metrics-tls
+          readOnly: true
+        {{- end }}
+        {{- end }}
       volumes:
       - name: prometheus-ca-cert
         configMap:
           name: prometheus-ca
           optional: true
+      {{- if .Values.wva.prometheus.tls }}
+      {{- if not .Values.wva.prometheus.tls.insecureSkipVerify }}
+      - name: metrics-tls
+        secret:
+          secretName: workload-variant-autoscaler-metrics-tls
+          optional: true
+      {{- end }}
+      {{- end }}
       serviceAccountName: workload-variant-autoscaler-controller-manager
       terminationGracePeriodSeconds: 10

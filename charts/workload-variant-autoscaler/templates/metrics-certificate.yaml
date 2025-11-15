@@ -1,0 +1,26 @@
+{{- if and .Values.wva.prometheus.tls (not .Values.wva.prometheus.tls.insecureSkipVerify) (eq .Values.platform "kubernetes") }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: workload-variant-autoscaler-metrics-tls
+  namespace: {{ .Release.Namespace }}
+  labels:
+    control-plane: controller-manager
+    app.kubernetes.io/name: workload-variant-autoscaler
+spec:
+  secretName: workload-variant-autoscaler-metrics-tls
+  duration: {{ .Values.wva.prometheus.tls.certManager.duration | default "8760h" }}  # 1 year
+  renewBefore: {{ .Values.wva.prometheus.tls.certManager.renewBefore | default "720h" }}  # 30 days
+  issuerRef:
+    name: {{ .Values.wva.prometheus.tls.certManager.issuer | default "selfsigned-issuer" }}
+    kind: {{ .Values.wva.prometheus.tls.certManager.issuerKind | default "Issuer" }}
+    group: cert-manager.io
+  commonName: workload-variant-autoscaler-controller-manager-metrics-service.{{ .Release.Namespace }}.svc
+  dnsNames:
+    - workload-variant-autoscaler-controller-manager-metrics-service.{{ .Release.Namespace }}.svc
+    - workload-variant-autoscaler-controller-manager-metrics-service.{{ .Release.Namespace }}.svc.cluster.local
+  usages:
+    - digital signature
+    - key encipherment
+    - server auth
+{{- end }}

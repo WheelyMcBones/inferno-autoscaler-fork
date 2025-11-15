@@ -18,6 +18,22 @@ spec:
         key: token
       tlsConfig:
         insecureSkipVerify: {{ if and .Values.wva.prometheus.tls (hasKey .Values.wva.prometheus.tls "insecureSkipVerify") }}{{ .Values.wva.prometheus.tls.insecureSkipVerify }}{{ else }}true{{ end }}
+        {{- if and .Values.wva.prometheus.caCert (or (not .Values.wva.prometheus.tls) (not (hasKey .Values.wva.prometheus.tls "insecureSkipVerify")) (not .Values.wva.prometheus.tls.insecureSkipVerify)) }}
+        {{- if eq .Values.platform "openshift" }}
+        # OpenShift: Use prometheus-ca ConfigMap (service CA)
+        ca:
+          configMap:
+            name: prometheus-ca
+            key: ca.crt
+        {{- else if eq .Values.platform "kubernetes" }}
+        # Kubernetes: Use CA from cert-manager generated secret
+        ca:
+          secret:
+            name: {{ .Values.wva.prometheus.tls.certManager.caSecretName | default "workload-variant-autoscaler-metrics-ca" }}
+            key: {{ .Values.wva.prometheus.tls.certManager.caSecretKey | default "ca.crt" }}
+        {{- end }}
+        serverName: workload-variant-autoscaler-controller-manager-metrics-service.{{ .Release.Namespace }}.svc
+        {{- end }}
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace }}

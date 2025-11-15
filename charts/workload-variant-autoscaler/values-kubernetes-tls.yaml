@@ -1,0 +1,68 @@
+# Example values for Kubernetes with strict TLS verification
+
+# Platform: "kubernetes" or "openshift"
+platform: kubernetes
+
+wva:
+  enabled: true
+  
+  image:
+    repository: ghcr.io/llm-d/workload-variant-autoscaler
+    tag: latest
+  imagePullPolicy: Always
+
+  metrics:
+    enabled: true
+    port: 8443
+    secure: true
+  
+  reconcileInterval: 60s
+    
+  prometheus:
+    monitoringNamespace: workload-variant-autoscaler-monitoring
+    baseURL: "http://kube-prometheus-stack-prometheus.workload-variant-autoscaler-monitoring.svc.cluster.local:9090"
+    
+    # TLS Configuration for secure metrics endpoint
+    tls:
+      # Enabling strict TLS verification by default
+      insecureSkipVerify: false
+      
+      # cert-manager configuration for Kubernetes
+      certManager:
+        # Create a self-signed issuer (set to false if using existing issuer)
+        createIssuer: true
+        
+        # Issuer configuration
+        issuer: selfsigned-issuer
+        issuerKind: Issuer  # or ClusterIssuer
+        
+        # Certificate settings
+        duration: 8760h  # 1 year
+        renewBefore: 720h  # 30 days
+        
+        # CA secret for ServiceMonitor (must contain the CA cert)
+        # For self-signed certs, extract from the generated secret
+        caSecretName: workload-variant-autoscaler-metrics-tls
+        caSecretKey: ca.crt
+
+llmd:
+  namespace: llm-d-inference-scheduler
+  modelName: ms-inference-scheduling-llm-d-modelservice
+  modelID: "unsloth/Meta-Llama-3.1-8B"
+
+va:
+  enabled: true
+  accelerator: H100
+  sloTpot: 10
+  sloTtft: 1000
+
+hpa:
+  enabled: true
+  maxReplicas: 10
+  targetAverageValue: "1"
+
+vllmService:
+  enabled: true
+  nodePort: 30000
+  interval: 15s
+  scheme: http
