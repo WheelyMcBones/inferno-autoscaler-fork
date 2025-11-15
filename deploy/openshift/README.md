@@ -324,6 +324,84 @@ kubectl get hpa -n llm-d-inference-scheduler
 kubectl get --raw "/apis/external.metrics.k8s.io/v1beta1/namespaces/llm-d-inference-scheduler/inferno_desired_replicas" | jq
 ```
 
+### TLS Configuration for Metrics (OpenShift)
+
+OpenShift deployments use the built-in service CA for automatic certificate generation. The default configuration uses `insecureSkipVerify: true` for simplicity.
+
+#### Option 1: Using insecureSkipVerify (Default - Simple)
+
+```yaml
+# Current default configuration
+platform: openshift
+wva:
+  prometheus:
+    tls:
+      insecureSkipVerify: true  # Uses TLS but skips hostname verification
+```
+
+This is the **recommended setting** for OpenShift internal metrics as:
+
+- Traffic stays within the cluster
+- TLS encryption is still enabled
+- Simpler configuration
+- No certificate management needed
+
+#### Option 2: Strict TLS with OpenShift Service CA (Production)
+
+For production deployments requiring strict certificate validation:
+
+```yaml
+# values-openshift-tls.yaml
+platform: openshift
+
+wva:
+  prometheus:
+    baseURL: https://thanos-querier.openshift-monitoring.svc.cluster.local:9091
+    monitoringNamespace: openshift-user-workload-monitoring
+    
+    # Provide the OpenShift service CA certificate
+    caCert: |
+      -----BEGIN CERTIFICATE-----
+      MIIDUTCCAjmgAwIBAgIILO3QxKOB6NYwDQYJKoZIhvcNAQELBQAwNjE0...
+      -----END CERTIFICATE-----
+    
+    tls:
+      insecureSkipVerify: false  # Enable strict verification
+      caCertPath: /etc/ssl/certs/prometheus-ca.crt
+```
+
+**Get the OpenShift service CA**:
+
+```bash
+# Extract service CA certificate
+oc get configmap -n openshift-service-ca service-ca.crt -o jsonpath='{.data.service-ca\.crt}'
+```
+
+**Deploy with strict TLS**:
+
+```bash
+helm upgrade --install workload-variant-autoscaler ./charts/workload-variant-autoscaler \
+  -n workload-variant-autoscaler-system \
+  -f values-openshift-tls.yaml
+```
+
+**What happens**:
+
+- OpenShift service CA automatically generates certificates for the metrics service
+- ServiceMonitor uses `prometheus-ca` ConfigMap for CA validation
+- Prometheus validates certificates using the service CA
+- `serverName` matches the service FQDN for proper hostname verification
+
+**Verify metrics are being scraped**:
+
+```bash
+# Check Prometheus targets
+kubectl exec -n openshift-user-workload-monitoring \
+  $(kubectl get pods -n openshift-user-workload-monitoring -l app.kubernetes.io/name=prometheus -o name | head -1) \
+  -- curl -s http://localhost:9090/api/v1/targets | \
+  jq '.data.activeTargets[] | select(.labels.service=="workload-variant-autoscaler-controller-manager-metrics-service")'
+```
+
 ### Monitor WVA Logs
 
 ```bash

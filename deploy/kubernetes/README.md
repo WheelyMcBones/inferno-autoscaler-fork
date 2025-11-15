@@ -610,6 +610,84 @@ export PROMETHEUS_URL="https://my-prometheus.monitoring.svc:9090"
 make deploy-wva-on-k8s
 ```
 
+### TLS Configuration for Metrics
+
+By default, the controller uses `insecureSkipVerify: true` for internal metrics scraping. For production deployments with strict TLS verification:
+
+#### Option 1: Using insecureSkipVerify (Default - Simple)
+
+```yaml
+# values.yaml or Helm upgrade
+platform: kubernetes
+wva:
+  prometheus:
+    tls:
+      insecureSkipVerify: true  # Default - uses TLS but skips hostname verification
+```
+
+#### Option 2: Strict TLS with cert-manager (Recommended for Production)
+
+**Prerequisites**: Install [cert-manager](https://cert-manager.io/docs/installation/)
+
+```bash
+# Install cert-manager
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.0/cert-manager.yaml
+```
+
+**Configure values for strict TLS**:
+
+```yaml
+# values-kubernetes-tls.yaml
+platform: kubernetes
+
+wva:
+  prometheus:
+    tls:
+      insecureSkipVerify: false  # Enable strict verification
+      
+      certManager:
+        createIssuer: true  # Create self-signed issuer (or set false to use existing)
+        issuer: selfsigned-issuer
+        issuerKind: Issuer  # or ClusterIssuer
+        duration: 8760h  # 1 year
+        renewBefore: 720h  # 30 days
+        
+        # CA secret for Prometheus to validate controller cert
+        caSecretName: workload-variant-autoscaler-metrics-tls
+        caSecretKey: ca.crt
+```
+
+**Deploy with strict TLS on Kubernetes using Helm**:
+
+```bash
+helm upgrade --install workload-variant-autoscaler ./charts/workload-variant-autoscaler \
+  -n workload-variant-autoscaler-system \
+  --create-namespace \
+  -f charts/workload-variant-autoscaler/values-kubernetes-tls.yaml
+```
+
+**What happens**:
+
+- cert-manager generates a TLS certificate for the metrics service
+- Certificate includes proper DNS names (service FQDN)
+- Prometheus validates the certificate using the CA
+- ServiceMonitor configured with proper `serverName` and `ca.secret`
+
+**Using a custom CA/Issuer**:
+
+```yaml
+wva:
+  prometheus:
+    tls:
+      insecureSkipVerify: false
+      certManager:
+        createIssuer: false  # Don't create issuer
+        issuer: my-company-ca
+        issuerKind: ClusterIssuer
+        caSecretName: my-company-ca-cert
+        caSecretKey: ca.crt
+```
+
 ### Deploy to Specific Cluster Context
 
 ```bash
