@@ -27,7 +27,7 @@ INSTALL_GATEWAY_CTRLPLANE=false  # OpenShift uses its own Gateway control plane 
 REQUIRED_TOOLS=("oc")
 
 # TLS verification enabled by default on OpenShift
-SKIP_TLS_VERIFY=false
+SKIP_TLS_VERIFY=true
 VALUES_FILE="${WVA_PROJECT}/charts/workload-variant-autoscaler/values.yaml"
 
 #### REQUIRED FUNCTION used by deploy/install.sh ####
