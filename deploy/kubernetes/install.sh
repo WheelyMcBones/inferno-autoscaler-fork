@@ -19,6 +19,7 @@ PROMETHEUS_PORT="9090"
 PROMETHEUS_URL=${PROMETHEUS_URL:-"$PROMETHEUS_BASE_URL:$PROMETHEUS_PORT"}
 DEPLOY_PROMETHEUS=${DEPLOY_PROMETHEUS:-"true"}
 SKIP_TLS_VERIFY=${SKIP_TLS_VERIFY:-"true"}
+PLATFORM="kubernetes"
 
 check_specific_prerequisites() {
     log_info "No Kubernetes-specific prerequisites needed other than common prerequisites"
@@ -37,7 +38,7 @@ deploy_wva_prerequisites() {
         VALUES_FILE="${WVA_PROJECT}/charts/workload-variant-autoscaler/values-dev.yaml"
     else
         log_info "TLS verification enabled: using values.yaml for production deployments"
-        VALUES_FILE="${WVA_PROJECT}/charts/workload-variant-autoscaler/values.yaml"
+        VALUES_FILE="${WVA_PROJECT}/charts/workload-variant-autoscaler/values-kubernetes-tls.yaml"
     fi
 
     log_success "WVA prerequisites complete"

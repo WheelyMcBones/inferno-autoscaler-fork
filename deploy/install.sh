@@ -395,6 +395,7 @@ deploy_wva_controller() {
     helm upgrade -i workload-variant-autoscaler ${WVA_PROJECT}/charts/workload-variant-autoscaler \
         -n $WVA_NS \
         --values $VALUES_FILE \
+        --set platform=${PLATFORM:-kubernetes} \
         --set-file wva.prometheus.caCert=$PROM_CA_CERT_PATH \
         --set wva.image.repository=$WVA_IMAGE_REPO \
         --set wva.image.tag=$WVA_IMAGE_TAG \

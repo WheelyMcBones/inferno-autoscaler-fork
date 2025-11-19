@@ -26,7 +26,11 @@ INSTALL_GATEWAY_CTRLPLANE=false  # OpenShift uses its own Gateway control plane 
 # OpenShift-specific prerequisites
 REQUIRED_TOOLS=("oc")
 
-# TLS verification enabled by default on OpenShift
+# Platform identifier for Helm chart
+PLATFORM="openshift"
+
+# TLS verification enabled by default on OpenShift to test certificate generation
+# Set to true to skip TLS verification during development/testing
 SKIP_TLS_VERIFY=false
 VALUES_FILE="${WVA_PROJECT}/charts/workload-variant-autoscaler/values.yaml"
 
