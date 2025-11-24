@@ -1,0 +1,9 @@
+{
+  "experiment_name": "hpa-experiment-20251124-144139",
+  "start_time": "2025-11-24T19:41:39Z",
+  "namespace": "llm-d-inference-scheduler",
+  "hpa_name": "vllm-hpa-combined",
+  "deployment_name": "ms-inference-scheduling-llm-d-modelservice-decode",
+  "sample_interval_seconds": 5,
+  "output_directory": "./experiment-data/hpa-experiment-20251124-144139"
+}

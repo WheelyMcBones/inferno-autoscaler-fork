@@ -1,0 +1,63 @@
+# Baseline HPA Experiment Configuration
+# This setup tests basic HPA scaling with standard load patterns
+
+name: "baseline-hpa"
+description: "Baseline HPA scaling test with moderate load"
+namespace: "llm-d-inference-scheduler"
+deployment: "ms-inference-scheduling-llm-d-modelservice-decode"
+model_name: "unsloth/Meta-Llama-3.1-8B"
+
+# HPA configuration
+hpa:
+  enabled: true
+  manifest: "../manifests/hpa-vllm-combined.yaml"
+
+# Load jobs to execute sequentially
+jobs:
+  - name: "warm-up"
+    manifest: "../workloads/sharegpt-load-job-warmup.yaml"
+    duration: 120  # seconds to wait after job starts
+    
+  - name: "phase-1-low"
+    manifest: "../workloads/sharegpt-load-job-1.yaml"
+    duration: 360  # 6 minutes
+    
+  - name: "phase-2-medium"
+    manifest: "../workloads/sharegpt-load-job-2.yaml"
+    duration: 360
+    
+  - name: "phase-3-high"
+    manifest: "../workloads/sharegpt-load-job-3.yaml"
+    duration: 360
+
+# Metrics to collect
+metrics:
+  interval: 5  # seconds between samples
+  
+  # Prometheus queries for performance metrics
+  prometheus:
+    # TTFT: Time to First Token (ms)
+    ttft:
+      query: 'sum(rate(vllm:time_to_first_token_seconds_sum{model_name="unsloth/Meta-Llama-3.1-8B",namespace="llm-d-inference-scheduler"}[1m]))/sum(rate(vllm:time_to_first_token_seconds_count{model_name="unsloth/Meta-Llama-3.1-8B",namespace="llm-d-inference-scheduler"}[1m])) * 1000'
+      
+    # ITL: Inter-Token Latency (ms)
+    itl:
+      query: 'sum(rate(vllm:time_per_output_token_seconds_sum{model_name="unsloth/Meta-Llama-3.1-8B",namespace="llm-d-inference-scheduler"}[1m]))/sum(rate(vllm:time_per_output_token_seconds_count{model_name="unsloth/Meta-Llama-3.1-8B",namespace="llm-d-inference-scheduler"}[1m])) * 1000'
+      
+    # Request rate (req/min)
+    request_rate:
+      query: 'sum(rate(vllm:request_success_total{model_name="unsloth/Meta-Llama-3.1-8B",namespace="llm-d-inference-scheduler"}[1m])) * 60'
+      
+    # Queue depth
+    num_requests_waiting:
+      query: 'vllm:num_requests_waiting{model_name="unsloth/Meta-Llama-3.1-8B",namespace="llm-d-inference-scheduler"}'
+      
+    # KV cache usage (percentage as decimal)
+    kv_cache_usage:
+      query: 'vllm:kv_cache_usage_perc{model_name="unsloth/Meta-Llama-3.1-8B",namespace="llm-d-inference-scheduler"}'
+
+# Output configuration
+output:
+  base_dir: "experiment-data"
+  include_pod_logs: true
+  include_events: true

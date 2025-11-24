@@ -1,0 +1,48 @@
+# High Load HPA Experiment Configuration
+# Tests HPA under heavy load to force scaling
+
+name: "high-load-hpa"
+description: "HPA scaling test with high request rates"
+namespace: "llm-d-inference-scheduler"
+deployment: "ms-inference-scheduling-llm-d-modelservice-decode"
+model_name: "unsloth/Meta-Llama-3.1-8B"
+
+hpa:
+  enabled: true
+  manifest: "../manifests/hpa-vllm-combined.yaml"
+
+jobs:
+  - name: "warm-up"
+    manifest: "../workloads/sharegpt-load-job-warmup.yaml"
+    duration: 60
+    
+  - name: "phase-1-ramp"
+    manifest: "../workloads/sharegpt-load-job-high-1.yaml"
+    duration: 300  # 5 minutes
+    
+  - name: "phase-2-peak"
+    manifest: "../workloads/sharegpt-load-job-high-2.yaml"
+    duration: 600  # 10 minutes
+    
+  - name: "phase-3-sustained"
+    manifest: "../workloads/sharegpt-load-job-high-3.yaml"
+    duration: 300
+
+metrics:
+  interval: 5
+  prometheus:
+    ttft:
+      query: 'sum(rate(vllm:time_to_first_token_seconds_sum{model_name="unsloth/Meta-Llama-3.1-8B",namespace="llm-d-inference-scheduler"}[1m]))/sum(rate(vllm:time_to_first_token_seconds_count{model_name="unsloth/Meta-Llama-3.1-8B",namespace="llm-d-inference-scheduler"}[1m])) * 1000'
+    itl:
+      query: 'sum(rate(vllm:time_per_output_token_seconds_sum{model_name="unsloth/Meta-Llama-3.1-8B",namespace="llm-d-inference-scheduler"}[1m]))/sum(rate(vllm:time_per_output_token_seconds_count{model_name="unsloth/Meta-Llama-3.1-8B",namespace="llm-d-inference-scheduler"}[1m])) * 1000'
+    request_rate:
+      query: 'sum(rate(vllm:request_success_total{model_name="unsloth/Meta-Llama-3.1-8B",namespace="llm-d-inference-scheduler"}[1m])) * 60'
+    num_requests_waiting:
+      query: 'vllm:num_requests_waiting{model_name="unsloth/Meta-Llama-3.1-8B",namespace="llm-d-inference-scheduler"}'
+    kv_cache_usage:
+      query: 'vllm:kv_cache_usage_perc{model_name="unsloth/Meta-Llama-3.1-8B",namespace="llm-d-inference-scheduler"}'
+
+output:
+  base_dir: "experiment-data"
+  include_pod_logs: true
+  include_events: true
