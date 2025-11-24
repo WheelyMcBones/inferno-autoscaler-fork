@@ -1,11 +1,11 @@
-# High Load HPA Experiment Configuration
-# Tests HPA under OVERLAPPING heavy load to force aggressive scaling
-# Jobs run in parallel with staggered start times to create cumulative pressure
+# Moderate Load HPA Experiment Configuration
+# Tests HPA with overlapping moderate load to observe gradual scaling
+# Jobs run in parallel with staggered start times to create cumulative but manageable pressure
 # Pattern: Job1 (0s) → Job2 (+120s, overlap with Job1) → Job3 (+120s, overlap with Job2)
-# This creates sustained 40-50 req/s load periods to saturate pods and force scale-up
+# This creates sustained 22-27 req/s load periods - enough to trigger scaling without overwhelming
 
-name: "high-load-hpa"
-description: "HPA stress test with overlapping 20-30 req/s jobs to force scaling"
+name: "moderate-load-hpa"
+description: "HPA test with overlapping 10-15 req/s jobs for gradual scaling"
 namespace: "llm-d-inference-scheduler"
 deployment: "ms-inference-scheduling-llm-d-modelservice-decode"
 model_name: "unsloth/Meta-Llama-3.1-8B"
@@ -15,33 +15,34 @@ hpa:
   manifest: "../../manifests/hpa-vllm-combined.yaml"
 
 jobs:
-  - name: "phase-1-high-load"
-    manifest: "../../workloads/sharegpt-load-job-high-20.yaml"  # 20 req/s
+  - name: "phase-1-moderate"
+    manifest: "../../workloads/sharegpt-load-job-moderate-10.yaml"  # 10 req/s
     duration: 360  # 6 minutes
     start_delay: 0  # Start immediately
     
-  - name: "phase-2-peak-load"
-    manifest: "../../workloads/sharegpt-load-job-high-30.yaml"  # 30 req/s
+  - name: "phase-2-moderate-peak"
+    manifest: "../../workloads/sharegpt-load-job-moderate-15.yaml"  # 15 req/s
     duration: 360  # 6 minutes
     start_delay: 120  # Start 2min after experiment begins (240s overlap with phase-1)
     
-  - name: "phase-3-sustained"
-    manifest: "../../workloads/sharegpt-load-job-high-20.yaml"  # Back to 20 req/s
+  - name: "phase-3-moderate-sustained"
+    manifest: "../../workloads/sharegpt-load-job-moderate-12.yaml"  # 12 req/s
     duration: 360  # 6 minutes
     start_delay: 240  # Start 4min after experiment begins (240s overlap with phase-2)
 
 # Timeline visualization:
 # Time:    0s        120s       240s       360s       480s       600s
-# Job1:    [========================================]  (20 req/s)
-# Job2:              [========================================]  (30 req/s)
-# Job3:                         [========================================]  (20 req/s)
-# Load:    20        50         50         30         20         0
+# Job1:    [========================================]  (10 req/s)
+# Job2:              [========================================]  (15 req/s)
+# Job3:                         [========================================]  (12 req/s)
+# Load:    10        25         37         27         12         0
 # 
 # Expected behavior:
-# - 0-120s: 20 req/s (single job, may not trigger scale-up)
-# - 120-360s: 50 req/s (job1+job2, should saturate and trigger scale-up)
-# - 360-480s: 50 req/s (job2+job3, sustained high load)
-# - 480-600s: 20 req/s (job3 only, scale-down period)
+# - 0-120s: 10 req/s (single job, warm-up period)
+# - 120-240s: 25 req/s (job1+job2, should start triggering scale-up)
+# - 240-360s: 37 req/s (job1+job2+job3, PEAK - all three running!)
+# - 360-480s: 27 req/s (job2+job3, sustained load after job1 finishes)
+# - 480-600s: 12 req/s (job3 only, gradual decrease before scale-down)
 
 metrics:
   interval: 5
@@ -65,4 +66,4 @@ output:
 # Observation period after jobs complete to capture scale-down behavior
 cooldown:
   enabled: true
-  duration: 180  # Monitor for 3 minutes after jobs complete to observe scale-down
+  duration: 90  # Monitor for 1.5 minutes after jobs complete to observe scale-down

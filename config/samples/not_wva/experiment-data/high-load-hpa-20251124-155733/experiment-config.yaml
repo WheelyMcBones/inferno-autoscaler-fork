@@ -61,8 +61,3 @@ output:
   base_dir: "experiment-data"
   include_pod_logs: true
   include_events: true
-
-# Observation period after jobs complete to capture scale-down behavior
-cooldown:
-  enabled: true
-  duration: 180  # Monitor for 3 minutes after jobs complete to observe scale-down

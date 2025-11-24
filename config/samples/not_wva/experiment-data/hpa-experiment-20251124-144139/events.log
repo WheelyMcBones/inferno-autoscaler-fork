@@ -1,6 +1,0 @@
-=== Initial State at 2025-11-24T19:41:39Z ===
-LAST SEEN   TYPE      REASON                         OBJECT                                      MESSAGE
-138m        Warning   FailedGetPodsMetric            horizontalpodautoscaler/vllm-hpa-combined   unable to get metric kv_cache_usage_perc: unable to fetch metrics from custom metrics API: the server could not find the metric kv_cache_usage_perc for pods
-138m        Warning   FailedComputeMetricsReplicas   horizontalpodautoscaler/vllm-hpa-combined   invalid metrics (2 invalid out of 2), first error is: failed to get pods metric value: unable to get metric num_requests_waiting: unable to fetch metrics from custom metrics API: the server could not find the metric num_requests_waiting for pods
-105m        Warning   FailedGetPodsMetric            horizontalpodautoscaler/vllm-hpa-combined   unable to get metric num_requests_waiting: unable to fetch metrics from custom metrics API: the server could not find the metric num_requests_waiting for pods
-
