@@ -15,7 +15,7 @@ cd new-experiments
 
 ## Directory Structure
 
-```
+```bash
 not_wva/
 ├── launch.sh                    # Main launcher
 ├── new-experiments/             # ✅ Recommended: Config-driven system with TTFT/ITL
@@ -29,11 +29,13 @@ not_wva/
 ## Prerequisites
 
 Required:
+
 - `kubectl`, `oc` (OpenShift CLI)
 - `yq` (install: `brew install yq`)
 - `jq`
 
 For analysis:
+
 - `python3` with pandas, matplotlib
 - `jupyter` (optional, for notebooks)
 
@@ -46,6 +48,7 @@ kubectl apply -f manifests/vllm-service.yaml
 ```
 
 Verify:
+
 ```bash
 kubectl get svc vllm-service -n llm-d-inference-scheduler
 kubectl get endpoints vllm-service -n llm-d-inference-scheduler
@@ -80,6 +83,7 @@ kubectl get hpa vllm-hpa-combined -n llm-d-inference-scheduler
 See `new-experiments/README.md` for detailed usage.
 
 Quick example:
+
 ```bash
 cd new-experiments
 ./start-experiments.sh
@@ -89,6 +93,7 @@ cd new-experiments
 ## Troubleshooting
 
 **No metrics data:**
+
 ```bash
 # Check if vLLM is up
 kubectl get pods -n llm-d-inference-scheduler -l llm-d.ai/model=ms-inference-scheduling-llm-d-modelservice
@@ -98,12 +103,14 @@ kubectl logs -n llm-d-inference-scheduler <pod-name> -c vllm --tail=20
 ```
 
 **HPA not scaling:**
+
 ```bash
 # Check current metrics vs targets
 kubectl get hpa vllm-hpa-combined -n llm-d-inference-scheduler
 ```
 
 **Jobs not starting:**
+
 ```bash
 # Check service exists
 kubectl get svc vllm-service -n llm-d-inference-scheduler

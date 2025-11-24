@@ -13,6 +13,7 @@ Original manual HPA experiment runner. **Recommendation: Use `../new-experiments
 ## Why Legacy?
 
 These scripts require manual editing to change experiment parameters and don't collect TTFT/ITL metrics. The new system offers:
+
 - YAML-based configuration
 - TTFT/ITL metrics matching WVA's collector
 - Interactive menus
