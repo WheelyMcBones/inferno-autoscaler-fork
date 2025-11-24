@@ -110,9 +110,22 @@ while true; do
     DESIRED_REPLICAS=$(echo "$HPA_DATA" | jq -r '.status.desiredReplicas // 0')
     
     # Extract metrics from HPA status
-    NUM_WAITING=$(echo "$HPA_DATA" | jq -r '.status.currentMetrics[] | select(.pods.metric.name=="num_requests_waiting") | .pods.current.averageValue // "0"' | sed 's/[^0-9.]//g')
-    NUM_WAITING_TARGET=$(echo "$HPA_DATA" | jq -r '.spec.metrics[] | select(.pods.metric.name=="num_requests_waiting") | .pods.target.averageValue // "0"' | sed 's/[^0-9.]//g')
+    # num_requests_waiting: handle both plain numbers ("2") and millicores ("10500m")
+    NUM_WAITING_RAW=$(echo "$HPA_DATA" | jq -r '.status.currentMetrics[] | select(.pods.metric.name=="num_requests_waiting") | .pods.current.averageValue // "0"')
+    if [[ "$NUM_WAITING_RAW" == *"m" ]]; then
+        NUM_WAITING=$(echo "$NUM_WAITING_RAW" | sed 's/m$//' | awk '{print $1/1000}')
+    else
+        NUM_WAITING=$(echo "$NUM_WAITING_RAW" | sed 's/[^0-9.]//g')
+    fi
     
+    NUM_WAITING_TARGET_RAW=$(echo "$HPA_DATA" | jq -r '.spec.metrics[] | select(.pods.metric.name=="num_requests_waiting") | .pods.target.averageValue // "0"')
+    if [[ "$NUM_WAITING_TARGET_RAW" == *"m" ]]; then
+        NUM_WAITING_TARGET=$(echo "$NUM_WAITING_TARGET_RAW" | sed 's/m$//' | awk '{print $1/1000}')
+    else
+        NUM_WAITING_TARGET=$(echo "$NUM_WAITING_TARGET_RAW" | sed 's/[^0-9.]//g')
+    fi
+    
+    # kv_cache_usage_perc: ALWAYS has 'm' suffix (millicores)
     KV_CACHE=$(echo "$HPA_DATA" | jq -r '.status.currentMetrics[] | select(.pods.metric.name=="kv_cache_usage_perc") | .pods.current.averageValue // "0"' | sed 's/m$//' | awk '{print $1/1000}')
     KV_CACHE_TARGET=$(echo "$HPA_DATA" | jq -r '.spec.metrics[] | select(.pods.metric.name=="kv_cache_usage_perc") | .pods.target.averageValue // "0"' | sed 's/m$//' | awk '{print $1/1000}')
     
@@ -123,6 +136,8 @@ while true; do
     KV_CACHE_TARGET=${KV_CACHE_TARGET:-0}
     
     # Query Prometheus for performance metrics
+    # Uses WVA collector pattern: sum(rate(metric_sum[1m]))/sum(rate(metric_count[1m])) * 1000
+    
     # TTFT: Time to First Token (ms)
     TTFT_QUERY='sum(rate(vllm:time_to_first_token_seconds_sum{model_name="'$MODEL_NAME'",namespace="'$NAMESPACE'"}[1m]))/sum(rate(vllm:time_to_first_token_seconds_count{model_name="'$MODEL_NAME'",namespace="'$NAMESPACE'"}[1m])) * 1000'
     TTFT=$(query_prometheus "$TTFT_QUERY" "ttft")
@@ -130,6 +145,11 @@ while true; do
     # ITL: Inter-Token Latency (ms)
     ITL_QUERY='sum(rate(vllm:time_per_output_token_seconds_sum{model_name="'$MODEL_NAME'",namespace="'$NAMESPACE'"}[1m]))/sum(rate(vllm:time_per_output_token_seconds_count{model_name="'$MODEL_NAME'",namespace="'$NAMESPACE'"}[1m])) * 1000'
     ITL=$(query_prometheus "$ITL_QUERY" "itl")
+    
+    # Note: If metrics return 0, it means either:
+    # 1. Prometheus is not scraping vLLM metrics yet (check ServiceMonitor/PodMonitor)
+    # 2. No requests have been processed in the [1m] window (rate returns 0)
+    # The rate() function calculates per-second average over the time window, not cumulative totals
     
     # Request rate (req/min)
     REQ_RATE_QUERY='sum(rate(vllm:request_success_total{model_name="'$MODEL_NAME'",namespace="'$NAMESPACE'"}[1m])) * 60'

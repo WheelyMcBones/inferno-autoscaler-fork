@@ -10,24 +10,20 @@ model_name: "unsloth/Meta-Llama-3.1-8B"
 # HPA configuration
 hpa:
   enabled: true
-  manifest: "../manifests/hpa-vllm-combined.yaml"
+  manifest: "../../manifests/hpa-vllm-combined.yaml"
 
 # Load jobs to execute sequentially
 jobs:
-  - name: "warm-up"
-    manifest: "../workloads/sharegpt-load-job-warmup.yaml"
-    duration: 120  # seconds to wait after job starts
-    
   - name: "phase-1-low"
-    manifest: "../workloads/sharegpt-load-job-1.yaml"
+    manifest: "../../workloads/sharegpt-load-job-1.yaml"
     duration: 360  # 6 minutes
     
   - name: "phase-2-medium"
-    manifest: "../workloads/sharegpt-load-job-2.yaml"
+    manifest: "../../workloads/sharegpt-load-job-2.yaml"
     duration: 360
     
   - name: "phase-3-high"
-    manifest: "../workloads/sharegpt-load-job-3.yaml"
+    manifest: "../../workloads/sharegpt-load-job-3.yaml"
     duration: 360
 
 # Metrics to collect
@@ -61,3 +57,8 @@ output:
   base_dir: "experiment-data"
   include_pod_logs: true
   include_events: true
+
+# Observation period after jobs complete to capture scale-down behavior
+cooldown:
+  enabled: true
+  duration: 180  # Monitor for 3 minutes after jobs complete to observe scale-down
