@@ -1,5 +1,5 @@
 prometheus:
-  url: http://prometheus-user-workload.openshift-user-workload-monitoring.svc.cluster.local
+  url: https://thanos-querier.openshift-monitoring.svc.cluster.local
   port: 9091
 
 rules:
@@ -30,21 +30,21 @@ replicas: 2
 logLevel: 6
 
 tls:
-  enable: false
+  enable: false # Inbound TLS (Client → Adapter)
 
-# Remove TLS/CA configuration since we're using http://
-# extraVolumes:
-#   - name: prometheus-ca
-#     configMap:
-#       name: prometheus-ca
+extraVolumes:
+  - name: prometheus-ca
+    configMap:
+      name: prometheus-ca
 
-# extraVolumeMounts:
-#   - name: prometheus-ca
-#     mountPath: /etc/prometheus-ca
-#     readOnly: true
+extraVolumeMounts:
+  - name: prometheus-ca
+    mountPath: /etc/prometheus-ca
+    readOnly: true
 
-# extraArguments:
-#   - --prometheus-token-file=/var/run/secrets/kubernetes.io/serviceaccount/token
+extraArguments:
+  - --prometheus-ca-file=/etc/prometheus-ca/ca.crt
+  - --prometheus-token-file=/var/run/secrets/kubernetes.io/serviceaccount/token
 
 podSecurityContext:
   fsGroup: null
