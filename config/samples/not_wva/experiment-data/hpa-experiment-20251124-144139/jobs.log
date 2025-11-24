@@ -1,0 +1,12 @@
+=== Job Status at 2025-11-24T19:42:00Z ===
+NAME                         STATUS    COMPLETIONS   DURATION   AGE   CONTAINERS                   IMAGES                    SELECTOR
+vllm-bench-sharegpt-load-1   Running   0/1           16s        16s   vllm-bench-serve-container   vllm/vllm-openai:latest   batch.kubernetes.io/controller-uid=51fc360e-34b1-4281-8eea-ef1b080127b2
+
+=== Job Status at 2025-11-24T19:43:00Z ===
+NAME                         STATUS    COMPLETIONS   DURATION   AGE   CONTAINERS                   IMAGES                    SELECTOR
+vllm-bench-sharegpt-load-1   Running   0/1           77s        77s   vllm-bench-serve-container   vllm/vllm-openai:latest   batch.kubernetes.io/controller-uid=51fc360e-34b1-4281-8eea-ef1b080127b2
+
+=== Job Status at 2025-11-24T19:47:00Z ===
+NAME                         STATUS    COMPLETIONS   DURATION   AGE     CONTAINERS                   IMAGES                    SELECTOR
+vllm-bench-sharegpt-load-1   Running   0/1           5m17s      5m17s   vllm-bench-serve-container   vllm/vllm-openai:latest   batch.kubernetes.io/controller-uid=51fc360e-34b1-4281-8eea-ef1b080127b2
+

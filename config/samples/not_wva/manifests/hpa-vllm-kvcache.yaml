@@ -30,4 +30,4 @@ spec:
         name: kv_cache_usage_perc
       target:
         type: AverageValue
-        averageValue: "80"
+        averageValue: "800m"  # 0.8 = 80% cache usage

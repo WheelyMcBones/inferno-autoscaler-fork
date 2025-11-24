@@ -19,11 +19,11 @@ spec:
         periodSeconds: 15
       selectPolicy: Max
     scaleDown:
-      stabilizationWindowSeconds: 60
+      stabilizationWindowSeconds: 0
       policies:
       - type: Pods
         value: 1
-        periodSeconds: 30
+        periodSeconds: 15
       selectPolicy: Min
   metrics:
   # Scale on waiting requests
@@ -33,7 +33,7 @@ spec:
         name: num_requests_waiting
       target:
         type: AverageValue
-        averageValue: "5"
+        averageValue: "2"  # Scale when avg waiting requests > 2
   # Scale on KV cache usage
   - type: Pods
     pods:
@@ -41,4 +41,4 @@ spec:
         name: kv_cache_usage_perc
       target:
         type: AverageValue
-        averageValue: "80"
+        averageValue: "800m"  # 0.8 = 80% cache usage

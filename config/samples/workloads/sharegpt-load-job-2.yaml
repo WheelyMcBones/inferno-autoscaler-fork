@@ -1,0 +1,71 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: vllm-bench-sharegpt-load-2
+  namespace: llm-d-inference-scheduler
+  labels:
+    experiment: sharegpt-e2e
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      initContainers:
+      - name: download-dataset
+        image: busybox:latest
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          wget -O /data/ShareGPT_V3_unfiltered_cleaned_split.json \
+          https://huggingface.co/datasets/anon8231489123/ShareGPT_Vicuna_unfiltered/resolve/main/ShareGPT_V3_unfiltered_cleaned_split.json
+        volumeMounts:
+        - name: dataset-volume
+          mountPath: /data
+      containers:
+      - name: vllm-bench-serve-container
+        image: vllm/vllm-openai:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: HF_HOME
+          value: "/tmp"
+        command: ["/usr/bin/python3"]
+        args:
+        - "-m"
+        - "vllm.entrypoints.cli.main"
+        - "bench"
+        - "serve"
+        - "--backend"
+        - "openai"
+        - "--base-url"
+        # - "http://infra-inference-scheduling-inference-gateway-istio:80"  # Update with your gateway name
+        - "http://vllm-service:8200"  # vLLM API endpoint
+        - "--dataset-name"
+        - "sharegpt"
+        - "--dataset-path"
+        - "/data/ShareGPT_V3_unfiltered_cleaned_split.json"
+        - "--model"
+        - "unsloth/Meta-Llama-3.1-8B"  # Update with your model ID
+        # - "ibm-granite/granite-3.3-8b-instruct"
+        - "--seed"
+        - "12345"
+        - "--num-prompts"
+        - "7560"  # Total number of prompts to send: 420 req/min for 18 minutes
+        - "--max-concurrency"
+        - "512"
+        - "--request-rate"
+        - "7"  # Requests per second (420 req/min)
+        - "--sharegpt-output-len"
+        - "1024"
+        volumeMounts:
+        - name: dataset-volume
+          mountPath: /data
+        resources:
+          limits:
+            memory: "8Gi"
+            cpu: "2"
+          requests:
+            cpu: "1"
+            memory: "4Gi"
+      volumes:
+      - name: dataset-volume
+        emptyDir: {}
+      restartPolicy: Never
