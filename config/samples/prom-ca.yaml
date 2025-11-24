@@ -1,0 +1,8 @@
+apiVersion: v1
+data:
+  ca.crt: |
+    # CA certificate not provided - using system CA bundle
+kind: ConfigMap
+metadata:
+  name: prometheus-ca
+  namespace: openshift-user-workload-monitoring

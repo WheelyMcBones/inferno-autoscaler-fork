@@ -1,0 +1,60 @@
+prometheus:
+  url: http://prometheus-user-workload.openshift-user-workload-monitoring.svc.cluster.local
+  port: 9091
+
+rules:
+  custom:
+  # vLLM waiting requests metric - pod-based
+  - seriesQuery: 'vllm:num_requests_waiting{namespace!="",pod!=""}'
+    resources:
+      overrides:
+        namespace: {resource: "namespace"}
+        pod: {resource: "pod"}
+    name:
+      matches: "^vllm:num_requests_waiting$"
+      as: "num_requests_waiting"
+    metricsQuery: 'avg(vllm:num_requests_waiting{<<.LabelMatchers>>}) by (<<.GroupBy>>)'
+  
+  # vLLM KV cache usage percentage - pod-based
+  - seriesQuery: 'vllm:kv_cache_usage_perc{namespace!="",pod!=""}'
+    resources:
+      overrides:
+        namespace: {resource: "namespace"}
+        pod: {resource: "pod"}
+    name:
+      matches: "^vllm:kv_cache_usage_perc$"
+      as: "kv_cache_usage_perc"
+    metricsQuery: 'avg(vllm:kv_cache_usage_perc{<<.LabelMatchers>>}) by (<<.GroupBy>>)'
+
+replicas: 2
+logLevel: 6
+
+tls:
+  enable: false
+
+# Remove TLS/CA configuration since we're using http://
+# extraVolumes:
+#   - name: prometheus-ca
+#     configMap:
+#       name: prometheus-ca
+
+# extraVolumeMounts:
+#   - name: prometheus-ca
+#     mountPath: /etc/prometheus-ca
+#     readOnly: true
+
+# extraArguments:
+#   - --prometheus-token-file=/var/run/secrets/kubernetes.io/serviceaccount/token
+
+podSecurityContext:
+  fsGroup: null
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop: ["ALL"]
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: null
+  seccompProfile:
+    type: RuntimeDefault
