@@ -1,0 +1,44 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: vllm-hpa-combined
+  namespace: llm-d-inference-scheduler
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ms-inference-scheduling-llm-d-modelservice-decode
+  minReplicas: 1
+  maxReplicas: 10
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 0
+      policies:
+      - type: Pods
+        value: 4
+        periodSeconds: 15
+      selectPolicy: Max
+    scaleDown:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Pods
+        value: 1
+        periodSeconds: 30
+      selectPolicy: Min
+  metrics:
+  # Scale on waiting requests
+  - type: Pods
+    pods:
+      metric:
+        name: num_requests_waiting
+      target:
+        type: AverageValue
+        averageValue: "5"
+  # Scale on KV cache usage
+  - type: Pods
+    pods:
+      metric:
+        name: kv_cache_usage_perc
+      target:
+        type: AverageValue
+        averageValue: "80"
