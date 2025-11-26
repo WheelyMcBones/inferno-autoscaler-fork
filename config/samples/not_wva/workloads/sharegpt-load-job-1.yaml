@@ -36,15 +36,15 @@ spec:
         - "--backend"
         - "openai"
         - "--base-url"
-        # - "http://infra-inference-scheduling-inference-gateway-istio:80"  # Update with your gateway name
-        - "http://vllm-service:8200"  # vLLM API endpoint
+        - "http://infra-workload-autoscaler-inference-gateway-istio:80"  # Update with your gateway name
+        # - "http://vllm-service:8200"  #
         - "--dataset-name"
         - "sharegpt"
         - "--dataset-path"
         - "/data/ShareGPT_V3_unfiltered_cleaned_split.json"
         - "--model"
-        - "unsloth/Meta-Llama-3.1-8B"  # Update with your model ID
-        # - "ibm-granite/granite-3.3-8b-instruct"
+        - "Qwen/Qwen3-0.6B"  # Update with your model ID
+        # - "unsloth/Meta-Llama-3.1-8B"
         - "--seed"
         - "12345"
         - "--num-prompts"
