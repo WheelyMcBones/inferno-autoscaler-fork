@@ -1058,11 +1058,24 @@ func (r *VariantAutoscalingReconciler) prepareVariantAutoscalings(
 
 		currentAllocation, err := collector.AddMetricsToOptStatus(ctx, &updateVA, deploy, acceleratorCostValFloat, r.PromAPI)
 		if err != nil {
-			logger.Log.Errorf("unable to fetch metrics, skipping this variantAutoscaling loop: error=%v", err)
+			logger.Log.Errorf("unable to fetch metrics, skipping this variantAutoscaling loop: variant=%s, error=%v", updateVA.Name, err)
 			// Don't update status here - will be updated in next reconcile when metrics are available
 			continue
 		}
 		updateVA.Status.CurrentAlloc = currentAllocation
+
+		// Log collected metrics in detail
+		logger.Log.Debugf("✓ Metrics collected for VA: variant=%s, replicas=%d, accelerator=%s, ttft=%sms, itl=%sms, cost=%s, maxBatch=%d, arrivalRate=%s, avgInputTokens=%s, avgOutputTokens=%s",
+			updateVA.Name,
+			currentAllocation.NumReplicas,
+			currentAllocation.Accelerator,
+			currentAllocation.TTFTAverage,
+			currentAllocation.ITLAverage,
+			currentAllocation.VariantCost,
+			currentAllocation.MaxBatch,
+			currentAllocation.Load.ArrivalRate,
+			currentAllocation.Load.AvgInputTokens,
+			currentAllocation.Load.AvgOutputTokens)
 
 		if err := utils.AddServerInfoToSystemData(systemData, &updateVA, className); err != nil {
 			logger.Log.Infof("variantAutoscaling bad deployment server data, skipping optimization: variantAutoscaling-name=%s", updateVA.Name)
