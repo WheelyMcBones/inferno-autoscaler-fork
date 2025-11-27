@@ -569,7 +569,6 @@ func convertCapacityTargetsToDecisions(
 			action = interfaces.ActionScaleDown
 		} else {
 			action = interfaces.ActionNoChange
-			continue
 		}
 
 		decision := interfaces.VariantDecision{
@@ -764,13 +763,14 @@ func (r *VariantAutoscalingReconciler) collectMetricsForCapacityMode(
 		// Update vaMap with the VA that has CurrentAlloc populated
 		vaMap[updateVA.Name] = &updateVA
 
-		logger.Log.Infof("Metrics collected for VA: variant=%s, replicas=%d, accelerator=%s, ttft=%sms, itl=%sms, cost=%s",
+		logger.Log.Infof("Metrics collected for VA: variant=%s, replicas=%d, accelerator=%s, ttft=%sms, itl=%sms, cost=%s, arrivalRate=%.2f",
 			updateVA.Name,
 			currentAllocation.NumReplicas,
 			currentAllocation.Accelerator,
 			currentAllocation.TTFTAverage,
 			currentAllocation.ITLAverage,
-			currentAllocation.VariantCost)
+			currentAllocation.VariantCost,
+			currentAllocation.Load.ArrivalRate)
 	}
 
 	return nil
