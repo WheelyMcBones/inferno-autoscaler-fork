@@ -17,32 +17,32 @@ hpa:
 jobs:
   - name: "phase-1-moderate"
     manifest: "../../workloads/sharegpt-load-job-moderate-10.yaml"  # 10 req/s
-    duration: 360  # 6 minutes
+    duration: 480  # 8 minutes (extended from 6 to observe longer-term effects)
     start_delay: 0  # Start immediately
     
   - name: "phase-2-moderate-peak"
     manifest: "../../workloads/sharegpt-load-job-moderate-15.yaml"  # 15 req/s
-    duration: 360  # 6 minutes
-    start_delay: 120  # Start 2min after experiment begins (240s overlap with phase-1)
+    duration: 480  # 8 minutes (extended from 6)
+    start_delay: 60  # Start 1min after experiment begins (earlier - was 120s)
     
   - name: "phase-3-moderate-sustained"
     manifest: "../../workloads/sharegpt-load-job-moderate-12.yaml"  # 12 req/s
-    duration: 360  # 6 minutes
-    start_delay: 240  # Start 4min after experiment begins (240s overlap with phase-2)
+    duration: 480  # 8 minutes (extended from 6)
+    start_delay: 120  # Start 2min after experiment begins (earlier - was 240s)
 
-# Timeline visualization:
-# Time:    0s        120s       240s       360s       480s       600s
-# Job1:    [========================================]  (10 req/s)
-# Job2:              [========================================]  (15 req/s)
-# Job3:                         [========================================]  (12 req/s)
-# Load:    10        25         37         27         12         0
+# Timeline visualization (EXTENDED):
+# Time:    0s    60s   120s       240s       360s       480s       540s       600s
+# Job1:    [========================================================]  (10 req/s, 8min)
+# Job2:         [========================================================]  (15 req/s, 8min)
+# Job3:              [========================================================]  (12 req/s, 8min)
+# Load:    10    25    37         37         37         37         27         12
 # 
-# Expected behavior:
-# - 0-120s: 10 req/s (single job, warm-up period)
-# - 120-240s: 25 req/s (job1+job2, should start triggering scale-up)
-# - 240-360s: 37 req/s (job1+job2+job3, PEAK - all three running!)
-# - 360-480s: 27 req/s (job2+job3, sustained load after job1 finishes)
-# - 480-600s: 12 req/s (job3 only, gradual decrease before scale-down)
+# Expected behavior (EXTENDED):
+# - 0-60s: 10 req/s (single job, warm-up period)
+# - 60-120s: 25 req/s (job1+job2, should start triggering scale-up - earlier than before)
+# - 120-480s: 37 req/s (EXTENDED PEAK - all three running for 6 minutes, sustained high load to test new replicas)
+# - 480-540s: 27 req/s (job2+job3, sustained load after job1 finishes)
+# - 540-600s: 12 req/s (job3 only, gradual decrease before scale-down)
 
 metrics:
   interval: 5
