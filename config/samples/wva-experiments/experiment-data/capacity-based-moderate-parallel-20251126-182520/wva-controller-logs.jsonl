@@ -1,0 +1,351 @@
+{"level":"INFO","ts":"2025-11-26T23:20:25.572Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:20:25.572Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:20:25.572Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:20:25.828Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=10.00"}
+{"level":"INFO","ts":"2025-11-26T23:20:25.829Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.000 (0.0%)"}
+{"level":"INFO","ts":"2025-11-26T23:20:25.829Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:20:25.830Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:20:25.830Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 0"}
+{"level":"INFO","ts":"2025-11-26T23:20:25.830Z","msg":"No scaling decisions to apply"}
+{"level":"INFO","ts":"2025-11-26T23:20:25.830Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-11-26T23:20:25.830Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:20:25.830Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:20:25.830Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:20:25.838Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=10.00"}
+{"level":"INFO","ts":"2025-11-26T23:20:25.839Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:20:25.839Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.000 (0.0%)"}
+{"level":"INFO","ts":"2025-11-26T23:20:25.839Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:20:25.839Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 0"}
+{"level":"INFO","ts":"2025-11-26T23:20:25.839Z","msg":"No scaling decisions to apply"}
+{"level":"INFO","ts":"2025-11-26T23:20:25.839Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-11-26T23:21:25.831Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:21:25.831Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:21:25.831Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:21:25.843Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=10.00"}
+{"level":"INFO","ts":"2025-11-26T23:21:25.844Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:21:25.845Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.000 (0.0%)"}
+{"level":"INFO","ts":"2025-11-26T23:21:25.845Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:21:25.845Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 0"}
+{"level":"INFO","ts":"2025-11-26T23:21:25.845Z","msg":"No scaling decisions to apply"}
+{"level":"INFO","ts":"2025-11-26T23:21:25.845Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-11-26T23:21:25.845Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:21:25.845Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:21:25.845Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:21:25.853Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=10.00"}
+{"level":"INFO","ts":"2025-11-26T23:21:25.854Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:21:25.854Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.000 (0.0%)"}
+{"level":"INFO","ts":"2025-11-26T23:21:25.854Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:21:25.854Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 0"}
+{"level":"INFO","ts":"2025-11-26T23:21:25.854Z","msg":"No scaling decisions to apply"}
+{"level":"INFO","ts":"2025-11-26T23:21:25.854Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-11-26T23:22:25.845Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:22:25.845Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:22:25.845Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:22:25.870Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=10.00"}
+{"level":"INFO","ts":"2025-11-26T23:22:25.871Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:22:25.871Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.000 (0.0%)"}
+{"level":"INFO","ts":"2025-11-26T23:22:25.871Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:22:25.871Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 0"}
+{"level":"INFO","ts":"2025-11-26T23:22:25.871Z","msg":"No scaling decisions to apply"}
+{"level":"INFO","ts":"2025-11-26T23:22:25.871Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-11-26T23:22:25.871Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:22:25.871Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:22:25.871Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:22:25.879Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=10.00"}
+{"level":"INFO","ts":"2025-11-26T23:22:25.880Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:22:25.880Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.000 (0.0%)"}
+{"level":"INFO","ts":"2025-11-26T23:22:25.880Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:22:25.880Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 0"}
+{"level":"INFO","ts":"2025-11-26T23:22:25.880Z","msg":"No scaling decisions to apply"}
+{"level":"INFO","ts":"2025-11-26T23:22:25.880Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-11-26T23:23:25.872Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:23:25.872Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:23:25.873Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:23:25.885Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=10.00"}
+{"level":"INFO","ts":"2025-11-26T23:23:25.887Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:23:25.887Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.000 (0.0%)"}
+{"level":"INFO","ts":"2025-11-26T23:23:25.887Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:23:25.887Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 0"}
+{"level":"INFO","ts":"2025-11-26T23:23:25.887Z","msg":"No scaling decisions to apply"}
+{"level":"INFO","ts":"2025-11-26T23:23:25.887Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-11-26T23:23:25.887Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:23:25.887Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:23:25.887Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:23:25.894Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=10.00"}
+{"level":"INFO","ts":"2025-11-26T23:23:25.896Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:23:25.896Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.000 (0.0%)"}
+{"level":"INFO","ts":"2025-11-26T23:23:25.896Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:23:25.896Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 0"}
+{"level":"INFO","ts":"2025-11-26T23:23:25.896Z","msg":"No scaling decisions to apply"}
+{"level":"INFO","ts":"2025-11-26T23:23:25.896Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-11-26T23:24:25.888Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:24:25.888Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:24:25.888Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:24:25.909Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=10.00"}
+{"level":"INFO","ts":"2025-11-26T23:24:25.911Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.000 (0.0%)"}
+{"level":"INFO","ts":"2025-11-26T23:24:25.911Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:24:25.911Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:24:25.911Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 0"}
+{"level":"INFO","ts":"2025-11-26T23:24:25.911Z","msg":"No scaling decisions to apply"}
+{"level":"INFO","ts":"2025-11-26T23:24:25.911Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-11-26T23:24:25.911Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:24:25.911Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:24:25.911Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:24:25.919Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=10.00"}
+{"level":"INFO","ts":"2025-11-26T23:24:25.920Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:24:25.920Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.000 (0.0%)"}
+{"level":"INFO","ts":"2025-11-26T23:24:25.920Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:24:25.920Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 0"}
+{"level":"INFO","ts":"2025-11-26T23:24:25.920Z","msg":"No scaling decisions to apply"}
+{"level":"INFO","ts":"2025-11-26T23:24:25.920Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-11-26T23:25:25.911Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:25:25.911Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:25:25.911Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:25:25.925Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=10.00"}
+{"level":"INFO","ts":"2025-11-26T23:25:25.926Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.000 (0.0%)"}
+{"level":"INFO","ts":"2025-11-26T23:25:25.926Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:25:25.926Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:25:25.926Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 0"}
+{"level":"INFO","ts":"2025-11-26T23:25:25.926Z","msg":"No scaling decisions to apply"}
+{"level":"INFO","ts":"2025-11-26T23:25:25.926Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-11-26T23:25:25.927Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:25:25.927Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:25:25.927Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:25:25.937Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=10.00"}
+{"level":"INFO","ts":"2025-11-26T23:25:25.938Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:25:25.938Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.000 (0.0%)"}
+{"level":"INFO","ts":"2025-11-26T23:25:25.938Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:25:25.939Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 0"}
+{"level":"INFO","ts":"2025-11-26T23:25:25.939Z","msg":"No scaling decisions to apply"}
+{"level":"INFO","ts":"2025-11-26T23:25:25.939Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-11-26T23:26:25.927Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:26:25.927Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:26:25.927Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:26:25.952Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=26.60ms, itl=8.40ms, cost=10.00"}
+{"level":"INFO","ts":"2025-11-26T23:26:25.954Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:26:25.954Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.003 (0.3%)"}
+{"level":"INFO","ts":"2025-11-26T23:26:25.954Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:26:25.954Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 0"}
+{"level":"INFO","ts":"2025-11-26T23:26:25.954Z","msg":"No scaling decisions to apply"}
+{"level":"INFO","ts":"2025-11-26T23:26:25.954Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-11-26T23:26:25.954Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:26:25.954Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:26:25.954Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:26:25.962Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=26.60ms, itl=8.40ms, cost=10.00"}
+{"level":"INFO","ts":"2025-11-26T23:26:25.963Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.003 (0.3%)"}
+{"level":"INFO","ts":"2025-11-26T23:26:25.963Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:26:25.964Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:26:25.964Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 0"}
+{"level":"INFO","ts":"2025-11-26T23:26:25.964Z","msg":"No scaling decisions to apply"}
+{"level":"INFO","ts":"2025-11-26T23:26:25.964Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-11-26T23:27:25.955Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:27:25.955Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:27:25.955Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:27:25.971Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=24.06ms, itl=11.89ms, cost=10.00"}
+{"level":"INFO","ts":"2025-11-26T23:27:25.972Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:27:25.972Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.086 (8.6%)"}
+{"level":"INFO","ts":"2025-11-26T23:27:25.972Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:27:25.972Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 0"}
+{"level":"INFO","ts":"2025-11-26T23:27:25.972Z","msg":"No scaling decisions to apply"}
+{"level":"INFO","ts":"2025-11-26T23:27:25.972Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-11-26T23:27:25.972Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:27:25.972Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:27:25.972Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:27:25.981Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=24.06ms, itl=11.89ms, cost=10.00"}
+{"level":"INFO","ts":"2025-11-26T23:27:25.982Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:27:25.982Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.086 (8.6%)"}
+{"level":"INFO","ts":"2025-11-26T23:27:25.983Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:27:25.983Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 0"}
+{"level":"INFO","ts":"2025-11-26T23:27:25.983Z","msg":"No scaling decisions to apply"}
+{"level":"INFO","ts":"2025-11-26T23:27:25.983Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-11-26T23:28:25.973Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:28:25.973Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:28:25.973Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:28:25.997Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=22.68ms, itl=11.30ms, cost=10.00"}
+{"level":"INFO","ts":"2025-11-26T23:28:25.999Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:28:25.999Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.070 (7.0%)"}
+{"level":"INFO","ts":"2025-11-26T23:28:25.999Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:28:25.999Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 0"}
+{"level":"INFO","ts":"2025-11-26T23:28:25.999Z","msg":"No scaling decisions to apply"}
+{"level":"INFO","ts":"2025-11-26T23:28:25.999Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-11-26T23:28:25.999Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:28:25.999Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:28:25.999Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:28:26.007Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=22.68ms, itl=11.30ms, cost=10.00"}
+{"level":"INFO","ts":"2025-11-26T23:28:26.009Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:28:26.009Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.070 (7.0%)"}
+{"level":"INFO","ts":"2025-11-26T23:28:26.009Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:28:26.009Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 0"}
+{"level":"INFO","ts":"2025-11-26T23:28:26.009Z","msg":"No scaling decisions to apply"}
+{"level":"INFO","ts":"2025-11-26T23:28:26.009Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-11-26T23:29:26.000Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:29:26.000Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:29:26.000Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:29:26.014Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=46.85ms, itl=26.72ms, cost=10.00"}
+{"level":"INFO","ts":"2025-11-26T23:29:26.016Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.408 (40.8%)"}
+{"level":"INFO","ts":"2025-11-26T23:29:26.016Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:29:26.016Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:29:26.016Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 0"}
+{"level":"INFO","ts":"2025-11-26T23:29:26.016Z","msg":"No scaling decisions to apply"}
+{"level":"INFO","ts":"2025-11-26T23:29:26.016Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-11-26T23:29:26.016Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:29:26.016Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:29:26.016Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:29:26.024Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=46.85ms, itl=26.72ms, cost=10.00"}
+{"level":"INFO","ts":"2025-11-26T23:29:26.026Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.408 (40.8%)"}
+{"level":"INFO","ts":"2025-11-26T23:29:26.026Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:29:26.026Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:29:26.026Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 0"}
+{"level":"INFO","ts":"2025-11-26T23:29:26.026Z","msg":"No scaling decisions to apply"}
+{"level":"INFO","ts":"2025-11-26T23:29:26.026Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-11-26T23:30:26.017Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:30:26.017Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:30:26.017Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:30:26.040Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=61.73ms, itl=35.24ms, cost=10.00"}
+{"level":"INFO","ts":"2025-11-26T23:30:26.042Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.541 (54.1%)"}
+{"level":"INFO","ts":"2025-11-26T23:30:26.042Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:30:26.042Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:30:26.042Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 0"}
+{"level":"INFO","ts":"2025-11-26T23:30:26.042Z","msg":"No scaling decisions to apply"}
+{"level":"INFO","ts":"2025-11-26T23:30:26.042Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-11-26T23:30:26.042Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:30:26.042Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:30:26.042Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:30:26.050Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=61.73ms, itl=35.24ms, cost=10.00"}
+{"level":"INFO","ts":"2025-11-26T23:30:26.051Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:30:26.051Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.541 (54.1%)"}
+{"level":"INFO","ts":"2025-11-26T23:30:26.051Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:30:26.051Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 0"}
+{"level":"INFO","ts":"2025-11-26T23:30:26.051Z","msg":"No scaling decisions to apply"}
+{"level":"INFO","ts":"2025-11-26T23:30:26.051Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.043Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.043Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.043Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.056Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=85.69ms, itl=51.20ms, cost=10.00"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.058Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.058Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.777 (77.7%)"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.058Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=true, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.058Z","msg":"Capacity target: scale-up cheapest variant: variant=ms-inference-scheduling-llm-d-modelservice-decode, cost=10.00, currentReplicas=1, readyReplicas=1, target=2, reason=KV spare capacity low (0.023 < 0.100)"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.058Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.058Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.058Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-up, current=1→target=2"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.058Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 2, accelerator: H100"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.058Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=2, accelerator=H100, capacityOnly=true"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.064Z","msg":"Applied capacity decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-up, current=1, target=2, reason=capacity-only mode: scale-up"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.064Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.064Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.064Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.064Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.073Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=85.69ms, itl=51.20ms, cost=10.00"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.075Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.777 (77.7%)"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.075Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.075Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=true, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.075Z","msg":"Capacity target: scale-up cheapest variant: variant=ms-inference-scheduling-llm-d-modelservice-decode, cost=10.00, currentReplicas=1, readyReplicas=1, target=2, reason=KV spare capacity low (0.023 < 0.100)"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.075Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.075Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.075Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-up, current=1→target=2"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.075Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 2, accelerator: H100"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.075Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=2, accelerator=H100, capacityOnly=true"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.080Z","msg":"Applied capacity decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-up, current=1, target=2, reason=capacity-only mode: scale-up"}
+{"level":"INFO","ts":"2025-11-26T23:31:26.080Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-11-26T23:32:26.065Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:32:26.065Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:32:26.065Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:32:26.094Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=2, accelerator=H100, ttft=10122.90ms, itl=86.61ms, cost=20.00"}
+{"level":"INFO","ts":"2025-11-26T23:32:26.096Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.997 (99.7%)"}
+{"level":"INFO","ts":"2025-11-26T23:32:26.096Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=600"}
+{"level":"INFO","ts":"2025-11-26T23:32:26.096Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=0, shouldScaleUp=true, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:32:26.096Z","msg":"Capacity target: scale-up cheapest variant: variant=ms-inference-scheduling-llm-d-modelservice-decode, cost=10.00, currentReplicas=2, readyReplicas=1, target=2, reason=both KV spare (0.000 < 0.100) and queue spare (0.0 < 3.0)"}
+{"level":"INFO","ts":"2025-11-26T23:32:26.096Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 0"}
+{"level":"INFO","ts":"2025-11-26T23:32:26.096Z","msg":"No scaling decisions to apply"}
+{"level":"INFO","ts":"2025-11-26T23:32:26.096Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-11-26T23:32:26.096Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:32:26.096Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:32:26.096Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:32:26.104Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=2, accelerator=H100, ttft=10122.90ms, itl=86.61ms, cost=20.00"}
+{"level":"INFO","ts":"2025-11-26T23:32:26.106Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=600"}
+{"level":"INFO","ts":"2025-11-26T23:32:26.106Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.997 (99.7%)"}
+{"level":"INFO","ts":"2025-11-26T23:32:26.106Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=0, shouldScaleUp=true, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:32:26.106Z","msg":"Capacity target: scale-up cheapest variant: variant=ms-inference-scheduling-llm-d-modelservice-decode, cost=10.00, currentReplicas=2, readyReplicas=1, target=2, reason=both KV spare (0.000 < 0.100) and queue spare (0.0 < 3.0)"}
+{"level":"INFO","ts":"2025-11-26T23:32:26.106Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 0"}
+{"level":"INFO","ts":"2025-11-26T23:32:26.106Z","msg":"No scaling decisions to apply"}
+{"level":"INFO","ts":"2025-11-26T23:32:26.106Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-11-26T23:33:26.097Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:33:26.097Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:33:26.097Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:33:26.111Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=2, accelerator=H100, ttft=16345.01ms, itl=90.55ms, cost=20.00"}
+{"level":"INFO","ts":"2025-11-26T23:33:26.113Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=265"}
+{"level":"INFO","ts":"2025-11-26T23:33:26.113Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.997 (99.7%)"}
+{"level":"INFO","ts":"2025-11-26T23:33:26.113Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=0, shouldScaleUp=true, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:33:26.113Z","msg":"Capacity target: scale-up cheapest variant: variant=ms-inference-scheduling-llm-d-modelservice-decode, cost=10.00, currentReplicas=2, readyReplicas=1, target=2, reason=both KV spare (0.000 < 0.100) and queue spare (0.0 < 3.0)"}
+{"level":"INFO","ts":"2025-11-26T23:33:26.113Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 0"}
+{"level":"INFO","ts":"2025-11-26T23:33:26.113Z","msg":"No scaling decisions to apply"}
+{"level":"INFO","ts":"2025-11-26T23:33:26.113Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-11-26T23:33:26.113Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:33:26.113Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:33:26.113Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:33:26.124Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=2, accelerator=H100, ttft=16345.01ms, itl=90.55ms, cost=20.00"}
+{"level":"INFO","ts":"2025-11-26T23:33:26.125Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=265"}
+{"level":"INFO","ts":"2025-11-26T23:33:26.125Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.997 (99.7%)"}
+{"level":"INFO","ts":"2025-11-26T23:33:26.126Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=0, shouldScaleUp=true, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:33:26.126Z","msg":"Capacity target: scale-up cheapest variant: variant=ms-inference-scheduling-llm-d-modelservice-decode, cost=10.00, currentReplicas=2, readyReplicas=1, target=2, reason=both KV spare (0.000 < 0.100) and queue spare (0.0 < 3.0)"}
+{"level":"INFO","ts":"2025-11-26T23:33:26.126Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 0"}
+{"level":"INFO","ts":"2025-11-26T23:33:26.126Z","msg":"No scaling decisions to apply"}
+{"level":"INFO","ts":"2025-11-26T23:33:26.126Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-11-26T23:34:26.114Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:34:26.114Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:34:26.114Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:34:26.133Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=2, accelerator=H100, ttft=3802.35ms, itl=47.94ms, cost=20.00"}
+{"level":"INFO","ts":"2025-11-26T23:34:26.135Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=227"}
+{"level":"INFO","ts":"2025-11-26T23:34:26.135Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f9wzgzn, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:34:26.135Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.998 (99.8%)"}
+{"level":"INFO","ts":"2025-11-26T23:34:26.135Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f9wzgzn, usage=0.054 (5.4%)"}
+{"level":"INFO","ts":"2025-11-26T23:34:26.135Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=2, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:34:26.135Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 0"}
+{"level":"INFO","ts":"2025-11-26T23:34:26.135Z","msg":"No scaling decisions to apply"}
+{"level":"INFO","ts":"2025-11-26T23:34:26.135Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-11-26T23:34:26.135Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:34:26.135Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:34:26.135Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:34:26.143Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=2, accelerator=H100, ttft=3802.05ms, itl=47.93ms, cost=20.00"}
+{"level":"INFO","ts":"2025-11-26T23:34:26.145Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=227"}
+{"level":"INFO","ts":"2025-11-26T23:34:26.145Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f9wzgzn, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:34:26.145Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.998 (99.8%)"}
+{"level":"INFO","ts":"2025-11-26T23:34:26.145Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f9wzgzn, usage=0.054 (5.4%)"}
+{"level":"INFO","ts":"2025-11-26T23:34:26.145Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=2, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-11-26T23:34:26.145Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 0"}
+{"level":"INFO","ts":"2025-11-26T23:34:26.145Z","msg":"No scaling decisions to apply"}
+{"level":"INFO","ts":"2025-11-26T23:34:26.145Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.135Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.135Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.135Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.155Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=2, accelerator=H100, ttft=22.44ms, itl=11.44ms, cost=20.00"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.157Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.157Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f9wzgzn, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.157Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.090 (9.0%)"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.157Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f9wzgzn, usage=0.010 (1.0%)"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.157Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=2, nonSaturated=2, shouldScaleUp=false, scaleDownSafe=true"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.157Z","msg":"Capacity target: scale-down most expensive variant: variant=ms-inference-scheduling-llm-d-modelservice-decode, cost=10.00, currentReplicas=2, readyReplicas=2, target=1"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.157Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.157Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.157Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-down, current=2→target=1"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.157Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 2, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.158Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, capacityOnly=true"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.162Z","msg":"Applied capacity decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-down, current=2, target=1, reason=capacity-only mode: scale-down"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.162Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.162Z","msg":"Operating in CAPACITY-ONLY mode: reactive capacity-based scaling only"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.162Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.162Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.172Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=2, accelerator=H100, ttft=22.44ms, itl=11.44ms, cost=20.00"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.173Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.173Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f9wzgzn, queueLength=0"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.174Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f98fz7d, usage=0.090 (9.0%)"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.174Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-789945f9wzgzn, usage=0.010 (1.0%)"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.174Z","msg":"Capacity analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=2, nonSaturated=2, shouldScaleUp=false, scaleDownSafe=true"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.174Z","msg":"Capacity-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.174Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.174Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-down, current=2→target=1"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.174Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 2, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.174Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, capacityOnly=true"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.179Z","msg":"Applied capacity decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-down, current=2, target=1, reason=capacity-only mode: scale-down"}
+{"level":"INFO","ts":"2025-11-26T23:35:26.179Z","msg":"Reconciliation completed successfully: mode=capacity-only, modelsProcessed=1, decisionsApplied=1"}
