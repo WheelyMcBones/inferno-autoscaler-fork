@@ -1,0 +1,45 @@
+name: model-based-high-load
+description: "Model-based WVA with high ShareGPT load (20-30 req/min)"
+mode: model-based
+
+# Kubernetes Configuration
+namespace: llm-d-inference-scheduler
+controller_namespace: workload-variant-autoscaler-system
+controller_pod_prefix: workload-variant-autoscaler-controller-manager
+deployment: ms-inference-scheduling-llm-d-modelservice-decode
+model_name: unsloth/Meta-Llama-3.1-8B
+
+# Metrics Collection
+metrics:
+  interval: 10  # seconds between log polls
+  log_level: INFO
+
+# Workload Sequence
+workloads:
+  - name: warmup
+    job_manifest: ../../not_wva/workloads/sharegpt-load-job-warmup.yaml
+    wait_completion: true
+    description: "Warmup phase - 5 minutes low load"
+  
+  - name: high-20
+    job_manifest: ../../not_wva/workloads/sharegpt-load-job-high-20.yaml
+    wait_completion: true
+    description: "High load - 20 requests/minute"
+  
+  - name: high-30
+    job_manifest: ../../not_wva/workloads/sharegpt-load-job-high-30.yaml
+    wait_completion: true
+    description: "High load - 30 requests/minute"
+
+# Output Configuration
+output:
+  base_dir: ./experiment-data
+  save_raw_logs: true
+  save_parsed_metrics: true
+
+# Expected Behavior
+expected:
+  mode: "MODEL-ONLY mode"
+  slo_itl: 10
+  slo_ttft: 1000
+  accelerator: H100

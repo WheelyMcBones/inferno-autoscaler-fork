@@ -1,0 +1,70 @@
+# Model-Based WVA with Parallel Overlapping Jobs - High Load
+# Pattern matches HPA high-load experiment for direct comparison
+# Jobs run in parallel with staggered start times to create high cumulative load
+# Pattern: Job1 (0s) → Job2 (+120s, overlap with Job1) → Job3 (+120s, overlap with Job2)
+# Peak load reaches 65 req/s - aggressive test of WVA's predictive scaling
+
+name: model-based-high-parallel
+description: "Model-based WVA with overlapping high load (parallel jobs, 20-30 req/s)"
+mode: model-based
+
+# Kubernetes Configuration
+namespace: llm-d-inference-scheduler
+controller_namespace: workload-variant-autoscaler-system
+controller_pod_prefix: workload-variant-autoscaler-controller-manager
+deployment: ms-inference-scheduling-llm-d-modelservice-decode
+model_name: unsloth/Meta-Llama-3.1-8B
+
+# Metrics Collection
+metrics:
+  interval: 5  # seconds between log polls (faster for parallel mode)
+  log_level: INFO
+
+# Parallel Workload Sequence (matches HPA high-load experiment)
+workloads:
+  - name: phase-1-high
+    job_manifest: ../../not_wva/workloads/sharegpt-load-job-high-20.yaml  # 20 req/s
+    duration: 600  # 10 minutes
+    start_delay: 0  # Start immediately
+    description: "Phase 1: 20 req/s high baseline load"
+    
+  - name: phase-2-high-peak
+    job_manifest: ../../not_wva/workloads/sharegpt-load-job-high-30.yaml  # 30 req/s
+    duration: 600  # 10 minutes
+    start_delay: 120  # Start 2min after experiment begins (480s overlap with phase-1)
+    description: "Phase 2: 30 req/s very high load (overlaps with phase 1)"
+    
+  - name: phase-3-high-sustained
+    job_manifest: ../../not_wva/workloads/sharegpt-load-job-moderate-15.yaml  # 15 req/s
+    duration: 600  # 10 minutes
+    start_delay: 240  # Start 4min after experiment begins (480s overlap with phase-2)
+    description: "Phase 3: 15 req/s moderate sustained (overlaps with phase 2)"
+
+# Timeline visualization:
+# Time:    0s        120s       240s       360s       480s       600s       720s       840s
+# Job1:    [================================================================]  (20 req/s)
+# Job2:              [================================================================]  (30 req/s)
+# Job3:                         [================================================================]  (15 req/s)
+# Load:    20        50         65         65         65         45         15         0
+# 
+# Expected behavior with WVA model-based:
+# - 0-120s: 20 req/s (aggressive start, WVA should predict higher replica count)
+# - 120-240s: 50 req/s (job1+job2, WVA major scale-up predicted)
+# - 240-600s: 65 req/s (PEAK - all three running, maximum load test, should scale above 2)
+# - 600-720s: 45 req/s (job2+job3, still high load but decreasing)
+# - 720-840s: 15 req/s (job3 only, WVA should predict gradual scale-down)
+
+# Output Configuration
+output:
+  base_dir: ./experiment-data
+  save_raw_logs: true
+  save_parsed_metrics: true
+
+# Expected Behavior (for validation)
+expected:
+  mode: "MODEL-ONLY mode"
+  slo_itl: 10  # ms
+  slo_ttft: 1000  # ms
+  accelerator: H100
+  pattern: "overlapping_parallel"
+  peak_load: "65 req/s at t=240-600s (6 minutes sustained peak)"

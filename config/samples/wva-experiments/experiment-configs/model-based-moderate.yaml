@@ -1,0 +1,50 @@
+name: model-based-moderate-load
+description: "Model-based WVA with moderate ShareGPT load (10-15 req/min)"
+mode: model-based
+
+# Kubernetes Configuration
+namespace: llm-d-inference-scheduler
+controller_namespace: workload-variant-autoscaler-system
+controller_pod_prefix: workload-variant-autoscaler-controller-manager
+deployment: ms-inference-scheduling-llm-d-modelservice-decode
+model_name: unsloth/Meta-Llama-3.1-8B
+
+# Metrics Collection
+metrics:
+  interval: 10  # seconds between log polls
+  log_level: INFO  # Extract logs at this level and above
+
+# Workload Sequence
+workloads:
+  - name: warmup
+    job_manifest: ../../not_wva/workloads/sharegpt-load-job-warmup.yaml
+    wait_completion: true
+    description: "Warmup phase - 5 minutes low load"
+  
+  - name: moderate-10
+    job_manifest: ../../not_wva/workloads/sharegpt-load-job-moderate-10.yaml
+    wait_completion: true
+    description: "Moderate load - 10 requests/minute"
+  
+  - name: moderate-12
+    job_manifest: ../../not_wva/workloads/sharegpt-load-job-moderate-12.yaml
+    wait_completion: true
+    description: "Moderate load - 12 requests/minute"
+  
+  - name: moderate-15
+    job_manifest: ../../not_wva/workloads/sharegpt-load-job-moderate-15.yaml
+    wait_completion: true
+    description: "Moderate load - 15 requests/minute"
+
+# Output Configuration
+output:
+  base_dir: ./experiment-data
+  save_raw_logs: true
+  save_parsed_metrics: true
+
+# Expected Behavior (for validation)
+expected:
+  mode: "MODEL-ONLY mode"
+  slo_itl: 10  # ms
+  slo_ttft: 1000  # ms
+  accelerator: H100
