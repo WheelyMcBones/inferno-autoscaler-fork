@@ -36,8 +36,8 @@ spec:
         - "--backend"
         - "openai"
         - "--base-url"
-        - "http://vllm-service:8200"
-        # - "http://infra-workload-autoscaler-inference-gateway-istio:80"  # Update with your gateway name
+        # - "http://vllm-service:8200"
+        - "http://infra-inference-scheduling-inference-gateway-istio:80"  # Update with your gateway name
         - "--dataset-name"
         - "sharegpt"
         - "--dataset-path"
