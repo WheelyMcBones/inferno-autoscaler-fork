@@ -247,6 +247,12 @@ func (r *VariantAutoscalingReconciler) Reconcile(ctx context.Context, req ctrl.R
 				// In hybrid mode, continue to run model-based (saturation failed but we can still run optimizer)
 				errorCount++
 			}
+		} else if enableModelOptimizer {
+			// Model-only mode: collect and log capacity metrics for observability
+			if err := r.collectAndLogCapacityMetrics(ctx, modelID, modelVAs); err != nil {
+				logger.Log.Debugf("Failed to collect capacity metrics for logging in model-only mode: modelID=%s, error=%v", modelID, err)
+				// Non-fatal - just for observability
+			}
 		}
 
 		var finalDecisions []interfaces.VariantDecision
@@ -770,7 +776,7 @@ func (r *VariantAutoscalingReconciler) collectMetricsForSaturationMode(
 		// Update vaMap with the VA that has CurrentAlloc populated
 		vaMap[updateVA.Name] = &updateVA
 
-		logger.Log.Infof("Metrics collected for VA: variant=%s, replicas=%d, accelerator=%s, ttft=%sms, itl=%sms, cost=%s, arrivalRate=%.2f",
+		logger.Log.Infof("Metrics collected for VA: variant=%s, replicas=%d, accelerator=%s, ttft=%sms, itl=%sms, cost=%s, arrivalRate=%s",
 			updateVA.Name,
 			currentAllocation.NumReplicas,
 			currentAllocation.Accelerator,
@@ -779,6 +785,66 @@ func (r *VariantAutoscalingReconciler) collectMetricsForSaturationMode(
 			currentAllocation.VariantCost,
 			currentAllocation.Load.ArrivalRate)
 	}
+
+	return nil
+}
+
+// collectAndLogCapacityMetrics collects and logs per-pod KV cache and queue metrics for observability in model-only mode.
+// This function logs the same format as capacity-based mode so the same parsing can be reused in analysis notebooks.
+func (r *VariantAutoscalingReconciler) collectAndLogCapacityMetrics(
+	ctx context.Context,
+	modelID string,
+	modelVAs []llmdVariantAutoscalingV1alpha1.VariantAutoscaling,
+) error {
+	if len(modelVAs) == 0 {
+		return nil
+	}
+
+	namespace := modelVAs[0].Namespace
+
+	// Build deployment map and variant costs map
+	deployments := make(map[string]*appsv1.Deployment)
+	variantAutoscalings := make(map[string]*llmdVariantAutoscalingV1alpha1.VariantAutoscaling)
+	variantCosts := make(map[string]float64)
+
+	for i := range modelVAs {
+		va := &modelVAs[i]
+
+		// Get Deployment
+		var deploy appsv1.Deployment
+		err := utils.GetDeploymentWithBackoff(ctx, r.Client, va.Name, va.Namespace, &deploy)
+		if err != nil {
+			logger.Log.Debugf("Could not get deployment for VA in model-only metrics logging: variant=%s, error=%v", va.Name, err)
+			continue
+		}
+
+		deployments[va.Name] = &deploy
+		variantAutoscalings[va.Name] = va
+
+		// Extract variant cost
+		if va.Spec.VariantCost != "" {
+			cost, err := strconv.ParseFloat(va.Spec.VariantCost, 64)
+			if err == nil {
+				variantCosts[va.Name] = cost
+			}
+		}
+	}
+
+	if len(deployments) == 0 {
+		return fmt.Errorf("no deployments found for model: %s", modelID)
+	}
+
+	// Create saturation metrics collector
+	saturationCollector := collector.NewSaturationMetricsCollector(r.PromAPI)
+	saturationCollector.SetK8sClient(r.Client)
+
+	// Collect replica metrics (KV cache and queue)
+	replicaMetrics, err := saturationCollector.CollectReplicaMetrics(ctx, modelID, namespace, deployments, variantAutoscalings, variantCosts)
+	if err != nil {
+		return fmt.Errorf("failed to collect replica metrics: %w", err)
+	}
+
+	logger.Log.Debugf("Collected capacity metrics for observability in model-only mode: modelID=%s, replicaCount=%d", modelID, len(replicaMetrics))
 
 	return nil
 }
