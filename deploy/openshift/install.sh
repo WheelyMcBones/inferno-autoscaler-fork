@@ -30,7 +30,7 @@ REQUIRED_TOOLS=("oc")
 SKIP_TLS_VERIFY=false
 VALUES_FILE="${WVA_PROJECT}/charts/workload-variant-autoscaler/values.yaml"
 
-# EXPERIMENTAL_HYBRID_OPTIMIZATION=true
+# EXPERIMENTAL_HYBRID_OPTIMIZATION=on
 
 #### REQUIRED FUNCTION used by deploy/install.sh ####
 check_specific_prerequisites() {
