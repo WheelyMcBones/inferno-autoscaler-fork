@@ -17,32 +17,32 @@ hpa:
 jobs:
   - name: "phase-1-high-load"
     manifest: "../../workloads/sharegpt-load-job-high-20.yaml"  # 20 req/s
-    duration: 600  # 10 minutes
+    duration: 900  # 15 minutes
     start_delay: 0  # Start immediately
     
   - name: "phase-2-peak-load"
     manifest: "../../workloads/sharegpt-load-job-high-30.yaml"  # 30 req/s
-    duration: 600  # 10 minutes
-    start_delay: 120  # Start 2min after experiment begins (480s overlap with phase-1)
+    duration: 900  # 15 minutes
+    start_delay: 120  # Start 2min after experiment begins (780s overlap with phase-1)
     
   - name: "phase-3-sustained"
     manifest: "../../workloads/sharegpt-load-job-high-20.yaml"  # Back to 20 req/s
-    duration: 600  # 10 minutes
-    start_delay: 240  # Start 4min after experiment begins (480s overlap with phase-2)
+    duration: 900  # 15 minutes
+    start_delay: 240  # Start 4min after experiment begins (780s overlap with phase-2)
 
 # Timeline visualization:
-# Time:    0s        120s       240s       360s       480s       600s       720s       840s
-# Job1:    [================================================================]  (20 req/s)
-# Job2:              [================================================================]  (30 req/s)
-# Job3:                         [================================================================]  (20 req/s)
-# Load:    20        50         70         70         70         50         20         0
+# Time:    0s        120s       240s       360s       480s       600s       720s       840s       960s       1080s      1140s
+# Job1:    [============================================================================================]  (20 req/s)
+# Job2:              [============================================================================================]  (30 req/s)
+# Job3:                         [============================================================================================]  (20 req/s)
+# Load:    20        50         70         70         70         70         70         70         50         20         0
 # 
 # Expected behavior:
 # - 0-120s: 20 req/s (single job, may not trigger scale-up)
 # - 120-240s: 50 req/s (job1+job2, should saturate and trigger scale-up)
-# - 240-600s: 70 req/s (all three jobs, sustained very high load, should scale above 2)
-# - 600-720s: 50 req/s (job2+job3, sustained high load)
-# - 720-840s: 20 req/s (job3 only, scale-down period)
+# - 240-900s: 70 req/s (all three jobs for 11 minutes, sustained very high load, should scale above 2)
+# - 900-1020s: 50 req/s (job2+job3, sustained high load)
+# - 1020-1140s: 20 req/s (job3 only, scale-down period)
 
 metrics:
   interval: 5

@@ -47,7 +47,9 @@ spec:
         - "--seed"
         - "12345"
         - "--num-prompts"
-        - "5400"  # 15 req/s for 6 minutes (360s)
+        # Calculated: 15 req/s × 900s (15 min) = 13500 prompts
+        # Using high value to ensure job runs until manually terminated
+        - "50000"  # High enough to run continuously (previous: 5400 for 6min)
         - "--max-concurrency"
         - "512"
         - "--request-rate"
