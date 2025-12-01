@@ -1,0 +1,69 @@
+# Capacity-Based WVA with Parallel Overlapping Jobs - High Load
+# Pattern matches HPA high-load experiment for direct comparison
+# Jobs run in parallel with staggered start times to create high cumulative load
+# Tests capacity analyzer's saturation detection under extreme load
+
+name: capacity-based-high-parallel
+description: "Capacity-based WVA with overlapping high load (parallel jobs, 20-30 req/s)"
+mode: capacity-based
+
+# Kubernetes Configuration
+namespace: llm-d-inference-scheduler
+controller_namespace: workload-variant-autoscaler-system
+controller_pod_prefix: workload-variant-autoscaler-controller-manager
+deployment: ms-inference-scheduling-llm-d-modelservice-decode
+model_name: unsloth/Meta-Llama-3.1-8B
+
+# Metrics Collection
+metrics:
+  interval: 5  # seconds between log polls (faster for parallel mode)
+  log_level: INFO
+
+# Parallel Workload Sequence (matches HPA high-load experiment)
+workloads:
+  - name: phase-1-high
+    job_manifest: ../../not_wva/workloads/sharegpt-load-job-high-20.yaml  # 20 req/s
+    duration: 900  # 15 minutes
+    start_delay: 0  # Start immediately
+    description: "Phase 1: 20 req/s high baseline load"
+    
+  - name: phase-2-high-peak
+    job_manifest: ../../not_wva/workloads/sharegpt-load-job-high-30.yaml  # 30 req/s
+    duration: 900  # 15 minutes
+    start_delay: 120  # Start 2min after experiment begins (780s overlap with phase-1)
+    description: "Phase 2: 30 req/s very high load (overlaps with phase 1)"
+    
+  - name: phase-3-high-sustained
+    job_manifest: ../../not_wva/workloads/sharegpt-load-job-moderate-15.yaml  # 15 req/s
+    duration: 900  # 15 minutes
+    start_delay: 240  # Start 4min after experiment begins (780s overlap with phase-2)
+    description: "Phase 3: 15 req/s moderate sustained (overlaps with phase 2)"
+
+# Timeline visualization:
+# Time:    0s        120s       240s       360s       480s       600s       720s       840s       960s       1080s      1140s
+# Job1:    [============================================================================================]  (20 req/s)
+# Job2:              [============================================================================================]  (30 req/s)
+# Job3:                         [============================================================================================]  (15 req/s)
+# Load:    20        50         65         65         65         65         65         65         45         15         0
+# 
+# Expected behavior with WVA capacity-based:
+# - 0-120s: 20 req/s (KV cache saturation likely within minutes)
+# - 120-240s: 50 req/s (KV cache 100%, queue buildup expected, aggressive scale-up)
+# - 240-900s: 65 req/s (PEAK - maximum saturation for 11 minutes, multiple pods saturated, should scale above 2)
+# - 900-1020s: 45 req/s (still very high KV cache, queue persists)
+# - 1020-1140s: 15 req/s (KV cache drains gradually, delayed scale-down)
+
+# Output Configuration
+output:
+  base_dir: ./experiment-data
+  save_raw_logs: true
+  save_parsed_metrics: true
+
+# Expected Behavior (for validation)
+expected:
+  mode: "CAPACITY-ONLY mode"
+  kv_cache_threshold: 0.9
+  queue_threshold: 10
+  accelerator: H100
+  pattern: "overlapping_parallel"
+  peak_load: "65 req/s at t=240-600s (6 minutes sustained peak)"
