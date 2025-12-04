@@ -1,0 +1,538 @@
+{"level":"INFO","ts":"2025-12-03T21:41:48.925Z","msg":"Operating in MODEL-ONLY mode: model-based optimization only"}
+{"level":"INFO","ts":"2025-12-03T21:41:48.925Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-03T21:41:48.925Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:41:48.930Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, usage=0.000 (0.0%)"}
+{"level":"DEBUG","ts":"2025-12-03T21:41:48.930Z","msg":"KV cache metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:41:48.939Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, queueLength=0"}
+{"level":"DEBUG","ts":"2025-12-03T21:41:48.939Z","msg":"Queue metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=1"}
+{"level":"DEBUG","ts":"2025-12-03T21:41:48.940Z","msg":"Pod-to-variant matching successful: totalPods=1, variantCounts=map[ms-inference-scheduling-llm-d-modelservice-decode:1]"}
+{"level":"DEBUG","ts":"2025-12-03T21:41:48.940Z","msg":"Collected replica metrics: modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, replicaCount=1"}
+{"level":"DEBUG","ts":"2025-12-03T21:41:48.940Z","msg":"Collected capacity metrics for observability in model-only mode: modelID=unsloth/Meta-Llama-3.1-8B, replicaCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:41:48.940Z","msg":"Found SLO for model: model=unsloth/Meta-Llama-3.1-8B, class=Premium, slo-tpot=10, slo-ttft=1000"}
+{"level":"DEBUG","ts":"2025-12-03T21:41:48.952Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=100.00, maxBatch=256, arrivalRate=0.00, avgInputTokens=0.00, avgOutputTokens=0.00"}
+{"level":"DEBUG","ts":"2025-12-03T21:41:48.952Z","msg":"Experimental model tuner is enabled globally (EXPERIMENTAL_MODEL_TUNER_ENABLED=true) tuning model performance parameters for active VAs"}
+{"level":"DEBUG","ts":"2025-12-03T21:41:48.952Z","msg":"Using state vals from VA status to tune variant ms-inference-scheduling-llm-d-modelservice-decode: alpha= 9.293570, beta= 0.023245, gamma= 19.368063, delta= 0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:41:48.952Z","msg":"[Tuner Config] variant=ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler | Initial state: alpha=9.293570, beta=0.023245, gamma=19.368063, delta=0.000190 | SLO targets: TTFT=1000.00ms, ITL=10.00ms | Has covariance=true"}
+{"level":"WARN","ts":"2025-12-03T21:41:48.952Z","msg":"Tuner failed completely for variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler: failed to get/create tuner: failed to create tuner: invalid environment: &{0 0 0 256 0 0 1}. Using fallback parameters."}
+{"level":"INFO","ts":"2025-12-03T21:41:48.952Z","msg":"Using tuned parameters from status for variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler"}
+{"level":"DEBUG","ts":"2025-12-03T21:41:48.952Z","msg":"Updated SystemData for model=unsloth/Meta-Llama-3.1-8B, accelerator=H100: alpha=9.293570, beta=0.023245, gamma=19.368063, delta=0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:41:48.952Z","msg":"Optimization solution - system: Solution: \ns=ms-inference-scheduling-llm-d-modelservice-decode:llm-d-inference-scheduler; c=Premium; m=unsloth/Meta-Llama-3.1-8B; rate=0; inTk=0; outTk=0; sol=1, sat=false, alloc={acc=H100; numRep=1; maxBatch=512; cost=100, val=0, itl=9.316814, ttft=19.368254, rho=0, maxRPM=757335.5}; slo-itl=10, slo-ttft=1000, slo-tps=0 \nAllocationByType: \nname=NVIDIA-H100-80GB-HBM3, count=1, limit=0, cost=100 \ntotalCost=100 \n"}
+{"level":"DEBUG","ts":"2025-12-03T21:41:48.952Z","msg":"Setting accelerator name: Name=H100, allocationData={H100 1 512 100 9.316814 19.368254 {0 0 0}}"}
+{"level":"INFO","ts":"2025-12-03T21:41:48.952Z","msg":"Model-based optimization completed for model: unsloth/Meta-Llama-3.1-8B - model-based targets: map[ms-inference-scheduling-llm-d-modelservice-decode:1]"}
+{"level":"WARN","ts":"2025-12-03T21:41:48.952Z","msg":"Capacity analysis unavailable, using model-based targets only: modelID=unsloth/Meta-Llama-3.1-8B"}
+{"level":"INFO","ts":"2025-12-03T21:41:48.952Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-03T21:41:48.952Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"DEBUG","ts":"2025-12-03T21:41:48.952Z","msg":"Found VA in map: variant=ms-inference-scheduling-llm-d-modelservice-decode, hasCurrentAlloc=true, accelerator=H100"}
+{"level":"INFO","ts":"2025-12-03T21:41:48.952Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-03T21:41:48.952Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, capacityOnly=false"}
+{"level":"INFO","ts":"2025-12-03T21:41:48.958Z","msg":"Applied capacity decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=model-based only (capacity unavailable)"}
+{"level":"INFO","ts":"2025-12-03T21:41:48.958Z","msg":"Reconciliation completed successfully: mode=model-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-03T21:42:48.959Z","msg":"Operating in MODEL-ONLY mode: model-based optimization only"}
+{"level":"INFO","ts":"2025-12-03T21:42:48.959Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-03T21:42:48.959Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:42:48.967Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, queueLength=0"}
+{"level":"DEBUG","ts":"2025-12-03T21:42:48.967Z","msg":"Queue metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:42:48.967Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, usage=0.000 (0.0%)"}
+{"level":"DEBUG","ts":"2025-12-03T21:42:48.967Z","msg":"KV cache metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=1"}
+{"level":"DEBUG","ts":"2025-12-03T21:42:48.967Z","msg":"Pod-to-variant matching successful: totalPods=1, variantCounts=map[ms-inference-scheduling-llm-d-modelservice-decode:1]"}
+{"level":"DEBUG","ts":"2025-12-03T21:42:48.967Z","msg":"Collected replica metrics: modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, replicaCount=1"}
+{"level":"DEBUG","ts":"2025-12-03T21:42:48.967Z","msg":"Collected capacity metrics for observability in model-only mode: modelID=unsloth/Meta-Llama-3.1-8B, replicaCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:42:48.967Z","msg":"Found SLO for model: model=unsloth/Meta-Llama-3.1-8B, class=Premium, slo-tpot=10, slo-ttft=1000"}
+{"level":"DEBUG","ts":"2025-12-03T21:42:48.976Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=100.00, maxBatch=256, arrivalRate=0.00, avgInputTokens=0.00, avgOutputTokens=0.00"}
+{"level":"DEBUG","ts":"2025-12-03T21:42:48.976Z","msg":"Experimental model tuner is enabled globally (EXPERIMENTAL_MODEL_TUNER_ENABLED=true) tuning model performance parameters for active VAs"}
+{"level":"DEBUG","ts":"2025-12-03T21:42:48.976Z","msg":"Using state vals from VA status to tune variant ms-inference-scheduling-llm-d-modelservice-decode: alpha= 9.293570, beta= 0.023245, gamma= 19.368063, delta= 0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:42:48.976Z","msg":"[Tuner Config] variant=ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler | Initial state: alpha=9.293570, beta=0.023245, gamma=19.368063, delta=0.000190 | SLO targets: TTFT=1000.00ms, ITL=10.00ms | Has covariance=true"}
+{"level":"WARN","ts":"2025-12-03T21:42:48.976Z","msg":"Tuner failed completely for variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler: failed to get/create tuner: failed to create tuner: invalid environment: &{0 0 0 256 0 0 1}. Using fallback parameters."}
+{"level":"INFO","ts":"2025-12-03T21:42:48.976Z","msg":"Using tuned parameters from status for variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler"}
+{"level":"DEBUG","ts":"2025-12-03T21:42:48.976Z","msg":"Updated SystemData for model=unsloth/Meta-Llama-3.1-8B, accelerator=H100: alpha=9.293570, beta=0.023245, gamma=19.368063, delta=0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:42:48.976Z","msg":"Optimization solution - system: Solution: \ns=ms-inference-scheduling-llm-d-modelservice-decode:llm-d-inference-scheduler; c=Premium; m=unsloth/Meta-Llama-3.1-8B; rate=0; inTk=0; outTk=0; sol=1, sat=false, alloc={acc=H100; numRep=1; maxBatch=512; cost=100, val=0, itl=9.316814, ttft=19.368254, rho=0, maxRPM=757335.5}; slo-itl=10, slo-ttft=1000, slo-tps=0 \nAllocationByType: \nname=NVIDIA-H100-80GB-HBM3, count=1, limit=0, cost=100 \ntotalCost=100 \n"}
+{"level":"DEBUG","ts":"2025-12-03T21:42:48.976Z","msg":"Setting accelerator name: Name=H100, allocationData={H100 1 512 100 9.316814 19.368254 {0 0 0}}"}
+{"level":"INFO","ts":"2025-12-03T21:42:48.976Z","msg":"Model-based optimization completed for model: unsloth/Meta-Llama-3.1-8B - model-based targets: map[ms-inference-scheduling-llm-d-modelservice-decode:1]"}
+{"level":"WARN","ts":"2025-12-03T21:42:48.976Z","msg":"Capacity analysis unavailable, using model-based targets only: modelID=unsloth/Meta-Llama-3.1-8B"}
+{"level":"INFO","ts":"2025-12-03T21:42:48.976Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-03T21:42:48.976Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"DEBUG","ts":"2025-12-03T21:42:48.976Z","msg":"Found VA in map: variant=ms-inference-scheduling-llm-d-modelservice-decode, hasCurrentAlloc=true, accelerator=H100"}
+{"level":"INFO","ts":"2025-12-03T21:42:48.976Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-03T21:42:48.976Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, capacityOnly=false"}
+{"level":"INFO","ts":"2025-12-03T21:42:48.983Z","msg":"Applied capacity decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=model-based only (capacity unavailable)"}
+{"level":"INFO","ts":"2025-12-03T21:42:48.983Z","msg":"Reconciliation completed successfully: mode=model-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-03T21:43:48.984Z","msg":"Operating in MODEL-ONLY mode: model-based optimization only"}
+{"level":"INFO","ts":"2025-12-03T21:43:48.984Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-03T21:43:48.984Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:43:48.992Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, queueLength=0"}
+{"level":"DEBUG","ts":"2025-12-03T21:43:48.992Z","msg":"Queue metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:43:48.992Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, usage=0.000 (0.0%)"}
+{"level":"DEBUG","ts":"2025-12-03T21:43:48.992Z","msg":"KV cache metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=1"}
+{"level":"DEBUG","ts":"2025-12-03T21:43:48.992Z","msg":"Pod-to-variant matching successful: totalPods=1, variantCounts=map[ms-inference-scheduling-llm-d-modelservice-decode:1]"}
+{"level":"DEBUG","ts":"2025-12-03T21:43:48.992Z","msg":"Collected replica metrics: modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, replicaCount=1"}
+{"level":"DEBUG","ts":"2025-12-03T21:43:48.992Z","msg":"Collected capacity metrics for observability in model-only mode: modelID=unsloth/Meta-Llama-3.1-8B, replicaCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:43:48.992Z","msg":"Found SLO for model: model=unsloth/Meta-Llama-3.1-8B, class=Premium, slo-tpot=10, slo-ttft=1000"}
+{"level":"DEBUG","ts":"2025-12-03T21:43:49.002Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=100.00, maxBatch=256, arrivalRate=0.00, avgInputTokens=0.00, avgOutputTokens=0.00"}
+{"level":"DEBUG","ts":"2025-12-03T21:43:49.002Z","msg":"Experimental model tuner is enabled globally (EXPERIMENTAL_MODEL_TUNER_ENABLED=true) tuning model performance parameters for active VAs"}
+{"level":"DEBUG","ts":"2025-12-03T21:43:49.002Z","msg":"Using state vals from VA status to tune variant ms-inference-scheduling-llm-d-modelservice-decode: alpha= 9.293570, beta= 0.023245, gamma= 19.368063, delta= 0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:43:49.002Z","msg":"[Tuner Config] variant=ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler | Initial state: alpha=9.293570, beta=0.023245, gamma=19.368063, delta=0.000190 | SLO targets: TTFT=1000.00ms, ITL=10.00ms | Has covariance=true"}
+{"level":"WARN","ts":"2025-12-03T21:43:49.002Z","msg":"Tuner failed completely for variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler: failed to get/create tuner: failed to create tuner: invalid environment: &{0 0 0 256 0 0 1}. Using fallback parameters."}
+{"level":"INFO","ts":"2025-12-03T21:43:49.002Z","msg":"Using tuned parameters from status for variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler"}
+{"level":"DEBUG","ts":"2025-12-03T21:43:49.002Z","msg":"Updated SystemData for model=unsloth/Meta-Llama-3.1-8B, accelerator=H100: alpha=9.293570, beta=0.023245, gamma=19.368063, delta=0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:43:49.002Z","msg":"Optimization solution - system: Solution: \ns=ms-inference-scheduling-llm-d-modelservice-decode:llm-d-inference-scheduler; c=Premium; m=unsloth/Meta-Llama-3.1-8B; rate=0; inTk=0; outTk=0; sol=1, sat=false, alloc={acc=H100; numRep=1; maxBatch=512; cost=100, val=0, itl=9.316814, ttft=19.368254, rho=0, maxRPM=757335.5}; slo-itl=10, slo-ttft=1000, slo-tps=0 \nAllocationByType: \nname=NVIDIA-H100-80GB-HBM3, count=1, limit=0, cost=100 \ntotalCost=100 \n"}
+{"level":"DEBUG","ts":"2025-12-03T21:43:49.002Z","msg":"Setting accelerator name: Name=H100, allocationData={H100 1 512 100 9.316814 19.368254 {0 0 0}}"}
+{"level":"INFO","ts":"2025-12-03T21:43:49.002Z","msg":"Model-based optimization completed for model: unsloth/Meta-Llama-3.1-8B - model-based targets: map[ms-inference-scheduling-llm-d-modelservice-decode:1]"}
+{"level":"WARN","ts":"2025-12-03T21:43:49.002Z","msg":"Capacity analysis unavailable, using model-based targets only: modelID=unsloth/Meta-Llama-3.1-8B"}
+{"level":"INFO","ts":"2025-12-03T21:43:49.002Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-03T21:43:49.002Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"DEBUG","ts":"2025-12-03T21:43:49.002Z","msg":"Found VA in map: variant=ms-inference-scheduling-llm-d-modelservice-decode, hasCurrentAlloc=true, accelerator=H100"}
+{"level":"INFO","ts":"2025-12-03T21:43:49.002Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-03T21:43:49.002Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, capacityOnly=false"}
+{"level":"INFO","ts":"2025-12-03T21:43:49.008Z","msg":"Applied capacity decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=model-based only (capacity unavailable)"}
+{"level":"INFO","ts":"2025-12-03T21:43:49.008Z","msg":"Reconciliation completed successfully: mode=model-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-03T21:44:49.008Z","msg":"Operating in MODEL-ONLY mode: model-based optimization only"}
+{"level":"INFO","ts":"2025-12-03T21:44:49.008Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-03T21:44:49.008Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:44:49.014Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, queueLength=0"}
+{"level":"DEBUG","ts":"2025-12-03T21:44:49.014Z","msg":"Queue metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:44:49.014Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, usage=0.000 (0.0%)"}
+{"level":"DEBUG","ts":"2025-12-03T21:44:49.014Z","msg":"KV cache metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=1"}
+{"level":"DEBUG","ts":"2025-12-03T21:44:49.014Z","msg":"Pod-to-variant matching successful: totalPods=1, variantCounts=map[ms-inference-scheduling-llm-d-modelservice-decode:1]"}
+{"level":"DEBUG","ts":"2025-12-03T21:44:49.014Z","msg":"Collected replica metrics: modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, replicaCount=1"}
+{"level":"DEBUG","ts":"2025-12-03T21:44:49.014Z","msg":"Collected capacity metrics for observability in model-only mode: modelID=unsloth/Meta-Llama-3.1-8B, replicaCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:44:49.015Z","msg":"Found SLO for model: model=unsloth/Meta-Llama-3.1-8B, class=Premium, slo-tpot=10, slo-ttft=1000"}
+{"level":"DEBUG","ts":"2025-12-03T21:44:49.024Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=100.00, maxBatch=256, arrivalRate=0.00, avgInputTokens=0.00, avgOutputTokens=0.00"}
+{"level":"DEBUG","ts":"2025-12-03T21:44:49.024Z","msg":"Experimental model tuner is enabled globally (EXPERIMENTAL_MODEL_TUNER_ENABLED=true) tuning model performance parameters for active VAs"}
+{"level":"DEBUG","ts":"2025-12-03T21:44:49.024Z","msg":"Using state vals from VA status to tune variant ms-inference-scheduling-llm-d-modelservice-decode: alpha= 9.293570, beta= 0.023245, gamma= 19.368063, delta= 0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:44:49.024Z","msg":"[Tuner Config] variant=ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler | Initial state: alpha=9.293570, beta=0.023245, gamma=19.368063, delta=0.000190 | SLO targets: TTFT=1000.00ms, ITL=10.00ms | Has covariance=true"}
+{"level":"WARN","ts":"2025-12-03T21:44:49.024Z","msg":"Tuner failed completely for variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler: failed to get/create tuner: failed to create tuner: invalid environment: &{0 0 0 256 0 0 1}. Using fallback parameters."}
+{"level":"INFO","ts":"2025-12-03T21:44:49.024Z","msg":"Using tuned parameters from status for variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler"}
+{"level":"DEBUG","ts":"2025-12-03T21:44:49.024Z","msg":"Updated SystemData for model=unsloth/Meta-Llama-3.1-8B, accelerator=H100: alpha=9.293570, beta=0.023245, gamma=19.368063, delta=0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:44:49.024Z","msg":"Optimization solution - system: Solution: \ns=ms-inference-scheduling-llm-d-modelservice-decode:llm-d-inference-scheduler; c=Premium; m=unsloth/Meta-Llama-3.1-8B; rate=0; inTk=0; outTk=0; sol=1, sat=false, alloc={acc=H100; numRep=1; maxBatch=512; cost=100, val=0, itl=9.316814, ttft=19.368254, rho=0, maxRPM=757335.5}; slo-itl=10, slo-ttft=1000, slo-tps=0 \nAllocationByType: \nname=NVIDIA-H100-80GB-HBM3, count=1, limit=0, cost=100 \ntotalCost=100 \n"}
+{"level":"DEBUG","ts":"2025-12-03T21:44:49.024Z","msg":"Setting accelerator name: Name=H100, allocationData={H100 1 512 100 9.316814 19.368254 {0 0 0}}"}
+{"level":"INFO","ts":"2025-12-03T21:44:49.024Z","msg":"Model-based optimization completed for model: unsloth/Meta-Llama-3.1-8B - model-based targets: map[ms-inference-scheduling-llm-d-modelservice-decode:1]"}
+{"level":"WARN","ts":"2025-12-03T21:44:49.024Z","msg":"Capacity analysis unavailable, using model-based targets only: modelID=unsloth/Meta-Llama-3.1-8B"}
+{"level":"INFO","ts":"2025-12-03T21:44:49.024Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-03T21:44:49.024Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"DEBUG","ts":"2025-12-03T21:44:49.024Z","msg":"Found VA in map: variant=ms-inference-scheduling-llm-d-modelservice-decode, hasCurrentAlloc=true, accelerator=H100"}
+{"level":"INFO","ts":"2025-12-03T21:44:49.024Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-03T21:44:49.024Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, capacityOnly=false"}
+{"level":"INFO","ts":"2025-12-03T21:44:49.030Z","msg":"Applied capacity decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=model-based only (capacity unavailable)"}
+{"level":"INFO","ts":"2025-12-03T21:44:49.030Z","msg":"Reconciliation completed successfully: mode=model-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-03T21:45:49.030Z","msg":"Operating in MODEL-ONLY mode: model-based optimization only"}
+{"level":"INFO","ts":"2025-12-03T21:45:49.030Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-03T21:45:49.030Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:45:49.037Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, queueLength=0"}
+{"level":"DEBUG","ts":"2025-12-03T21:45:49.037Z","msg":"Queue metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:45:49.037Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, usage=0.000 (0.0%)"}
+{"level":"DEBUG","ts":"2025-12-03T21:45:49.037Z","msg":"KV cache metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=1"}
+{"level":"DEBUG","ts":"2025-12-03T21:45:49.037Z","msg":"Pod-to-variant matching successful: totalPods=1, variantCounts=map[ms-inference-scheduling-llm-d-modelservice-decode:1]"}
+{"level":"DEBUG","ts":"2025-12-03T21:45:49.037Z","msg":"Collected replica metrics: modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, replicaCount=1"}
+{"level":"DEBUG","ts":"2025-12-03T21:45:49.037Z","msg":"Collected capacity metrics for observability in model-only mode: modelID=unsloth/Meta-Llama-3.1-8B, replicaCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:45:49.037Z","msg":"Found SLO for model: model=unsloth/Meta-Llama-3.1-8B, class=Premium, slo-tpot=10, slo-ttft=1000"}
+{"level":"DEBUG","ts":"2025-12-03T21:45:49.046Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=100.00, maxBatch=256, arrivalRate=0.00, avgInputTokens=0.00, avgOutputTokens=0.00"}
+{"level":"DEBUG","ts":"2025-12-03T21:45:49.046Z","msg":"Experimental model tuner is enabled globally (EXPERIMENTAL_MODEL_TUNER_ENABLED=true) tuning model performance parameters for active VAs"}
+{"level":"DEBUG","ts":"2025-12-03T21:45:49.046Z","msg":"Using state vals from VA status to tune variant ms-inference-scheduling-llm-d-modelservice-decode: alpha= 9.293570, beta= 0.023245, gamma= 19.368063, delta= 0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:45:49.046Z","msg":"[Tuner Config] variant=ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler | Initial state: alpha=9.293570, beta=0.023245, gamma=19.368063, delta=0.000190 | SLO targets: TTFT=1000.00ms, ITL=10.00ms | Has covariance=true"}
+{"level":"WARN","ts":"2025-12-03T21:45:49.046Z","msg":"Tuner failed completely for variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler: failed to get/create tuner: failed to create tuner: invalid environment: &{0 0 0 256 0 0 1}. Using fallback parameters."}
+{"level":"INFO","ts":"2025-12-03T21:45:49.046Z","msg":"Using tuned parameters from status for variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler"}
+{"level":"DEBUG","ts":"2025-12-03T21:45:49.046Z","msg":"Updated SystemData for model=unsloth/Meta-Llama-3.1-8B, accelerator=H100: alpha=9.293570, beta=0.023245, gamma=19.368063, delta=0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:45:49.047Z","msg":"Optimization solution - system: Solution: \ns=ms-inference-scheduling-llm-d-modelservice-decode:llm-d-inference-scheduler; c=Premium; m=unsloth/Meta-Llama-3.1-8B; rate=0; inTk=0; outTk=0; sol=1, sat=false, alloc={acc=H100; numRep=1; maxBatch=512; cost=100, val=0, itl=9.316814, ttft=19.368254, rho=0, maxRPM=757335.5}; slo-itl=10, slo-ttft=1000, slo-tps=0 \nAllocationByType: \nname=NVIDIA-H100-80GB-HBM3, count=1, limit=0, cost=100 \ntotalCost=100 \n"}
+{"level":"DEBUG","ts":"2025-12-03T21:45:49.047Z","msg":"Setting accelerator name: Name=H100, allocationData={H100 1 512 100 9.316814 19.368254 {0 0 0}}"}
+{"level":"INFO","ts":"2025-12-03T21:45:49.047Z","msg":"Model-based optimization completed for model: unsloth/Meta-Llama-3.1-8B - model-based targets: map[ms-inference-scheduling-llm-d-modelservice-decode:1]"}
+{"level":"WARN","ts":"2025-12-03T21:45:49.047Z","msg":"Capacity analysis unavailable, using model-based targets only: modelID=unsloth/Meta-Llama-3.1-8B"}
+{"level":"INFO","ts":"2025-12-03T21:45:49.047Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-03T21:45:49.047Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"DEBUG","ts":"2025-12-03T21:45:49.047Z","msg":"Found VA in map: variant=ms-inference-scheduling-llm-d-modelservice-decode, hasCurrentAlloc=true, accelerator=H100"}
+{"level":"INFO","ts":"2025-12-03T21:45:49.047Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-03T21:45:49.047Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, capacityOnly=false"}
+{"level":"INFO","ts":"2025-12-03T21:45:49.052Z","msg":"Applied capacity decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=model-based only (capacity unavailable)"}
+{"level":"INFO","ts":"2025-12-03T21:45:49.052Z","msg":"Reconciliation completed successfully: mode=model-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-03T21:46:49.052Z","msg":"Operating in MODEL-ONLY mode: model-based optimization only"}
+{"level":"INFO","ts":"2025-12-03T21:46:49.052Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-03T21:46:49.052Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:46:49.059Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, queueLength=0"}
+{"level":"DEBUG","ts":"2025-12-03T21:46:49.059Z","msg":"Queue metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:46:49.060Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, usage=0.000 (0.0%)"}
+{"level":"DEBUG","ts":"2025-12-03T21:46:49.060Z","msg":"KV cache metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=1"}
+{"level":"DEBUG","ts":"2025-12-03T21:46:49.060Z","msg":"Pod-to-variant matching successful: totalPods=1, variantCounts=map[ms-inference-scheduling-llm-d-modelservice-decode:1]"}
+{"level":"DEBUG","ts":"2025-12-03T21:46:49.060Z","msg":"Collected replica metrics: modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, replicaCount=1"}
+{"level":"DEBUG","ts":"2025-12-03T21:46:49.060Z","msg":"Collected capacity metrics for observability in model-only mode: modelID=unsloth/Meta-Llama-3.1-8B, replicaCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:46:49.060Z","msg":"Found SLO for model: model=unsloth/Meta-Llama-3.1-8B, class=Premium, slo-tpot=10, slo-ttft=1000"}
+{"level":"DEBUG","ts":"2025-12-03T21:46:49.073Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=100.00, maxBatch=256, arrivalRate=0.00, avgInputTokens=0.00, avgOutputTokens=0.00"}
+{"level":"DEBUG","ts":"2025-12-03T21:46:49.073Z","msg":"Experimental model tuner is enabled globally (EXPERIMENTAL_MODEL_TUNER_ENABLED=true) tuning model performance parameters for active VAs"}
+{"level":"DEBUG","ts":"2025-12-03T21:46:49.073Z","msg":"Using state vals from VA status to tune variant ms-inference-scheduling-llm-d-modelservice-decode: alpha= 9.293570, beta= 0.023245, gamma= 19.368063, delta= 0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:46:49.073Z","msg":"[Tuner Config] variant=ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler | Initial state: alpha=9.293570, beta=0.023245, gamma=19.368063, delta=0.000190 | SLO targets: TTFT=1000.00ms, ITL=10.00ms | Has covariance=true"}
+{"level":"WARN","ts":"2025-12-03T21:46:49.073Z","msg":"Tuner failed completely for variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler: failed to get/create tuner: failed to create tuner: invalid environment: &{0 0 0 256 0 0 1}. Using fallback parameters."}
+{"level":"INFO","ts":"2025-12-03T21:46:49.073Z","msg":"Using tuned parameters from status for variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler"}
+{"level":"DEBUG","ts":"2025-12-03T21:46:49.073Z","msg":"Updated SystemData for model=unsloth/Meta-Llama-3.1-8B, accelerator=H100: alpha=9.293570, beta=0.023245, gamma=19.368063, delta=0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:46:49.073Z","msg":"Optimization solution - system: Solution: \ns=ms-inference-scheduling-llm-d-modelservice-decode:llm-d-inference-scheduler; c=Premium; m=unsloth/Meta-Llama-3.1-8B; rate=0; inTk=0; outTk=0; sol=1, sat=false, alloc={acc=H100; numRep=1; maxBatch=512; cost=100, val=0, itl=9.316814, ttft=19.368254, rho=0, maxRPM=757335.5}; slo-itl=10, slo-ttft=1000, slo-tps=0 \nAllocationByType: \nname=NVIDIA-H100-80GB-HBM3, count=1, limit=0, cost=100 \ntotalCost=100 \n"}
+{"level":"DEBUG","ts":"2025-12-03T21:46:49.073Z","msg":"Setting accelerator name: Name=H100, allocationData={H100 1 512 100 9.316814 19.368254 {0 0 0}}"}
+{"level":"INFO","ts":"2025-12-03T21:46:49.073Z","msg":"Model-based optimization completed for model: unsloth/Meta-Llama-3.1-8B - model-based targets: map[ms-inference-scheduling-llm-d-modelservice-decode:1]"}
+{"level":"WARN","ts":"2025-12-03T21:46:49.073Z","msg":"Capacity analysis unavailable, using model-based targets only: modelID=unsloth/Meta-Llama-3.1-8B"}
+{"level":"INFO","ts":"2025-12-03T21:46:49.073Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-03T21:46:49.073Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"DEBUG","ts":"2025-12-03T21:46:49.073Z","msg":"Found VA in map: variant=ms-inference-scheduling-llm-d-modelservice-decode, hasCurrentAlloc=true, accelerator=H100"}
+{"level":"INFO","ts":"2025-12-03T21:46:49.073Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-03T21:46:49.073Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, capacityOnly=false"}
+{"level":"INFO","ts":"2025-12-03T21:46:49.081Z","msg":"Applied capacity decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=model-based only (capacity unavailable)"}
+{"level":"INFO","ts":"2025-12-03T21:46:49.081Z","msg":"Reconciliation completed successfully: mode=model-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-03T21:47:49.082Z","msg":"Operating in MODEL-ONLY mode: model-based optimization only"}
+{"level":"INFO","ts":"2025-12-03T21:47:49.082Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-03T21:47:49.082Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:47:49.087Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, usage=0.090 (9.0%)"}
+{"level":"DEBUG","ts":"2025-12-03T21:47:49.087Z","msg":"KV cache metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:47:49.087Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, queueLength=0"}
+{"level":"DEBUG","ts":"2025-12-03T21:47:49.087Z","msg":"Queue metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=1"}
+{"level":"DEBUG","ts":"2025-12-03T21:47:49.087Z","msg":"Pod-to-variant matching successful: totalPods=1, variantCounts=map[ms-inference-scheduling-llm-d-modelservice-decode:1]"}
+{"level":"DEBUG","ts":"2025-12-03T21:47:49.087Z","msg":"Collected replica metrics: modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, replicaCount=1"}
+{"level":"DEBUG","ts":"2025-12-03T21:47:49.087Z","msg":"Collected capacity metrics for observability in model-only mode: modelID=unsloth/Meta-Llama-3.1-8B, replicaCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:47:49.087Z","msg":"Found SLO for model: model=unsloth/Meta-Llama-3.1-8B, class=Premium, slo-tpot=10, slo-ttft=1000"}
+{"level":"DEBUG","ts":"2025-12-03T21:47:49.097Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=22.74ms, itl=11.42ms, cost=100.00, maxBatch=256, arrivalRate=536.00, avgInputTokens=260.29, avgOutputTokens=441.16"}
+{"level":"DEBUG","ts":"2025-12-03T21:47:49.097Z","msg":"Experimental model tuner is enabled globally (EXPERIMENTAL_MODEL_TUNER_ENABLED=true) tuning model performance parameters for active VAs"}
+{"level":"DEBUG","ts":"2025-12-03T21:47:49.097Z","msg":"Using state vals from VA status to tune variant ms-inference-scheduling-llm-d-modelservice-decode: alpha= 9.293570, beta= 0.023245, gamma= 19.368063, delta= 0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:47:49.097Z","msg":"[Tuner Config] variant=ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler | Initial state: alpha=9.293570, beta=0.023245, gamma=19.368063, delta=0.000190 | SLO targets: TTFT=1000.00ms, ITL=10.00ms | Has covariance=true"}
+{"level":"INFO","ts":"2025-12-03T21:47:49.098Z","msg":"Tuner validation succeeded for variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler, server ms-inference-scheduling-llm-d-modelservice-decode:llm-d-inference-scheduler - New NIS: 3.377892"}
+{"level":"DEBUG","ts":"2025-12-03T21:47:49.098Z","msg":"Model tuner results: model=unsloth/Meta-Llama-3.1-8B, accelerator=H100, alpha=10.138033, beta=0.024183, gamma=19.384321, delta=0.000190, NIS=3.38"}
+{"level":"DEBUG","ts":"2025-12-03T21:47:49.098Z","msg":"Updated tuner status for variant ms-inference-scheduling-llm-d-modelservice-decode: alpha=10.138033, beta=0.024183, gamma=19.384321, delta=0.000190, NIS=3.377892"}
+{"level":"INFO","ts":"2025-12-03T21:47:49.098Z","msg":"Tuned performance parameters result: variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler - alpha: 10.138033, beta: 0.024183, gamma: 19.384321, delta: 0.000190"}
+{"level":"INFO","ts":"2025-12-03T21:47:49.105Z","msg":"No potential allocations found for server: ms-inference-scheduling-llm-d-modelservice-decode:llm-d-inference-scheduler"}
+{"level":"ERROR","ts":"2025-12-03T21:47:49.105Z","msg":"Model-based optimization failed: no feasible allocations found for all variants: "}
+{"level":"WARN","ts":"2025-12-03T21:47:49.105Z","msg":"Both capacity and model-based failed, activating safety net: modelID=unsloth/Meta-Llama-3.1-8B"}
+{"level":"INFO","ts":"2025-12-03T21:47:49.105Z","msg":"Safety net activated: emitted fallback metrics: variant=ms-inference-scheduling-llm-d-modelservice-decode, currentReplicas=1, desiredReplicas=1, accelerator=H100, fallbackSource=previous-desired"}
+{"level":"INFO","ts":"2025-12-03T21:47:49.105Z","msg":"No scaling decisions to apply"}
+{"level":"WARN","ts":"2025-12-03T21:47:49.105Z","msg":"Reconciliation completed with errors: mode=model-only, modelsProcessed=1, modelsFailed=1, decisionsApplied=0"}
+{"level":"INFO","ts":"2025-12-03T21:48:49.106Z","msg":"Operating in MODEL-ONLY mode: model-based optimization only"}
+{"level":"INFO","ts":"2025-12-03T21:48:49.106Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-03T21:48:49.106Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:48:49.112Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, usage=0.079 (7.9%)"}
+{"level":"DEBUG","ts":"2025-12-03T21:48:49.113Z","msg":"KV cache metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:48:49.113Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, queueLength=0"}
+{"level":"DEBUG","ts":"2025-12-03T21:48:49.113Z","msg":"Queue metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=1"}
+{"level":"DEBUG","ts":"2025-12-03T21:48:49.113Z","msg":"Pod-to-variant matching successful: totalPods=1, variantCounts=map[ms-inference-scheduling-llm-d-modelservice-decode:1]"}
+{"level":"DEBUG","ts":"2025-12-03T21:48:49.113Z","msg":"Collected replica metrics: modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, replicaCount=1"}
+{"level":"DEBUG","ts":"2025-12-03T21:48:49.113Z","msg":"Collected capacity metrics for observability in model-only mode: modelID=unsloth/Meta-Llama-3.1-8B, replicaCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:48:49.113Z","msg":"Found SLO for model: model=unsloth/Meta-Llama-3.1-8B, class=Premium, slo-tpot=10, slo-ttft=1000"}
+{"level":"DEBUG","ts":"2025-12-03T21:48:49.123Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=21.75ms, itl=10.90ms, cost=100.00, maxBatch=256, arrivalRate=588.00, avgInputTokens=232.72, avgOutputTokens=481.15"}
+{"level":"DEBUG","ts":"2025-12-03T21:48:49.123Z","msg":"Experimental model tuner is enabled globally (EXPERIMENTAL_MODEL_TUNER_ENABLED=true) tuning model performance parameters for active VAs"}
+{"level":"DEBUG","ts":"2025-12-03T21:48:49.123Z","msg":"Using state vals from VA status to tune variant ms-inference-scheduling-llm-d-modelservice-decode: alpha= 9.293570, beta= 0.023245, gamma= 19.368063, delta= 0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:48:49.123Z","msg":"[Tuner Config] variant=ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler | Initial state: alpha=9.293570, beta=0.023245, gamma=19.368063, delta=0.000190 | SLO targets: TTFT=1000.00ms, ITL=10.00ms | Has covariance=true"}
+{"level":"INFO","ts":"2025-12-03T21:48:49.123Z","msg":"Tuner validation succeeded for variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler, server ms-inference-scheduling-llm-d-modelservice-decode:llm-d-inference-scheduler - New NIS: 0.447367"}
+{"level":"DEBUG","ts":"2025-12-03T21:48:49.123Z","msg":"Model tuner results: model=unsloth/Meta-Llama-3.1-8B, accelerator=H100, alpha=9.598198, beta=0.023681, gamma=19.370462, delta=0.000190, NIS=0.45"}
+{"level":"DEBUG","ts":"2025-12-03T21:48:49.123Z","msg":"Updated tuner status for variant ms-inference-scheduling-llm-d-modelservice-decode: alpha=9.598198, beta=0.023681, gamma=19.370462, delta=0.000190, NIS=0.447367"}
+{"level":"INFO","ts":"2025-12-03T21:48:49.123Z","msg":"Tuned performance parameters result: variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler - alpha: 9.598198, beta: 0.023681, gamma: 19.370462, delta: 0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:48:49.132Z","msg":"Optimization solution - system: Solution: \ns=ms-inference-scheduling-llm-d-modelservice-decode:llm-d-inference-scheduler; c=Premium; m=unsloth/Meta-Llama-3.1-8B; rate=588; inTk=232; outTk=481; sol=1, sat=false, alloc={acc=H100; numRep=3; maxBatch=512; cost=300, val=200, itl=9.994553, ttft=20.108236, rho=0.03073661, maxRPM=198.76083}; slo-itl=10, slo-ttft=1000, slo-tps=0 \nAllocationByType: \nname=NVIDIA-H100-80GB-HBM3, count=3, limit=0, cost=300 \ntotalCost=300 \n"}
+{"level":"DEBUG","ts":"2025-12-03T21:48:49.132Z","msg":"Setting accelerator name: Name=H100, allocationData={H100 3 512 300 9.994553 20.108236 {588 232 481}}"}
+{"level":"INFO","ts":"2025-12-03T21:48:49.132Z","msg":"Model-based optimization completed for model: unsloth/Meta-Llama-3.1-8B - model-based targets: map[ms-inference-scheduling-llm-d-modelservice-decode:3]"}
+{"level":"WARN","ts":"2025-12-03T21:48:49.132Z","msg":"Capacity analysis unavailable, using model-based targets only: modelID=unsloth/Meta-Llama-3.1-8B"}
+{"level":"INFO","ts":"2025-12-03T21:48:49.132Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-03T21:48:49.132Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-up, current=1→target=3"}
+{"level":"DEBUG","ts":"2025-12-03T21:48:49.132Z","msg":"Found VA in map: variant=ms-inference-scheduling-llm-d-modelservice-decode, hasCurrentAlloc=true, accelerator=H100"}
+{"level":"INFO","ts":"2025-12-03T21:48:49.132Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 3, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-03T21:48:49.132Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=3, accelerator=H100, capacityOnly=false"}
+{"level":"INFO","ts":"2025-12-03T21:48:49.137Z","msg":"Applied capacity decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-up, current=1, target=3, reason=model-based only (capacity unavailable)"}
+{"level":"INFO","ts":"2025-12-03T21:48:49.137Z","msg":"Reconciliation completed successfully: mode=model-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-03T21:49:49.138Z","msg":"Operating in MODEL-ONLY mode: model-based optimization only"}
+{"level":"INFO","ts":"2025-12-03T21:49:49.138Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-03T21:49:49.138Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:49:49.142Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, usage=0.337 (33.7%)"}
+{"level":"INFO","ts":"2025-12-03T21:49:49.142Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, queueLength=0"}
+{"level":"DEBUG","ts":"2025-12-03T21:49:49.142Z","msg":"Queue metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=1"}
+{"level":"DEBUG","ts":"2025-12-03T21:49:49.142Z","msg":"KV cache metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=1"}
+{"level":"DEBUG","ts":"2025-12-03T21:49:49.142Z","msg":"Pod-to-variant matching successful: totalPods=1, variantCounts=map[ms-inference-scheduling-llm-d-modelservice-decode:1]"}
+{"level":"DEBUG","ts":"2025-12-03T21:49:49.142Z","msg":"Collected replica metrics: modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, replicaCount=1"}
+{"level":"DEBUG","ts":"2025-12-03T21:49:49.142Z","msg":"Collected capacity metrics for observability in model-only mode: modelID=unsloth/Meta-Llama-3.1-8B, replicaCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:49:49.143Z","msg":"Found SLO for model: model=unsloth/Meta-Llama-3.1-8B, class=Premium, slo-tpot=10, slo-ttft=1000"}
+{"level":"DEBUG","ts":"2025-12-03T21:49:49.152Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=3, accelerator=H100, ttft=36.87ms, itl=20.37ms, cost=300.00, maxBatch=256, arrivalRate=1382.00, avgInputTokens=255.47, avgOutputTokens=379.50"}
+{"level":"DEBUG","ts":"2025-12-03T21:49:49.152Z","msg":"Experimental model tuner is enabled globally (EXPERIMENTAL_MODEL_TUNER_ENABLED=true) tuning model performance parameters for active VAs"}
+{"level":"DEBUG","ts":"2025-12-03T21:49:49.152Z","msg":"Using state vals from VA status to tune variant ms-inference-scheduling-llm-d-modelservice-decode: alpha= 9.598198, beta= 0.023681, gamma= 19.370462, delta= 0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:49:49.152Z","msg":"[Tuner Config] variant=ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler | Initial state: alpha=9.598198, beta=0.023681, gamma=19.370462, delta=0.000190 | SLO targets: TTFT=1000.00ms, ITL=10.00ms | Has covariance=true"}
+{"level":"WARN","ts":"2025-12-03T21:49:49.153Z","msg":"Tuner validation failed (NIS=262.62), validation error: normalized innovation squared (NIS=262.62) exceeds threshold (7.38), rejecting update as outlier - returning previous state: alpha=9.598198, beta=0.023681, gamma=19.370462, delta=0.000190"}
+{"level":"WARN","ts":"2025-12-03T21:49:49.153Z","msg":"Tuner NIS validation failed for variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler, server ms-inference-scheduling-llm-d-modelservice-decode:llm-d-inference-scheduler (NIS=262.62 exceeds threshold 7.38) - Keeping previous state: alpha=9.598198, beta=0.023681, gamma=19.370462, delta=0.000190"}
+{"level":"INFO","ts":"2025-12-03T21:49:49.153Z","msg":"Keeping previous tuned parameters for variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler due to NIS validation failure (NIS=262.621540)"}
+{"level":"DEBUG","ts":"2025-12-03T21:49:49.153Z","msg":"Model tuner results: model=unsloth/Meta-Llama-3.1-8B, accelerator=H100, alpha=9.598198, beta=0.023681, gamma=19.370462, delta=0.000190, NIS=262.62"}
+{"level":"DEBUG","ts":"2025-12-03T21:49:49.153Z","msg":"Updated tuner status for variant ms-inference-scheduling-llm-d-modelservice-decode: alpha=9.598198, beta=0.023681, gamma=19.370462, delta=0.000190, NIS=262.621540"}
+{"level":"DEBUG","ts":"2025-12-03T21:49:49.161Z","msg":"Optimization solution - system: Solution: \ns=ms-inference-scheduling-llm-d-modelservice-decode:llm-d-inference-scheduler; c=Premium; m=unsloth/Meta-Llama-3.1-8B; rate=1382; inTk=255; outTk=379; sol=1, sat=false, alloc={acc=H100; numRep=6; maxBatch=512; cost=600, val=300, itl=9.966181, ttft=20.123335, rho=0.02839683, maxRPM=252.09715}; slo-itl=10, slo-ttft=1000, slo-tps=0 \nAllocationByType: \nname=NVIDIA-H100-80GB-HBM3, count=6, limit=0, cost=600 \ntotalCost=600 \n"}
+{"level":"DEBUG","ts":"2025-12-03T21:49:49.161Z","msg":"Setting accelerator name: Name=H100, allocationData={H100 6 512 600 9.966181 20.123335 {1382 255 379}}"}
+{"level":"INFO","ts":"2025-12-03T21:49:49.161Z","msg":"Model-based optimization completed for model: unsloth/Meta-Llama-3.1-8B - model-based targets: map[ms-inference-scheduling-llm-d-modelservice-decode:6]"}
+{"level":"WARN","ts":"2025-12-03T21:49:49.161Z","msg":"Capacity analysis unavailable, using model-based targets only: modelID=unsloth/Meta-Llama-3.1-8B"}
+{"level":"INFO","ts":"2025-12-03T21:49:49.161Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-03T21:49:49.161Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-up, current=3→target=6"}
+{"level":"DEBUG","ts":"2025-12-03T21:49:49.161Z","msg":"Found VA in map: variant=ms-inference-scheduling-llm-d-modelservice-decode, hasCurrentAlloc=true, accelerator=H100"}
+{"level":"INFO","ts":"2025-12-03T21:49:49.161Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 3, desired-replicas: 6, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-03T21:49:49.161Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=6, accelerator=H100, capacityOnly=false"}
+{"level":"INFO","ts":"2025-12-03T21:49:49.166Z","msg":"Applied capacity decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-up, current=3, target=6, reason=model-based only (capacity unavailable)"}
+{"level":"INFO","ts":"2025-12-03T21:49:49.166Z","msg":"Reconciliation completed successfully: mode=model-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-03T21:50:49.167Z","msg":"Operating in MODEL-ONLY mode: model-based optimization only"}
+{"level":"INFO","ts":"2025-12-03T21:50:49.167Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-03T21:50:49.167Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:50:49.177Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, queueLength=0"}
+{"level":"INFO","ts":"2025-12-03T21:50:49.177Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c69sf9, queueLength=0"}
+{"level":"DEBUG","ts":"2025-12-03T21:50:49.177Z","msg":"Queue metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=2"}
+{"level":"INFO","ts":"2025-12-03T21:50:49.177Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, usage=0.439 (43.9%)"}
+{"level":"INFO","ts":"2025-12-03T21:50:49.177Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c69sf9, usage=0.007 (0.7%)"}
+{"level":"DEBUG","ts":"2025-12-03T21:50:49.177Z","msg":"KV cache metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=2"}
+{"level":"DEBUG","ts":"2025-12-03T21:50:49.178Z","msg":"Pod-to-variant matching successful: totalPods=2, variantCounts=map[ms-inference-scheduling-llm-d-modelservice-decode:2]"}
+{"level":"DEBUG","ts":"2025-12-03T21:50:49.178Z","msg":"Collected replica metrics: modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, replicaCount=2"}
+{"level":"DEBUG","ts":"2025-12-03T21:50:49.178Z","msg":"Collected capacity metrics for observability in model-only mode: modelID=unsloth/Meta-Llama-3.1-8B, replicaCount=2"}
+{"level":"INFO","ts":"2025-12-03T21:50:49.178Z","msg":"Found SLO for model: model=unsloth/Meta-Llama-3.1-8B, class=Premium, slo-tpot=10, slo-ttft=1000"}
+{"level":"DEBUG","ts":"2025-12-03T21:50:49.188Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=6, accelerator=H100, ttft=40.10ms, itl=22.43ms, cost=600.00, maxBatch=256, arrivalRate=1338.00, avgInputTokens=224.66, avgOutputTokens=548.72"}
+{"level":"DEBUG","ts":"2025-12-03T21:50:49.188Z","msg":"Experimental model tuner is enabled globally (EXPERIMENTAL_MODEL_TUNER_ENABLED=true) tuning model performance parameters for active VAs"}
+{"level":"DEBUG","ts":"2025-12-03T21:50:49.188Z","msg":"Using state vals from VA status to tune variant ms-inference-scheduling-llm-d-modelservice-decode: alpha= 9.598198, beta= 0.023681, gamma= 19.370462, delta= 0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:50:49.188Z","msg":"[Tuner Config] variant=ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler | Initial state: alpha=9.598198, beta=0.023681, gamma=19.370462, delta=0.000190 | SLO targets: TTFT=1000.00ms, ITL=10.00ms | Has covariance=true"}
+{"level":"WARN","ts":"2025-12-03T21:50:49.189Z","msg":"Tuner validation failed (NIS=407.80), validation error: normalized innovation squared (NIS=407.80) exceeds threshold (7.38), rejecting update as outlier - returning previous state: alpha=9.598198, beta=0.023681, gamma=19.370462, delta=0.000190"}
+{"level":"WARN","ts":"2025-12-03T21:50:49.189Z","msg":"Tuner NIS validation failed for variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler, server ms-inference-scheduling-llm-d-modelservice-decode:llm-d-inference-scheduler (NIS=407.80 exceeds threshold 7.38) - Keeping previous state: alpha=9.598198, beta=0.023681, gamma=19.370462, delta=0.000190"}
+{"level":"INFO","ts":"2025-12-03T21:50:49.189Z","msg":"Keeping previous tuned parameters for variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler due to NIS validation failure (NIS=407.800008)"}
+{"level":"DEBUG","ts":"2025-12-03T21:50:49.189Z","msg":"Model tuner results: model=unsloth/Meta-Llama-3.1-8B, accelerator=H100, alpha=9.598198, beta=0.023681, gamma=19.370462, delta=0.000190, NIS=407.80"}
+{"level":"DEBUG","ts":"2025-12-03T21:50:49.189Z","msg":"Updated tuner status for variant ms-inference-scheduling-llm-d-modelservice-decode: alpha=9.598198, beta=0.023681, gamma=19.370462, delta=0.000190, NIS=407.800008"}
+{"level":"DEBUG","ts":"2025-12-03T21:50:49.198Z","msg":"Optimization solution - system: Solution: \ns=ms-inference-scheduling-llm-d-modelservice-decode:llm-d-inference-scheduler; c=Premium; m=unsloth/Meta-Llama-3.1-8B; rate=1338; inTk=224; outTk=548; sol=1, sat=false, alloc={acc=H100; numRep=8; maxBatch=512; cost=800, val=200, itl=9.983693, ttft=20.063282, rho=0.029841186, maxRPM=174.50305}; slo-itl=10, slo-ttft=1000, slo-tps=0 \nAllocationByType: \nname=NVIDIA-H100-80GB-HBM3, count=8, limit=0, cost=800 \ntotalCost=800 \n"}
+{"level":"DEBUG","ts":"2025-12-03T21:50:49.198Z","msg":"Setting accelerator name: Name=H100, allocationData={H100 8 512 800 9.983693 20.063282 {1338 224 548}}"}
+{"level":"INFO","ts":"2025-12-03T21:50:49.198Z","msg":"Model-based optimization completed for model: unsloth/Meta-Llama-3.1-8B - model-based targets: map[ms-inference-scheduling-llm-d-modelservice-decode:8]"}
+{"level":"WARN","ts":"2025-12-03T21:50:49.198Z","msg":"Capacity analysis unavailable, using model-based targets only: modelID=unsloth/Meta-Llama-3.1-8B"}
+{"level":"INFO","ts":"2025-12-03T21:50:49.198Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-03T21:50:49.198Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-up, current=6→target=8"}
+{"level":"DEBUG","ts":"2025-12-03T21:50:49.198Z","msg":"Found VA in map: variant=ms-inference-scheduling-llm-d-modelservice-decode, hasCurrentAlloc=true, accelerator=H100"}
+{"level":"INFO","ts":"2025-12-03T21:50:49.198Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 6, desired-replicas: 8, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-03T21:50:49.198Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=8, accelerator=H100, capacityOnly=false"}
+{"level":"INFO","ts":"2025-12-03T21:50:49.261Z","msg":"Applied capacity decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-up, current=6, target=8, reason=model-based only (capacity unavailable)"}
+{"level":"INFO","ts":"2025-12-03T21:50:49.261Z","msg":"Reconciliation completed successfully: mode=model-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-03T21:51:49.262Z","msg":"Operating in MODEL-ONLY mode: model-based optimization only"}
+{"level":"INFO","ts":"2025-12-03T21:51:49.262Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-03T21:51:49.262Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:51:49.267Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, queueLength=0"}
+{"level":"INFO","ts":"2025-12-03T21:51:49.267Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c69sf9, queueLength=0"}
+{"level":"INFO","ts":"2025-12-03T21:51:49.267Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4cvmvzq, queueLength=0"}
+{"level":"DEBUG","ts":"2025-12-03T21:51:49.267Z","msg":"Queue metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=3"}
+{"level":"INFO","ts":"2025-12-03T21:51:49.267Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, usage=0.081 (8.1%)"}
+{"level":"INFO","ts":"2025-12-03T21:51:49.267Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c69sf9, usage=0.035 (3.5%)"}
+{"level":"INFO","ts":"2025-12-03T21:51:49.267Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4cvmvzq, usage=0.052 (5.2%)"}
+{"level":"DEBUG","ts":"2025-12-03T21:51:49.267Z","msg":"KV cache metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=3"}
+{"level":"DEBUG","ts":"2025-12-03T21:51:49.267Z","msg":"Pod-to-variant matching successful: totalPods=3, variantCounts=map[ms-inference-scheduling-llm-d-modelservice-decode:3]"}
+{"level":"DEBUG","ts":"2025-12-03T21:51:49.267Z","msg":"Collected replica metrics: modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, replicaCount=3"}
+{"level":"DEBUG","ts":"2025-12-03T21:51:49.267Z","msg":"Collected capacity metrics for observability in model-only mode: modelID=unsloth/Meta-Llama-3.1-8B, replicaCount=3"}
+{"level":"INFO","ts":"2025-12-03T21:51:49.267Z","msg":"Found SLO for model: model=unsloth/Meta-Llama-3.1-8B, class=Premium, slo-tpot=10, slo-ttft=1000"}
+{"level":"DEBUG","ts":"2025-12-03T21:51:49.278Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=8, accelerator=H100, ttft=18.59ms, itl=9.80ms, cost=800.00, maxBatch=256, arrivalRate=1274.07, avgInputTokens=224.51, avgOutputTokens=446.65"}
+{"level":"DEBUG","ts":"2025-12-03T21:51:49.278Z","msg":"Experimental model tuner is enabled globally (EXPERIMENTAL_MODEL_TUNER_ENABLED=true) tuning model performance parameters for active VAs"}
+{"level":"DEBUG","ts":"2025-12-03T21:51:49.278Z","msg":"Using state vals from VA status to tune variant ms-inference-scheduling-llm-d-modelservice-decode: alpha= 9.598198, beta= 0.023681, gamma= 19.370462, delta= 0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:51:49.278Z","msg":"[Tuner Config] variant=ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler | Initial state: alpha=9.598198, beta=0.023681, gamma=19.370462, delta=0.000190 | SLO targets: TTFT=1000.00ms, ITL=10.00ms | Has covariance=true"}
+{"level":"INFO","ts":"2025-12-03T21:51:49.278Z","msg":"Tuner validation succeeded for variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler, server ms-inference-scheduling-llm-d-modelservice-decode:llm-d-inference-scheduler - New NIS: 0.030135"}
+{"level":"DEBUG","ts":"2025-12-03T21:51:49.278Z","msg":"Model tuner results: model=unsloth/Meta-Llama-3.1-8B, accelerator=H100, alpha=9.517395, beta=0.023754, gamma=19.354345, delta=0.000190, NIS=0.03"}
+{"level":"DEBUG","ts":"2025-12-03T21:51:49.278Z","msg":"Updated tuner status for variant ms-inference-scheduling-llm-d-modelservice-decode: alpha=9.517395, beta=0.023754, gamma=19.354345, delta=0.000190, NIS=0.030135"}
+{"level":"INFO","ts":"2025-12-03T21:51:49.278Z","msg":"Tuned performance parameters result: variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler - alpha: 9.517395, beta: 0.023754, gamma: 19.354345, delta: 0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:51:49.288Z","msg":"Optimization solution - system: Solution: \ns=ms-inference-scheduling-llm-d-modelservice-decode:llm-d-inference-scheduler; c=Premium; m=unsloth/Meta-Llama-3.1-8B; rate=1274.07; inTk=224; outTk=446; sol=1, sat=false, alloc={acc=H100; numRep=5; maxBatch=512; cost=500, val=-300, itl=9.991744, ttft=20.20422, rho=0.03704864, maxRPM=259.27295}; slo-itl=10, slo-ttft=1000, slo-tps=0 \nAllocationByType: \nname=NVIDIA-H100-80GB-HBM3, count=5, limit=0, cost=500 \ntotalCost=500 \n"}
+{"level":"DEBUG","ts":"2025-12-03T21:51:49.288Z","msg":"Setting accelerator name: Name=H100, allocationData={H100 5 512 500 9.991744 20.20422 {1274.07 224 446}}"}
+{"level":"INFO","ts":"2025-12-03T21:51:49.288Z","msg":"Model-based optimization completed for model: unsloth/Meta-Llama-3.1-8B - model-based targets: map[ms-inference-scheduling-llm-d-modelservice-decode:5]"}
+{"level":"WARN","ts":"2025-12-03T21:51:49.288Z","msg":"Capacity analysis unavailable, using model-based targets only: modelID=unsloth/Meta-Llama-3.1-8B"}
+{"level":"INFO","ts":"2025-12-03T21:51:49.288Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-03T21:51:49.288Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-down, current=8→target=5"}
+{"level":"DEBUG","ts":"2025-12-03T21:51:49.288Z","msg":"Found VA in map: variant=ms-inference-scheduling-llm-d-modelservice-decode, hasCurrentAlloc=true, accelerator=H100"}
+{"level":"INFO","ts":"2025-12-03T21:51:49.288Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 8, desired-replicas: 5, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-03T21:51:49.288Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=5, accelerator=H100, capacityOnly=false"}
+{"level":"INFO","ts":"2025-12-03T21:51:49.294Z","msg":"Applied capacity decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-down, current=8, target=5, reason=model-based only (capacity unavailable)"}
+{"level":"INFO","ts":"2025-12-03T21:51:49.294Z","msg":"Reconciliation completed successfully: mode=model-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-03T21:52:49.294Z","msg":"Operating in MODEL-ONLY mode: model-based optimization only"}
+{"level":"INFO","ts":"2025-12-03T21:52:49.295Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-03T21:52:49.295Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:52:49.301Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, usage=0.057 (5.7%)"}
+{"level":"INFO","ts":"2025-12-03T21:52:49.301Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4crr7g2, usage=0.048 (4.8%)"}
+{"level":"INFO","ts":"2025-12-03T21:52:49.301Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4cvmvzq, usage=0.037 (3.7%)"}
+{"level":"INFO","ts":"2025-12-03T21:52:49.301Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4csfs9d, usage=0.069 (6.9%)"}
+{"level":"INFO","ts":"2025-12-03T21:52:49.301Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c4ssqn, usage=0.028 (2.8%)"}
+{"level":"DEBUG","ts":"2025-12-03T21:52:49.301Z","msg":"KV cache metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=5"}
+{"level":"INFO","ts":"2025-12-03T21:52:49.311Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, queueLength=0"}
+{"level":"INFO","ts":"2025-12-03T21:52:49.311Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4crr7g2, queueLength=0"}
+{"level":"INFO","ts":"2025-12-03T21:52:49.311Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4cvmvzq, queueLength=0"}
+{"level":"INFO","ts":"2025-12-03T21:52:49.311Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4csfs9d, queueLength=0"}
+{"level":"INFO","ts":"2025-12-03T21:52:49.311Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c4ssqn, queueLength=0"}
+{"level":"DEBUG","ts":"2025-12-03T21:52:49.311Z","msg":"Queue metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=5"}
+{"level":"DEBUG","ts":"2025-12-03T21:52:49.311Z","msg":"Pod-to-variant matching successful: totalPods=5, variantCounts=map[ms-inference-scheduling-llm-d-modelservice-decode:5]"}
+{"level":"DEBUG","ts":"2025-12-03T21:52:49.311Z","msg":"Collected replica metrics: modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, replicaCount=5"}
+{"level":"DEBUG","ts":"2025-12-03T21:52:49.311Z","msg":"Collected capacity metrics for observability in model-only mode: modelID=unsloth/Meta-Llama-3.1-8B, replicaCount=5"}
+{"level":"INFO","ts":"2025-12-03T21:52:49.312Z","msg":"Found SLO for model: model=unsloth/Meta-Llama-3.1-8B, class=Premium, slo-tpot=10, slo-ttft=1000"}
+{"level":"DEBUG","ts":"2025-12-03T21:52:49.322Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=5, accelerator=H100, ttft=18.86ms, itl=9.84ms, cost=500.00, maxBatch=256, arrivalRate=1770.61, avgInputTokens=239.00, avgOutputTokens=408.38"}
+{"level":"DEBUG","ts":"2025-12-03T21:52:49.322Z","msg":"Experimental model tuner is enabled globally (EXPERIMENTAL_MODEL_TUNER_ENABLED=true) tuning model performance parameters for active VAs"}
+{"level":"DEBUG","ts":"2025-12-03T21:52:49.322Z","msg":"Using state vals from VA status to tune variant ms-inference-scheduling-llm-d-modelservice-decode: alpha= 9.517395, beta= 0.023754, gamma= 19.354345, delta= 0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:52:49.322Z","msg":"[Tuner Config] variant=ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler | Initial state: alpha=9.517395, beta=0.023754, gamma=19.354345, delta=0.000190 | SLO targets: TTFT=1000.00ms, ITL=10.00ms | Has covariance=true"}
+{"level":"INFO","ts":"2025-12-03T21:52:49.323Z","msg":"Tuner validation succeeded for variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler, server ms-inference-scheduling-llm-d-modelservice-decode:llm-d-inference-scheduler - New NIS: 0.213726"}
+{"level":"DEBUG","ts":"2025-12-03T21:52:49.323Z","msg":"Model tuner results: model=unsloth/Meta-Llama-3.1-8B, accelerator=H100, alpha=9.299895, beta=0.023664, gamma=19.331730, delta=0.000190, NIS=0.21"}
+{"level":"DEBUG","ts":"2025-12-03T21:52:49.323Z","msg":"Updated tuner status for variant ms-inference-scheduling-llm-d-modelservice-decode: alpha=9.299895, beta=0.023664, gamma=19.331730, delta=0.000190, NIS=0.213726"}
+{"level":"INFO","ts":"2025-12-03T21:52:49.323Z","msg":"Tuned performance parameters result: variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler - alpha: 9.299895, beta: 0.023664, gamma: 19.331730, delta: 0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:52:49.326Z","msg":"Optimization solution - system: Solution: \ns=ms-inference-scheduling-llm-d-modelservice-decode:llm-d-inference-scheduler; c=Premium; m=unsloth/Meta-Llama-3.1-8B; rate=1770.61; inTk=239; outTk=408; sol=1, sat=false, alloc={acc=H100; numRep=5; maxBatch=512; cost=500, val=0, itl=9.888514, ttft=20.46126, rho=0.04662936, maxRPM=419.27988}; slo-itl=10, slo-ttft=1000, slo-tps=0 \nAllocationByType: \nname=NVIDIA-H100-80GB-HBM3, count=5, limit=0, cost=500 \ntotalCost=500 \n"}
+{"level":"DEBUG","ts":"2025-12-03T21:52:49.326Z","msg":"Setting accelerator name: Name=H100, allocationData={H100 5 512 500 9.888514 20.46126 {1770.61 239 408}}"}
+{"level":"INFO","ts":"2025-12-03T21:52:49.326Z","msg":"Model-based optimization completed for model: unsloth/Meta-Llama-3.1-8B - model-based targets: map[ms-inference-scheduling-llm-d-modelservice-decode:5]"}
+{"level":"WARN","ts":"2025-12-03T21:52:49.326Z","msg":"Capacity analysis unavailable, using model-based targets only: modelID=unsloth/Meta-Llama-3.1-8B"}
+{"level":"INFO","ts":"2025-12-03T21:52:49.326Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-03T21:52:49.326Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=5→target=5"}
+{"level":"DEBUG","ts":"2025-12-03T21:52:49.326Z","msg":"Found VA in map: variant=ms-inference-scheduling-llm-d-modelservice-decode, hasCurrentAlloc=true, accelerator=H100"}
+{"level":"INFO","ts":"2025-12-03T21:52:49.327Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 5, desired-replicas: 5, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-03T21:52:49.327Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=5, accelerator=H100, capacityOnly=false"}
+{"level":"INFO","ts":"2025-12-03T21:52:49.332Z","msg":"Applied capacity decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=5, target=5, reason=model-based only (capacity unavailable)"}
+{"level":"INFO","ts":"2025-12-03T21:52:49.332Z","msg":"Reconciliation completed successfully: mode=model-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-03T21:53:49.333Z","msg":"Operating in MODEL-ONLY mode: model-based optimization only"}
+{"level":"INFO","ts":"2025-12-03T21:53:49.333Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-03T21:53:49.333Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:53:49.338Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, usage=0.041 (4.1%)"}
+{"level":"INFO","ts":"2025-12-03T21:53:49.338Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4crr7g2, usage=0.039 (3.9%)"}
+{"level":"INFO","ts":"2025-12-03T21:53:49.338Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4cvmvzq, usage=0.039 (3.9%)"}
+{"level":"INFO","ts":"2025-12-03T21:53:49.338Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4csfs9d, usage=0.041 (4.1%)"}
+{"level":"INFO","ts":"2025-12-03T21:53:49.338Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c4ssqn, usage=0.051 (5.1%)"}
+{"level":"DEBUG","ts":"2025-12-03T21:53:49.338Z","msg":"KV cache metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=5"}
+{"level":"INFO","ts":"2025-12-03T21:53:49.338Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, queueLength=0"}
+{"level":"INFO","ts":"2025-12-03T21:53:49.338Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4crr7g2, queueLength=0"}
+{"level":"INFO","ts":"2025-12-03T21:53:49.338Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4cvmvzq, queueLength=0"}
+{"level":"INFO","ts":"2025-12-03T21:53:49.338Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4csfs9d, queueLength=0"}
+{"level":"INFO","ts":"2025-12-03T21:53:49.338Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c4ssqn, queueLength=0"}
+{"level":"DEBUG","ts":"2025-12-03T21:53:49.338Z","msg":"Queue metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=5"}
+{"level":"DEBUG","ts":"2025-12-03T21:53:49.338Z","msg":"Pod-to-variant matching successful: totalPods=5, variantCounts=map[ms-inference-scheduling-llm-d-modelservice-decode:5]"}
+{"level":"DEBUG","ts":"2025-12-03T21:53:49.338Z","msg":"Collected replica metrics: modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, replicaCount=5"}
+{"level":"DEBUG","ts":"2025-12-03T21:53:49.338Z","msg":"Collected capacity metrics for observability in model-only mode: modelID=unsloth/Meta-Llama-3.1-8B, replicaCount=5"}
+{"level":"INFO","ts":"2025-12-03T21:53:49.338Z","msg":"Found SLO for model: model=unsloth/Meta-Llama-3.1-8B, class=Premium, slo-tpot=10, slo-ttft=1000"}
+{"level":"DEBUG","ts":"2025-12-03T21:53:49.349Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=5, accelerator=H100, ttft=18.15ms, itl=9.42ms, cost=500.00, maxBatch=256, arrivalRate=1739.60, avgInputTokens=235.21, avgOutputTokens=460.24"}
+{"level":"DEBUG","ts":"2025-12-03T21:53:49.349Z","msg":"Experimental model tuner is enabled globally (EXPERIMENTAL_MODEL_TUNER_ENABLED=true) tuning model performance parameters for active VAs"}
+{"level":"DEBUG","ts":"2025-12-03T21:53:49.349Z","msg":"Using state vals from VA status to tune variant ms-inference-scheduling-llm-d-modelservice-decode: alpha= 9.299895, beta= 0.023664, gamma= 19.331730, delta= 0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:53:49.349Z","msg":"[Tuner Config] variant=ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler | Initial state: alpha=9.299895, beta=0.023664, gamma=19.331730, delta=0.000190 | SLO targets: TTFT=1000.00ms, ITL=10.00ms | Has covariance=true"}
+{"level":"INFO","ts":"2025-12-03T21:53:49.350Z","msg":"Tuner validation succeeded for variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler, server ms-inference-scheduling-llm-d-modelservice-decode:llm-d-inference-scheduler - New NIS: 0.783475"}
+{"level":"DEBUG","ts":"2025-12-03T21:53:49.350Z","msg":"Model tuner results: model=unsloth/Meta-Llama-3.1-8B, accelerator=H100, alpha=8.891920, beta=0.023552, gamma=19.296377, delta=0.000190, NIS=0.78"}
+{"level":"DEBUG","ts":"2025-12-03T21:53:49.350Z","msg":"Updated tuner status for variant ms-inference-scheduling-llm-d-modelservice-decode: alpha=8.891920, beta=0.023552, gamma=19.296377, delta=0.000190, NIS=0.783475"}
+{"level":"INFO","ts":"2025-12-03T21:53:49.350Z","msg":"Tuned performance parameters result: variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler - alpha: 8.891920, beta: 0.023552, gamma: 19.296377, delta: 0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:53:49.359Z","msg":"Optimization solution - system: Solution: \ns=ms-inference-scheduling-llm-d-modelservice-decode:llm-d-inference-scheduler; c=Premium; m=unsloth/Meta-Llama-3.1-8B; rate=1739.6; inTk=235; outTk=460; sol=1, sat=false, alloc={acc=H100; numRep=3; maxBatch=512; cost=300, val=-200, itl=9.9609995, ttft=21.323145, rho=0.086704835, maxRPM=599.1519}; slo-itl=10, slo-ttft=1000, slo-tps=0 \nAllocationByType: \nname=NVIDIA-H100-80GB-HBM3, count=3, limit=0, cost=300 \ntotalCost=300 \n"}
+{"level":"DEBUG","ts":"2025-12-03T21:53:49.359Z","msg":"Setting accelerator name: Name=H100, allocationData={H100 3 512 300 9.9609995 21.323145 {1739.6 235 460}}"}
+{"level":"INFO","ts":"2025-12-03T21:53:49.359Z","msg":"Model-based optimization completed for model: unsloth/Meta-Llama-3.1-8B - model-based targets: map[ms-inference-scheduling-llm-d-modelservice-decode:3]"}
+{"level":"WARN","ts":"2025-12-03T21:53:49.359Z","msg":"Capacity analysis unavailable, using model-based targets only: modelID=unsloth/Meta-Llama-3.1-8B"}
+{"level":"INFO","ts":"2025-12-03T21:53:49.359Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-03T21:53:49.359Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-down, current=5→target=3"}
+{"level":"DEBUG","ts":"2025-12-03T21:53:49.359Z","msg":"Found VA in map: variant=ms-inference-scheduling-llm-d-modelservice-decode, hasCurrentAlloc=true, accelerator=H100"}
+{"level":"INFO","ts":"2025-12-03T21:53:49.360Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 5, desired-replicas: 3, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-03T21:53:49.360Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=3, accelerator=H100, capacityOnly=false"}
+{"level":"INFO","ts":"2025-12-03T21:53:49.366Z","msg":"Applied capacity decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-down, current=5, target=3, reason=model-based only (capacity unavailable)"}
+{"level":"INFO","ts":"2025-12-03T21:53:49.366Z","msg":"Reconciliation completed successfully: mode=model-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-03T21:54:49.367Z","msg":"Operating in MODEL-ONLY mode: model-based optimization only"}
+{"level":"INFO","ts":"2025-12-03T21:54:49.367Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-03T21:54:49.367Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:54:49.375Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, queueLength=0"}
+{"level":"INFO","ts":"2025-12-03T21:54:49.375Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4crr7g2, queueLength=0"}
+{"level":"INFO","ts":"2025-12-03T21:54:49.375Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4cvmvzq, queueLength=0"}
+{"level":"INFO","ts":"2025-12-03T21:54:49.375Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4csfs9d, queueLength=0"}
+{"level":"DEBUG","ts":"2025-12-03T21:54:49.375Z","msg":"Queue metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=4"}
+{"level":"INFO","ts":"2025-12-03T21:54:49.375Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, usage=0.060 (6.0%)"}
+{"level":"INFO","ts":"2025-12-03T21:54:49.375Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4crr7g2, usage=0.031 (3.1%)"}
+{"level":"INFO","ts":"2025-12-03T21:54:49.375Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4cvmvzq, usage=0.049 (4.9%)"}
+{"level":"INFO","ts":"2025-12-03T21:54:49.375Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4csfs9d, usage=0.065 (6.5%)"}
+{"level":"DEBUG","ts":"2025-12-03T21:54:49.375Z","msg":"KV cache metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=4"}
+{"level":"DEBUG","ts":"2025-12-03T21:54:49.376Z","msg":"Pod-to-variant matching successful: totalPods=4, variantCounts=map[ms-inference-scheduling-llm-d-modelservice-decode:4]"}
+{"level":"DEBUG","ts":"2025-12-03T21:54:49.376Z","msg":"Collected replica metrics: modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, replicaCount=4"}
+{"level":"DEBUG","ts":"2025-12-03T21:54:49.376Z","msg":"Collected capacity metrics for observability in model-only mode: modelID=unsloth/Meta-Llama-3.1-8B, replicaCount=4"}
+{"level":"INFO","ts":"2025-12-03T21:54:49.376Z","msg":"Found SLO for model: model=unsloth/Meta-Llama-3.1-8B, class=Premium, slo-tpot=10, slo-ttft=1000"}
+{"level":"DEBUG","ts":"2025-12-03T21:54:49.387Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=3, accelerator=H100, ttft=19.86ms, itl=10.15ms, cost=300.00, maxBatch=256, arrivalRate=1526.28, avgInputTokens=241.09, avgOutputTokens=409.14"}
+{"level":"DEBUG","ts":"2025-12-03T21:54:49.387Z","msg":"Experimental model tuner is enabled globally (EXPERIMENTAL_MODEL_TUNER_ENABLED=true) tuning model performance parameters for active VAs"}
+{"level":"DEBUG","ts":"2025-12-03T21:54:49.387Z","msg":"Using state vals from VA status to tune variant ms-inference-scheduling-llm-d-modelservice-decode: alpha= 8.891920, beta= 0.023552, gamma= 19.296377, delta= 0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:54:49.387Z","msg":"[Tuner Config] variant=ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler | Initial state: alpha=8.891920, beta=0.023552, gamma=19.296377, delta=0.000190 | SLO targets: TTFT=1000.00ms, ITL=10.00ms | Has covariance=true"}
+{"level":"INFO","ts":"2025-12-03T21:54:49.387Z","msg":"Tuner validation succeeded for variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler, server ms-inference-scheduling-llm-d-modelservice-decode:llm-d-inference-scheduler - New NIS: 0.541126"}
+{"level":"DEBUG","ts":"2025-12-03T21:54:49.387Z","msg":"Model tuner results: model=unsloth/Meta-Llama-3.1-8B, accelerator=H100, alpha=9.215469, beta=0.023735, gamma=19.279869, delta=0.000190, NIS=0.54"}
+{"level":"DEBUG","ts":"2025-12-03T21:54:49.387Z","msg":"Updated tuner status for variant ms-inference-scheduling-llm-d-modelservice-decode: alpha=9.215469, beta=0.023735, gamma=19.279869, delta=0.000190, NIS=0.541126"}
+{"level":"INFO","ts":"2025-12-03T21:54:49.387Z","msg":"Tuned performance parameters result: variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler - alpha: 9.215469, beta: 0.023735, gamma: 19.279869, delta: 0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:54:49.391Z","msg":"Optimization solution - system: Solution: \ns=ms-inference-scheduling-llm-d-modelservice-decode:llm-d-inference-scheduler; c=Premium; m=unsloth/Meta-Llama-3.1-8B; rate=1526.28; inTk=241; outTk=409; sol=1, sat=false, alloc={acc=H100; numRep=4; maxBatch=512; cost=400, val=100, itl=9.848823, ttft=20.501762, rho=0.05016579, maxRPM=468.9932}; slo-itl=10, slo-ttft=1000, slo-tps=0 \nAllocationByType: \nname=NVIDIA-H100-80GB-HBM3, count=4, limit=0, cost=400 \ntotalCost=400 \n"}
+{"level":"DEBUG","ts":"2025-12-03T21:54:49.391Z","msg":"Setting accelerator name: Name=H100, allocationData={H100 4 512 400 9.848823 20.501762 {1526.28 241 409}}"}
+{"level":"INFO","ts":"2025-12-03T21:54:49.391Z","msg":"Model-based optimization completed for model: unsloth/Meta-Llama-3.1-8B - model-based targets: map[ms-inference-scheduling-llm-d-modelservice-decode:4]"}
+{"level":"WARN","ts":"2025-12-03T21:54:49.391Z","msg":"Capacity analysis unavailable, using model-based targets only: modelID=unsloth/Meta-Llama-3.1-8B"}
+{"level":"INFO","ts":"2025-12-03T21:54:49.391Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-03T21:54:49.391Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-up, current=3→target=4"}
+{"level":"DEBUG","ts":"2025-12-03T21:54:49.391Z","msg":"Found VA in map: variant=ms-inference-scheduling-llm-d-modelservice-decode, hasCurrentAlloc=true, accelerator=H100"}
+{"level":"INFO","ts":"2025-12-03T21:54:49.391Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 3, desired-replicas: 4, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-03T21:54:49.391Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=4, accelerator=H100, capacityOnly=false"}
+{"level":"INFO","ts":"2025-12-03T21:54:49.397Z","msg":"Applied capacity decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-up, current=3, target=4, reason=model-based only (capacity unavailable)"}
+{"level":"INFO","ts":"2025-12-03T21:54:49.397Z","msg":"Reconciliation completed successfully: mode=model-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-03T21:55:49.398Z","msg":"Operating in MODEL-ONLY mode: model-based optimization only"}
+{"level":"INFO","ts":"2025-12-03T21:55:49.398Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-03T21:55:49.398Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:55:49.405Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, usage=0.060 (6.0%)"}
+{"level":"INFO","ts":"2025-12-03T21:55:49.405Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4cvmvzq, usage=0.056 (5.6%)"}
+{"level":"INFO","ts":"2025-12-03T21:55:49.405Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4csfs9d, usage=0.051 (5.1%)"}
+{"level":"DEBUG","ts":"2025-12-03T21:55:49.405Z","msg":"KV cache metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=3"}
+{"level":"INFO","ts":"2025-12-03T21:55:49.405Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, queueLength=0"}
+{"level":"INFO","ts":"2025-12-03T21:55:49.405Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4cvmvzq, queueLength=0"}
+{"level":"INFO","ts":"2025-12-03T21:55:49.405Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4csfs9d, queueLength=0"}
+{"level":"DEBUG","ts":"2025-12-03T21:55:49.405Z","msg":"Queue metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=3"}
+{"level":"DEBUG","ts":"2025-12-03T21:55:49.405Z","msg":"Pod-to-variant matching successful: totalPods=3, variantCounts=map[ms-inference-scheduling-llm-d-modelservice-decode:3]"}
+{"level":"DEBUG","ts":"2025-12-03T21:55:49.405Z","msg":"Collected replica metrics: modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, replicaCount=3"}
+{"level":"DEBUG","ts":"2025-12-03T21:55:49.405Z","msg":"Collected capacity metrics for observability in model-only mode: modelID=unsloth/Meta-Llama-3.1-8B, replicaCount=3"}
+{"level":"INFO","ts":"2025-12-03T21:55:49.405Z","msg":"Found SLO for model: model=unsloth/Meta-Llama-3.1-8B, class=Premium, slo-tpot=10, slo-ttft=1000"}
+{"level":"DEBUG","ts":"2025-12-03T21:55:49.415Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=4, accelerator=H100, ttft=19.48ms, itl=9.68ms, cost=400.00, maxBatch=256, arrivalRate=1051.14, avgInputTokens=211.78, avgOutputTokens=544.19"}
+{"level":"DEBUG","ts":"2025-12-03T21:55:49.415Z","msg":"Experimental model tuner is enabled globally (EXPERIMENTAL_MODEL_TUNER_ENABLED=true) tuning model performance parameters for active VAs"}
+{"level":"DEBUG","ts":"2025-12-03T21:55:49.415Z","msg":"Using state vals from VA status to tune variant ms-inference-scheduling-llm-d-modelservice-decode: alpha= 9.215469, beta= 0.023735, gamma= 19.279869, delta= 0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:55:49.415Z","msg":"[Tuner Config] variant=ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler | Initial state: alpha=9.215469, beta=0.023735, gamma=19.279869, delta=0.000190 | SLO targets: TTFT=1000.00ms, ITL=10.00ms | Has covariance=true"}
+{"level":"INFO","ts":"2025-12-03T21:55:49.418Z","msg":"Tuner validation succeeded for variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler, server ms-inference-scheduling-llm-d-modelservice-decode:llm-d-inference-scheduler - New NIS: 0.037526"}
+{"level":"DEBUG","ts":"2025-12-03T21:55:49.419Z","msg":"Model tuner results: model=unsloth/Meta-Llama-3.1-8B, accelerator=H100, alpha=9.126730, beta=0.023765, gamma=19.266953, delta=0.000190, NIS=0.04"}
+{"level":"DEBUG","ts":"2025-12-03T21:55:49.419Z","msg":"Updated tuner status for variant ms-inference-scheduling-llm-d-modelservice-decode: alpha=9.126730, beta=0.023765, gamma=19.266953, delta=0.000190, NIS=0.037526"}
+{"level":"INFO","ts":"2025-12-03T21:55:49.419Z","msg":"Tuned performance parameters result: variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler - alpha: 9.126730, beta: 0.023765, gamma: 19.266953, delta: 0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:55:49.441Z","msg":"Optimization solution - system: Solution: \ns=ms-inference-scheduling-llm-d-modelservice-decode:llm-d-inference-scheduler; c=Premium; m=unsloth/Meta-Llama-3.1-8B; rate=1051.14; inTk=211; outTk=544; sol=1, sat=false, alloc={acc=H100; numRep=3; maxBatch=512; cost=300, val=-100, itl=9.899331, ttft=20.570286, rho=0.061543558, maxRPM=393.4797}; slo-itl=10, slo-ttft=1000, slo-tps=0 \nAllocationByType: \nname=NVIDIA-H100-80GB-HBM3, count=3, limit=0, cost=300 \ntotalCost=300 \n"}
+{"level":"DEBUG","ts":"2025-12-03T21:55:49.441Z","msg":"Setting accelerator name: Name=H100, allocationData={H100 3 512 300 9.899331 20.570286 {1051.14 211 544}}"}
+{"level":"INFO","ts":"2025-12-03T21:55:49.441Z","msg":"Model-based optimization completed for model: unsloth/Meta-Llama-3.1-8B - model-based targets: map[ms-inference-scheduling-llm-d-modelservice-decode:3]"}
+{"level":"WARN","ts":"2025-12-03T21:55:49.441Z","msg":"Capacity analysis unavailable, using model-based targets only: modelID=unsloth/Meta-Llama-3.1-8B"}
+{"level":"INFO","ts":"2025-12-03T21:55:49.441Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-03T21:55:49.441Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-down, current=4→target=3"}
+{"level":"DEBUG","ts":"2025-12-03T21:55:49.441Z","msg":"Found VA in map: variant=ms-inference-scheduling-llm-d-modelservice-decode, hasCurrentAlloc=true, accelerator=H100"}
+{"level":"INFO","ts":"2025-12-03T21:55:49.441Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 4, desired-replicas: 3, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-03T21:55:49.441Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=3, accelerator=H100, capacityOnly=false"}
+{"level":"INFO","ts":"2025-12-03T21:55:49.448Z","msg":"Applied capacity decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-down, current=4, target=3, reason=model-based only (capacity unavailable)"}
+{"level":"INFO","ts":"2025-12-03T21:55:49.448Z","msg":"Reconciliation completed successfully: mode=model-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-03T21:56:49.449Z","msg":"Operating in MODEL-ONLY mode: model-based optimization only"}
+{"level":"INFO","ts":"2025-12-03T21:56:49.449Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-03T21:56:49.449Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:56:49.457Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, queueLength=0"}
+{"level":"INFO","ts":"2025-12-03T21:56:49.457Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4cvmvzq, queueLength=0"}
+{"level":"INFO","ts":"2025-12-03T21:56:49.457Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4csfs9d, queueLength=0"}
+{"level":"DEBUG","ts":"2025-12-03T21:56:49.457Z","msg":"Queue metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=3"}
+{"level":"INFO","ts":"2025-12-03T21:56:49.457Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, usage=0.000 (0.0%)"}
+{"level":"INFO","ts":"2025-12-03T21:56:49.457Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4cvmvzq, usage=0.000 (0.0%)"}
+{"level":"INFO","ts":"2025-12-03T21:56:49.457Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4csfs9d, usage=0.020 (2.0%)"}
+{"level":"DEBUG","ts":"2025-12-03T21:56:49.457Z","msg":"KV cache metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=3"}
+{"level":"DEBUG","ts":"2025-12-03T21:56:49.457Z","msg":"Pod-to-variant matching successful: totalPods=3, variantCounts=map[ms-inference-scheduling-llm-d-modelservice-decode:3]"}
+{"level":"DEBUG","ts":"2025-12-03T21:56:49.457Z","msg":"Collected replica metrics: modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, replicaCount=3"}
+{"level":"DEBUG","ts":"2025-12-03T21:56:49.457Z","msg":"Collected capacity metrics for observability in model-only mode: modelID=unsloth/Meta-Llama-3.1-8B, replicaCount=3"}
+{"level":"INFO","ts":"2025-12-03T21:56:49.457Z","msg":"Found SLO for model: model=unsloth/Meta-Llama-3.1-8B, class=Premium, slo-tpot=10, slo-ttft=1000"}
+{"level":"DEBUG","ts":"2025-12-03T21:56:49.468Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=3, accelerator=H100, ttft=18.69ms, itl=8.30ms, cost=300.00, maxBatch=256, arrivalRate=15.65, avgInputTokens=237.46, avgOutputTokens=477.69"}
+{"level":"DEBUG","ts":"2025-12-03T21:56:49.468Z","msg":"Experimental model tuner is enabled globally (EXPERIMENTAL_MODEL_TUNER_ENABLED=true) tuning model performance parameters for active VAs"}
+{"level":"DEBUG","ts":"2025-12-03T21:56:49.468Z","msg":"Using state vals from VA status to tune variant ms-inference-scheduling-llm-d-modelservice-decode: alpha= 9.126730, beta= 0.023765, gamma= 19.266953, delta= 0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:56:49.468Z","msg":"[Tuner Config] variant=ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler | Initial state: alpha=9.126730, beta=0.023765, gamma=19.266953, delta=0.000190 | SLO targets: TTFT=1000.00ms, ITL=10.00ms | Has covariance=true"}
+{"level":"INFO","ts":"2025-12-03T21:56:49.468Z","msg":"Tuner validation succeeded for variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler, server ms-inference-scheduling-llm-d-modelservice-decode:llm-d-inference-scheduler - New NIS: 2.242668"}
+{"level":"DEBUG","ts":"2025-12-03T21:56:49.468Z","msg":"Model tuner results: model=unsloth/Meta-Llama-3.1-8B, accelerator=H100, alpha=8.436367, beta=0.024668, gamma=19.258514, delta=0.000190, NIS=2.24"}
+{"level":"DEBUG","ts":"2025-12-03T21:56:49.468Z","msg":"Updated tuner status for variant ms-inference-scheduling-llm-d-modelservice-decode: alpha=8.436367, beta=0.024668, gamma=19.258514, delta=0.000190, NIS=2.242668"}
+{"level":"INFO","ts":"2025-12-03T21:56:49.468Z","msg":"Tuned performance parameters result: variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler - alpha: 8.436367, beta: 0.024668, gamma: 19.258514, delta: 0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:56:49.478Z","msg":"Optimization solution - system: Solution: \ns=ms-inference-scheduling-llm-d-modelservice-decode:llm-d-inference-scheduler; c=Premium; m=unsloth/Meta-Llama-3.1-8B; rate=15.65; inTk=237; outTk=477; sol=1, sat=false, alloc={acc=H100; numRep=1; maxBatch=512; cost=100, val=-200, itl=8.487152, ttft=19.351221, rho=0.0020679375, maxRPM=782.76794}; slo-itl=10, slo-ttft=1000, slo-tps=0 \nAllocationByType: \nname=NVIDIA-H100-80GB-HBM3, count=1, limit=0, cost=100 \ntotalCost=100 \n"}
+{"level":"DEBUG","ts":"2025-12-03T21:56:49.478Z","msg":"Setting accelerator name: Name=H100, allocationData={H100 1 512 100 8.487152 19.351221 {15.65 237 477}}"}
+{"level":"INFO","ts":"2025-12-03T21:56:49.478Z","msg":"Model-based optimization completed for model: unsloth/Meta-Llama-3.1-8B - model-based targets: map[ms-inference-scheduling-llm-d-modelservice-decode:1]"}
+{"level":"WARN","ts":"2025-12-03T21:56:49.478Z","msg":"Capacity analysis unavailable, using model-based targets only: modelID=unsloth/Meta-Llama-3.1-8B"}
+{"level":"INFO","ts":"2025-12-03T21:56:49.478Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-03T21:56:49.478Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-down, current=3→target=1"}
+{"level":"DEBUG","ts":"2025-12-03T21:56:49.478Z","msg":"Found VA in map: variant=ms-inference-scheduling-llm-d-modelservice-decode, hasCurrentAlloc=true, accelerator=H100"}
+{"level":"INFO","ts":"2025-12-03T21:56:49.478Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 3, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-03T21:56:49.478Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, capacityOnly=false"}
+{"level":"INFO","ts":"2025-12-03T21:56:49.484Z","msg":"Applied capacity decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-down, current=3, target=1, reason=model-based only (capacity unavailable)"}
+{"level":"INFO","ts":"2025-12-03T21:56:49.484Z","msg":"Reconciliation completed successfully: mode=model-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-03T21:57:49.485Z","msg":"Operating in MODEL-ONLY mode: model-based optimization only"}
+{"level":"INFO","ts":"2025-12-03T21:57:49.485Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-03T21:57:49.485Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-03T21:57:49.491Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, queueLength=0"}
+{"level":"INFO","ts":"2025-12-03T21:57:49.491Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4csfs9d, queueLength=0"}
+{"level":"DEBUG","ts":"2025-12-03T21:57:49.491Z","msg":"Queue metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=2"}
+{"level":"INFO","ts":"2025-12-03T21:57:49.491Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4chmjgp, usage=0.000 (0.0%)"}
+{"level":"INFO","ts":"2025-12-03T21:57:49.491Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4csfs9d, usage=0.000 (0.0%)"}
+{"level":"DEBUG","ts":"2025-12-03T21:57:49.491Z","msg":"KV cache metrics collected (max over 1m): modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, podCount=2"}
+{"level":"DEBUG","ts":"2025-12-03T21:57:49.491Z","msg":"Pod-to-variant matching successful: totalPods=2, variantCounts=map[ms-inference-scheduling-llm-d-modelservice-decode:2]"}
+{"level":"DEBUG","ts":"2025-12-03T21:57:49.491Z","msg":"Collected replica metrics: modelID=unsloth/Meta-Llama-3.1-8B, namespace=llm-d-inference-scheduler, replicaCount=2"}
+{"level":"DEBUG","ts":"2025-12-03T21:57:49.491Z","msg":"Collected capacity metrics for observability in model-only mode: modelID=unsloth/Meta-Llama-3.1-8B, replicaCount=2"}
+{"level":"INFO","ts":"2025-12-03T21:57:49.491Z","msg":"Found SLO for model: model=unsloth/Meta-Llama-3.1-8B, class=Premium, slo-tpot=10, slo-ttft=1000"}
+{"level":"DEBUG","ts":"2025-12-03T21:57:49.501Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=100.00, maxBatch=256, arrivalRate=0.00, avgInputTokens=0.00, avgOutputTokens=0.00"}
+{"level":"DEBUG","ts":"2025-12-03T21:57:49.501Z","msg":"Experimental model tuner is enabled globally (EXPERIMENTAL_MODEL_TUNER_ENABLED=true) tuning model performance parameters for active VAs"}
+{"level":"DEBUG","ts":"2025-12-03T21:57:49.501Z","msg":"Using state vals from VA status to tune variant ms-inference-scheduling-llm-d-modelservice-decode: alpha= 8.436367, beta= 0.024668, gamma= 19.258514, delta= 0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:57:49.501Z","msg":"[Tuner Config] variant=ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler | Initial state: alpha=8.436367, beta=0.024668, gamma=19.258514, delta=0.000190 | SLO targets: TTFT=1000.00ms, ITL=10.00ms | Has covariance=true"}
+{"level":"WARN","ts":"2025-12-03T21:57:49.501Z","msg":"Tuner failed completely for variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler: failed to get/create tuner: failed to create tuner: invalid environment: &{0 0 0 256 0 0 1}. Using fallback parameters."}
+{"level":"INFO","ts":"2025-12-03T21:57:49.501Z","msg":"Using tuned parameters from status for variant ms-inference-scheduling-llm-d-modelservice-decode/llm-d-inference-scheduler"}
+{"level":"DEBUG","ts":"2025-12-03T21:57:49.501Z","msg":"Updated SystemData for model=unsloth/Meta-Llama-3.1-8B, accelerator=H100: alpha=8.436367, beta=0.024668, gamma=19.258514, delta=0.000190"}
+{"level":"DEBUG","ts":"2025-12-03T21:57:49.501Z","msg":"Optimization solution - system: Solution: \ns=ms-inference-scheduling-llm-d-modelservice-decode:llm-d-inference-scheduler; c=Premium; m=unsloth/Meta-Llama-3.1-8B; rate=0; inTk=0; outTk=0; sol=1, sat=false, alloc={acc=H100; numRep=1; maxBatch=512; cost=100, val=0, itl=8.461035, ttft=19.258705, rho=0, maxRPM=761808.6}; slo-itl=10, slo-ttft=1000, slo-tps=0 \nAllocationByType: \nname=NVIDIA-H100-80GB-HBM3, count=1, limit=0, cost=100 \ntotalCost=100 \n"}
+{"level":"DEBUG","ts":"2025-12-03T21:57:49.501Z","msg":"Setting accelerator name: Name=H100, allocationData={H100 1 512 100 8.461035 19.258705 {0 0 0}}"}
+{"level":"INFO","ts":"2025-12-03T21:57:49.501Z","msg":"Model-based optimization completed for model: unsloth/Meta-Llama-3.1-8B - model-based targets: map[ms-inference-scheduling-llm-d-modelservice-decode:1]"}
+{"level":"WARN","ts":"2025-12-03T21:57:49.501Z","msg":"Capacity analysis unavailable, using model-based targets only: modelID=unsloth/Meta-Llama-3.1-8B"}
+{"level":"INFO","ts":"2025-12-03T21:57:49.501Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-03T21:57:49.501Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"DEBUG","ts":"2025-12-03T21:57:49.501Z","msg":"Found VA in map: variant=ms-inference-scheduling-llm-d-modelservice-decode, hasCurrentAlloc=true, accelerator=H100"}
+{"level":"INFO","ts":"2025-12-03T21:57:49.501Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-03T21:57:49.501Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, capacityOnly=false"}
+{"level":"INFO","ts":"2025-12-03T21:57:49.522Z","msg":"Applied capacity decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=model-based only (capacity unavailable)"}
+{"level":"INFO","ts":"2025-12-03T21:57:49.522Z","msg":"Reconciliation completed successfully: mode=model-only, modelsProcessed=1, decisionsApplied=1"}
