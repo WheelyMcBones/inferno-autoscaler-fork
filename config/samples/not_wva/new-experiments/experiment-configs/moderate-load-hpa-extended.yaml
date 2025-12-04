@@ -1,0 +1,88 @@
+# Extended Moderate Load HPA Experiment Configuration
+# Extended 20+ minute test with overlapping moderate load for sustained observation
+# Jobs run in parallel with staggered start times to create cumulative but manageable pressure
+# Pattern: Job1 (0s) → Job2 (+180s) → Job3 (+360s) → Job4 (+540s)
+# Peak load kept moderate (~32 req/s) to observe gradual HPA scaling behavior
+
+name: "moderate-load-hpa-extended"
+description: "Extended HPA test with overlapping 10-12 req/s jobs (20+ mins, peak ~32 req/s)"
+namespace: "llm-d-inference-scheduler"
+deployment: "ms-inference-scheduling-llm-d-modelservice-decode"
+model_name: "unsloth/Meta-Llama-3.1-8B"
+
+hpa:
+  enabled: true
+  manifest: "../../manifests/hpa-vllm-combined.yaml"
+
+jobs:
+  - name: "phase-1-baseline"
+    manifest: "../../workloads/sharegpt-load-job-moderate-10-extended.yaml"  # 10 req/s, 10min
+    duration: 600  # 10 minutes
+    start_delay: 0  # Start immediately
+    
+  - name: "phase-2-ramp-up"
+    manifest: "../../workloads/sharegpt-load-job-moderate-12-extended.yaml"  # 12 req/s, 10min
+    duration: 600  # 10 minutes
+    start_delay: 180  # Start 3min after experiment begins
+    
+  - name: "phase-3-sustained"
+    manifest: "../../workloads/sharegpt-load-job-moderate-10-phase3.yaml"  # 10 req/s
+    duration: 600  # 10 minutes
+    start_delay: 360  # Start 6min after experiment begins
+    
+  - name: "phase-4-cooldown"
+    manifest: "../../workloads/sharegpt-load-job-moderate-10-phase4.yaml"  # 10 req/s
+    duration: 600  # 10 minutes
+    start_delay: 540  # Start 9min after experiment begins
+
+# Timeline visualization (EXTENDED - 23 minutes total):
+# Time:    0s    180s  360s  540s  600s  780s  960s  1140s 1200s 1320s 1380s
+# Job1:    [=================================]  (10 req/s, 10min)
+# Job2:              [=================================]  (12 req/s, 10min)
+# Job3:                          [=================================]  (10 req/s, 10min)
+# Job4:                                      [=================================]  (10 req/s, 10min)
+# Load:    10    22    32    32    22    22    20    10    10    10    0
+# 
+# Peak load: 32 req/s (moderate, manageable)
+# Duration: ~23 minutes total runtime
+# Longest overlap period: 360-600s (4 minutes at peak 32 req/s)
+# 
+# Expected HPA behavior:
+# - 0-180s: Initial warmup with 10 req/s (minimal scaling)
+# - 180-360s: Ramp-up to 22 req/s (CPU/memory metrics increase)
+# - 360-600s: Peak at 32 req/s (HPA scales up gradually to 3-4 replicas)
+# - 600-780s: Gradual decrease to 22 req/s (metrics stabilize)
+# - 780-960s: Further decrease to 20 req/s (potential scale-down begins)
+# - 960-1140s: Cooldown to 10 req/s (HPA considers scale-down)
+# - 1140-1320s: Final cooldown at 10 req/s
+# - 1320-1380s: Scale-down observation period
+#
+# HPA behavior to observe:
+# - Scaling responsiveness to gradual load increase
+# - Stability during sustained 32 req/s period (4 minutes)
+# - Scale-down behavior during gradual load decrease
+# - CPU/memory utilization patterns vs WVA approaches
+
+metrics:
+  interval: 5
+  prometheus:
+    ttft:
+      query: 'sum(rate(vllm:time_to_first_token_seconds_sum{model_name="unsloth/Meta-Llama-3.1-8B",namespace="llm-d-inference-scheduler"}[1m]))/sum(rate(vllm:time_to_first_token_seconds_count{model_name="unsloth/Meta-Llama-3.1-8B",namespace="llm-d-inference-scheduler"}[1m])) * 1000'
+    itl:
+      query: 'sum(rate(vllm:time_per_output_token_seconds_sum{model_name="unsloth/Meta-Llama-3.1-8B",namespace="llm-d-inference-scheduler"}[1m]))/sum(rate(vllm:time_per_output_token_seconds_count{model_name="unsloth/Meta-Llama-3.1-8B",namespace="llm-d-inference-scheduler"}[1m])) * 1000'
+    request_rate:
+      query: 'sum(rate(vllm:request_success_total{model_name="unsloth/Meta-Llama-3.1-8B",namespace="llm-d-inference-scheduler"}[1m])) * 60'
+    num_requests_waiting:
+      query: 'vllm:num_requests_waiting{model_name="unsloth/Meta-Llama-3.1-8B",namespace="llm-d-inference-scheduler"}'
+    kv_cache_usage:
+      query: 'vllm:kv_cache_usage_perc{model_name="unsloth/Meta-Llama-3.1-8B",namespace="llm-d-inference-scheduler"}'
+
+output:
+  base_dir: "experiment-data"
+  include_pod_logs: true
+  include_events: true
+
+# Extended observation period after jobs complete to capture scale-down behavior
+cooldown:
+  enabled: true
+  duration: 120  # Monitor for 2 minutes after jobs complete to observe scale-down

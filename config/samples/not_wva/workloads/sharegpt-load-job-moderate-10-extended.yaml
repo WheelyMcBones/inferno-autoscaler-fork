@@ -1,0 +1,69 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: vllm-bench-sharegpt-load-moderate-10-extended
+  namespace: llm-d-inference-scheduler
+  labels:
+    experiment: sharegpt-moderate-load-extended
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      initContainers:
+      - name: download-dataset
+        image: busybox:latest
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          wget -O /data/ShareGPT_V3_unfiltered_cleaned_split.json \
+          https://huggingface.co/datasets/anon8231489123/ShareGPT_Vicuna_unfiltered/resolve/main/ShareGPT_V3_unfiltered_cleaned_split.json
+        volumeMounts:
+        - name: dataset-volume
+          mountPath: /data
+      containers:
+      - name: vllm-bench-serve-container
+        image: vllm/vllm-openai:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: HF_HOME
+          value: "/tmp"
+        command: ["/usr/bin/python3"]
+        args:
+        - "-m"
+        - "vllm.entrypoints.cli.main"
+        - "bench"
+        - "serve"
+        - "--backend"
+        - "openai"
+        - "--base-url"
+        - "http://infra-inference-scheduling-inference-gateway-istio:80"
+        - "--dataset-name"
+        - "sharegpt"
+        - "--dataset-path"
+        - "/data/ShareGPT_V3_unfiltered_cleaned_split.json"
+        - "--model"
+        - "unsloth/Meta-Llama-3.1-8B"
+        - "--seed"
+        - "12345"
+        - "--num-prompts"
+        - "6000"  # 10 req/s for 10 minutes (600s)
+        - "--max-concurrency"
+        - "512"
+        - "--request-rate"
+        - "10"  # 10 requests per second
+        - "--sharegpt-output-len"
+        - "1024"
+        volumeMounts:
+        - name: dataset-volume
+          mountPath: /data
+        resources:
+          limits:
+            memory: "8Gi"
+            cpu: "2"
+          requests:
+            cpu: "1"
+            memory: "4Gi"
+      volumes:
+      - name: dataset-volume
+        emptyDir: {}
+      restartPolicy: Never
