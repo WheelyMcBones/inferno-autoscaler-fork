@@ -1,0 +1,84 @@
+# Model-Based WVA with Extended Parallel Overlapping Jobs
+# Extended 20+ minute scenario with moderate peak load for sustained observation
+# Jobs run in parallel with staggered start times to create cumulative load
+# Pattern: Job1 (0s) → Job2 (+180s) → Job3 (+180s) → Job4 (+180s)
+# Peak load kept moderate (~32 req/s) to avoid overwhelming the system
+
+name: model-based-moderate-parallel-extended
+description: "Model-based WVA with extended overlapping moderate load (20+ mins, peak ~32 req/s)"
+mode: model-based
+
+# Kubernetes Configuration
+namespace: llm-d-inference-scheduler
+controller_namespace: workload-variant-autoscaler-system
+controller_pod_prefix: workload-variant-autoscaler-controller-manager
+deployment: ms-inference-scheduling-llm-d-modelservice-decode
+model_name: unsloth/Meta-Llama-3.1-8B
+
+# Metrics Collection
+metrics:
+  interval: 5  # seconds between log polls
+  log_level: INFO
+
+# Extended Parallel Workload Sequence
+# Each job runs for 10 minutes with 3-minute stagger
+workloads:
+  - name: phase-1-baseline
+    job_manifest: ../../not_wva/workloads/sharegpt-load-job-moderate-10-extended.yaml  # 10 req/s, 10min
+    duration: 600  # 10 minutes
+    start_delay: 0  # Start immediately
+    description: "Phase 1: 10 req/s baseline load"
+    
+  - name: phase-2-ramp-up
+    job_manifest: ../../not_wva/workloads/sharegpt-load-job-moderate-12-extended.yaml  # 12 req/s, 10min
+    duration: 600  # 10 minutes
+    start_delay: 180  # Start 3min after experiment begins
+    description: "Phase 2: 12 req/s ramp-up load (overlaps with phase 1)"
+    
+  - name: phase-3-sustained
+    job_manifest: ../../not_wva/workloads/sharegpt-load-job-moderate-10-phase3.yaml  # 10 req/s
+    duration: 600  # 10 minutes
+    start_delay: 360  # Start 6min after experiment begins
+    description: "Phase 3: 10 req/s sustained load (overlaps with phase 2)"
+    
+  - name: phase-4-cooldown
+    job_manifest: ../../not_wva/workloads/sharegpt-load-job-moderate-10-phase4.yaml  # 10 req/s
+    duration: 600  # 10 minutes
+    start_delay: 540  # Start 9min after experiment begins
+    description: "Phase 4: 10 req/s cooldown load (overlaps with phase 3)"
+
+# Timeline visualization (EXTENDED - 23 minutes total):
+# Time:    0s    180s  360s  540s  600s  780s  960s  1140s 1200s 1320s 1380s
+# Job1:    [=================================]  (10 req/s, 10min)
+# Job2:              [=================================]  (12 req/s, 10min)
+# Job3:                          [=================================]  (10 req/s, 10min)
+# Job4:                                      [=================================]  (10 req/s, 10min)
+# Load:    10    22    32    32    22    22    20    10    10    10    0
+# 
+# Peak load: 32 req/s (moderate, manageable)
+# Duration: ~23 minutes total runtime
+# Longest overlap period: 360-600s (4 minutes at peak 32 req/s)
+# 
+# Expected behavior with WVA model-based:
+# - 0-180s: Initial warmup with 10 req/s (1-2 replicas)
+# - 180-360s: Ramp-up to 22 req/s (2-3 replicas)
+# - 360-600s: Peak at 32 req/s (3-4 replicas, sustained for 4 minutes)
+# - 600-780s: Gradual decrease to 22 req/s (2-3 replicas)
+# - 780-960s: Further decrease to 20 req/s (2-3 replicas)
+# - 960-1140s: Cooldown to 10 req/s (1-2 replicas)
+# - 1140-1320s: Final cooldown at 10 req/s
+# - 1320-1380s: Scale-down observation period
+#
+# Tuner behavior to observe:
+# - Parameter stability during sustained 32 req/s period
+# - Replica adjustments during gradual load changes
+# - No overshooting during pod startup (ReadyReplicas fix)
+# - NIS validation during scaling transitions
+
+slo:
+  target_itl_ms: 30  # Model-based target
+
+output:
+  base_dir: experiment-data
+  save_logs: true
+  save_metrics: true
