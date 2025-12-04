@@ -646,12 +646,6 @@ else
         fi
         
         echo ""
-        
-        # Brief pause between workloads
-        if [[ $i -lt $((WORKLOAD_COUNT - 1)) ]]; then
-            print_info "Pausing 30s before next workload..."
-            sleep 30
-        fi
     done
 fi
 
