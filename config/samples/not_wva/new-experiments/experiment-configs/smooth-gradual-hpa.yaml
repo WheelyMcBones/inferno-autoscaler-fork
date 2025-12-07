@@ -1,0 +1,117 @@
+# HPA Baseline with Smooth Gradual Load Transitions
+# Extended 30+ minute scenario with very gradual load changes
+# Multiple smaller jobs (5 req/s each) stagger to create smooth transitions
+# Pattern: Job1→Job2→Job3→Job4→Job5→Job6 with 2-minute intervals
+# Peak load: 30 req/s achieved gradually through 6 overlapping jobs
+
+name: smooth-gradual-hpa
+description: "HPA baseline with smooth gradual load transitions (30+ mins, 6 jobs @ 5 req/s each)"
+mode: hpa-baseline  # No WVA, standard Kubernetes HPA
+
+# Kubernetes Configuration
+namespace: llm-d-inference-scheduler
+deployment: ms-inference-scheduling-llm-d-modelservice-decode
+model_name: unsloth/Meta-Llama-3.1-8B
+
+# HPA configuration
+hpa:
+  enabled: true
+  manifest: "../../manifests/hpa-vllm-combined.yaml"
+
+# Smooth Gradual Job Sequence
+# Each job runs for 12 minutes at 5 req/s with 2-minute stagger
+# This creates very smooth load transitions (parallel mode with start_delay)
+jobs:
+  - name: job-1-baseline
+    manifest: ../../workloads/sharegpt-load-job-smooth-5-job1.yaml
+    duration: 720  # 12 minutes
+    start_delay: 0  # Start immediately
+    
+  - name: job-2-gentle-ramp
+    manifest: ../../workloads/sharegpt-load-job-smooth-5-job2.yaml
+    duration: 720  # 12 minutes
+    start_delay: 120  # Start 2min after experiment begins
+    
+  - name: job-3-continued-growth
+    manifest: ../../workloads/sharegpt-load-job-smooth-5-job3.yaml
+    duration: 720  # 12 minutes
+    start_delay: 240  # Start 4min after experiment begins
+    
+  - name: job-4-approaching-peak
+    manifest: ../../workloads/sharegpt-load-job-smooth-5-job4.yaml
+    duration: 720  # 12 minutes
+    start_delay: 360  # Start 6min after experiment begins
+    
+  - name: job-5-near-peak
+    manifest: ../../workloads/sharegpt-load-job-smooth-5-job5.yaml
+    duration: 720  # 12 minutes
+    start_delay: 480  # Start 8min after experiment begins
+    
+  - name: job-6-peak-sustain
+    manifest: ../../workloads/sharegpt-load-job-smooth-5-job6.yaml
+    duration: 720  # 12 minutes
+    start_delay: 600  # Start 10min after experiment begins
+
+# Timeline visualization (SMOOTH GRADUAL - 32 minutes total):
+# Time:    0    120  240  360  480  600  720  840  960  1080 1200 1320 1440 1560 1680 1800 1920
+# Job1:    [=======================================]  (5 req/s, 12min)
+# Job2:         [=======================================]  (5 req/s, 12min)
+# Job3:              [=======================================]  (5 req/s, 12min)
+# Job4:                   [=======================================]  (5 req/s, 12min)
+# Job5:                        [=======================================]  (5 req/s, 12min)
+# Job6:                             [=======================================]  (5 req/s, 12min)
+# Load:    5    10   15   20   25   30   30   25   20   15   10   5    5    5    5    5    0
+# 
+# Load progression:
+# - 0-120s: 5 req/s (1 job) - baseline
+# - 120-240s: 10 req/s (2 jobs) - +5 req/s smooth increase
+# - 240-360s: 15 req/s (3 jobs) - +5 req/s continued growth
+# - 360-480s: 20 req/s (4 jobs) - +5 req/s steady climb
+# - 480-600s: 25 req/s (5 jobs) - +5 req/s approaching peak
+# - 600-720s: 30 req/s (6 jobs) - +5 req/s peak reached
+# - 720-840s: 30 req/s (5 jobs) - sustained peak
+# - 840-960s: 25 req/s (4 jobs) - -5 req/s smooth decrease
+# - 960-1080s: 20 req/s (3 jobs) - -5 req/s continued decline
+# - 1080-1200s: 15 req/s (2 jobs) - -5 req/s gradual cooldown
+# - 1200-1320s: 10 req/s (1 job) - -5 req/s near baseline
+# - 1320-1440s: 5 req/s (1 job) - final cooldown
+# - 1440-1920s: 0 req/s - scale-down observation (8 minutes)
+
+# Metrics to collect
+metrics:
+  interval: 5  # seconds between samples
+  log_level: INFO
+  
+  # Prometheus queries for performance metrics
+  prometheus:
+    # TTFT: Time to First Token (ms)
+    ttft:
+      query: 'sum(rate(vllm:time_to_first_token_seconds_sum{model_name="unsloth/Meta-Llama-3.1-8B",namespace="llm-d-inference-scheduler"}[1m]))/sum(rate(vllm:time_to_first_token_seconds_count{model_name="unsloth/Meta-Llama-3.1-8B",namespace="llm-d-inference-scheduler"}[1m])) * 1000'
+      
+    # ITL: Inter-Token Latency (ms)
+    itl:
+      query: 'sum(rate(vllm:time_per_output_token_seconds_sum{model_name="unsloth/Meta-Llama-3.1-8B",namespace="llm-d-inference-scheduler"}[1m]))/sum(rate(vllm:time_per_output_token_seconds_count{model_name="unsloth/Meta-Llama-3.1-8B",namespace="llm-d-inference-scheduler"}[1m])) * 1000'
+      
+    # Request rate (req/min)
+    request_rate:
+      query: 'sum(rate(vllm:request_success_total{model_name="unsloth/Meta-Llama-3.1-8B",namespace="llm-d-inference-scheduler"}[1m])) * 60'
+      
+    # Queue depth
+    num_requests_waiting:
+      query: 'vllm:num_requests_waiting{model_name="unsloth/Meta-Llama-3.1-8B",namespace="llm-d-inference-scheduler"}'
+      
+    # KV cache usage (percentage as decimal)
+    kv_cache_usage:
+      query: 'vllm:kv_cache_usage_perc{model_name="unsloth/Meta-Llama-3.1-8B",namespace="llm-d-inference-scheduler"}'
+  
+
+# Output configuration
+output:
+  base_dir: "experiment-data"
+  include_pod_logs: true
+  include_events: true
+
+# Observation period after jobs complete to capture scale-down behavior
+cooldown:
+  enabled: true
+  duration: 480  # Monitor for 8 minutes after jobs complete to observe scale-down

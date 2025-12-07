@@ -13,5 +13,6 @@ spec:
     targetPort: 8200
     protocol: TCP
   selector:
-    llm-d.ai/model: ms-inference-scheduling-llm-d-modelservice
+    # llm-d.ai/model: ms-inference-scheduling-llm-d-modelservice
+    llm-d.ai/model: random_model
     llm-d.ai/role: decode

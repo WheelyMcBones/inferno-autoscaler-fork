@@ -1,0 +1,33 @@
+Model-Based WVA Experiment Analysis Report
+================================================================================
+
+Experiment: model-based-smooth-gradual-20251206-144853
+Data Directory: /Users/tom/Desktop/llm-d-communitydev/tom_wva/config/samples/wva-experiments/experiment-data/model-based-smooth-gradual-20251206-144853
+Analysis Date: 2025-12-06 15:16:42
+
+## Summary Statistics
+
+### Predictions
+Total predictions: 27
+
+### Observations
+Total observations: 27
+Avg TTFT: 16.89 ms
+Avg ITL: 8.32 ms
+
+### Scaling Decisions
+Total scaling decisions: 27
+  no-change: 17
+  scale-up: 5
+  scale-down: 5
+
+### KV Cache Utilization
+Mean: 6.54%
+Max: 16.40%
+Min: 0.00%
+
+### Queue Length
+Mean: 0.00
+Max: 0.00
+Min: 0.00
+

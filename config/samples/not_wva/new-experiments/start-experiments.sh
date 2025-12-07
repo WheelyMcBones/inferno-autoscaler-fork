@@ -90,7 +90,11 @@ list_experiments() {
     for config in "$CONFIG_DIR"/*.yaml; do
         local name=$(yq e '.name' "$config" 2>/dev/null || echo "unknown")
         local desc=$(yq e '.description' "$config" 2>/dev/null || echo "No description")
+        # Support both 'jobs' and 'workloads' array
         local jobs=$(yq e '.jobs | length' "$config" 2>/dev/null || echo "0")
+        if [[ "$jobs" == "0" ]] || [[ "$jobs" == "null" ]]; then
+            jobs=$(yq e '.workloads | length' "$config" 2>/dev/null || echo "0")
+        fi
         
         echo -e "${GREEN}[$i]${NC} ${BOLD}$(basename "$config")${NC}"
         echo -e "    Name: $name"

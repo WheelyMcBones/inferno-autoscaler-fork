@@ -1,0 +1,14 @@
+{
+  "experiment_name": "smooth-gradual-hpa",
+  "description": "HPA baseline with smooth gradual load transitions (30+ mins, 6 jobs @ 5 req/s each)",
+  "start_time": "2025-12-06 15:51:03",
+  "end_time": "2025-12-06 16:16:01",
+  "namespace": "llm-d-inference-scheduler",
+  "deployment_name": "ms-inference-scheduling-llm-d-modelservice-decode",
+  "hpa_name": "vllm-hpa-combined",
+  "model_name": "unsloth/Meta-Llama-3.1-8B",
+  "hpa_enabled": true,
+  "job_count": 6,
+  "cooldown_enabled": true,
+  "cooldown_duration": 480
+}

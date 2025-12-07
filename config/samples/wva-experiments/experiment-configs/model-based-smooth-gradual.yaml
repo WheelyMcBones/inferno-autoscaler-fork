@@ -1,0 +1,111 @@
+# Model-Based WVA with Smooth Gradual Load Transitions
+# Extended 30+ minute scenario with very gradual load changes
+# Multiple smaller jobs (5 req/s each) stagger to create smooth transitions
+# Pattern: Job1→Job2→Job3→Job4→Job5→Job6 with 2-minute intervals
+# Peak load: 30 req/s achieved gradually through 6 overlapping jobs
+
+name: model-based-smooth-gradual
+description: "Model-based WVA with smooth gradual load transitions (30+ mins, 6 jobs @ 5 req/s each)"
+mode: model-based
+
+# Kubernetes Configuration
+namespace: llm-d-inference-scheduler
+controller_namespace: workload-variant-autoscaler-system
+controller_pod_prefix: workload-variant-autoscaler-controller-manager
+deployment: ms-inference-scheduling-llm-d-modelservice-decode
+model_name: unsloth/Meta-Llama-3.1-8B
+
+# Metrics Collection
+metrics:
+  interval: 5  # seconds between log polls
+  log_level: INFO
+
+# Smooth Gradual Workload Sequence
+# Each job runs for 12 minutes at 5 req/s with 2-minute stagger
+# This creates very smooth load transitions
+workloads:
+  - name: job-1-baseline
+    job_manifest: ../../not_wva/workloads/sharegpt-load-job-smooth-5-job1.yaml  # 5 req/s, 12min
+    duration: 720  # 12 minutes
+    start_delay: 0  # Start immediately
+    description: "Job 1: 5 req/s baseline (0-12min)"
+    
+  - name: job-2-gentle-ramp
+    job_manifest: ../../not_wva/workloads/sharegpt-load-job-smooth-5-job2.yaml  # 5 req/s, 12min
+    duration: 720  # 12 minutes
+    start_delay: 120  # Start 2min after experiment begins
+    description: "Job 2: +5 req/s gentle ramp (2-14min)"
+    
+  - name: job-3-continued-growth
+    job_manifest: ../../not_wva/workloads/sharegpt-load-job-smooth-5-job3.yaml  # 5 req/s, 12min
+    duration: 720  # 12 minutes
+    start_delay: 240  # Start 4min after experiment begins
+    description: "Job 3: +5 req/s continued growth (4-16min)"
+    
+  - name: job-4-approaching-peak
+    job_manifest: ../../not_wva/workloads/sharegpt-load-job-smooth-5-job4.yaml  # 5 req/s, 12min
+    duration: 720  # 12 minutes
+    start_delay: 360  # Start 6min after experiment begins
+    description: "Job 4: +5 req/s approaching peak (6-18min)"
+    
+  - name: job-5-near-peak
+    job_manifest: ../../not_wva/workloads/sharegpt-load-job-smooth-5-job5.yaml  # 5 req/s, 12min
+    duration: 720  # 12 minutes
+    start_delay: 480  # Start 8min after experiment begins
+    description: "Job 5: +5 req/s near peak (8-20min)"
+    
+  - name: job-6-peak-sustain
+    job_manifest: ../../not_wva/workloads/sharegpt-load-job-smooth-5-job6.yaml  # 5 req/s, 12min
+    duration: 720  # 12 minutes
+    start_delay: 600  # Start 10min after experiment begins
+    description: "Job 6: +5 req/s peak sustain (10-22min)"
+
+# Timeline visualization (SMOOTH GRADUAL - 32 minutes total):
+# Time:    0    120  240  360  480  600  720  840  960  1080 1200 1320 1440 1560 1680 1800 1920
+# Job1:    [=======================================]  (5 req/s, 12min)
+# Job2:         [=======================================]  (5 req/s, 12min)
+# Job3:              [=======================================]  (5 req/s, 12min)
+# Job4:                   [=======================================]  (5 req/s, 12min)
+# Job5:                        [=======================================]  (5 req/s, 12min)
+# Job6:                             [=======================================]  (5 req/s, 12min)
+# Load:    5    10   15   20   25   30   30   25   20   15   10   5    5    5    5    5    0
+# 
+# Load progression:
+# - 0-120s: 5 req/s (1 job) - baseline
+# - 120-240s: 10 req/s (2 jobs) - +5 req/s smooth increase
+# - 240-360s: 15 req/s (3 jobs) - +5 req/s continued growth
+# - 360-480s: 20 req/s (4 jobs) - +5 req/s steady climb
+# - 480-600s: 25 req/s (5 jobs) - +5 req/s approaching peak
+# - 600-720s: 30 req/s (6 jobs) - +5 req/s peak reached
+# - 720-840s: 30 req/s (5 jobs) - sustained peak
+# - 840-960s: 25 req/s (4 jobs) - -5 req/s smooth decrease
+# - 960-1080s: 20 req/s (3 jobs) - -5 req/s continued decline
+# - 1080-1200s: 15 req/s (2 jobs) - -5 req/s gradual cooldown
+# - 1200-1320s: 10 req/s (1 job) - -5 req/s near baseline
+# - 1320-1440s: 5 req/s (1 job) - final cooldown
+# - 1440-1920s: 0 req/s - scale-down observation (8 minutes)
+# 
+# Peak load: 30 req/s (moderate, very smooth transitions)
+# Duration: ~32 minutes total runtime
+# Transition smoothness: +/-5 req/s every 2 minutes (very gradual)
+# 
+# Expected behavior with WVA model-based:
+# - Smooth replica scaling matching gradual load increases
+# - No aggressive scaling reactions (each change is small)
+# - Tuner parameters should remain stable
+# - Predictable scaling pattern: likely 1→2→2→3→3→4 replicas
+# - Long observation period for scale-down behavior
+#
+# Benefits of smooth transitions:
+# - Tests WVA response to gradual vs. sudden load changes
+# - Minimizes risk of SLO violations during transitions
+# - Allows tuner to adapt parameters incrementally
+# - Better mimics real-world traffic patterns
+
+slo:
+  target_itl_ms: 30  # Model-based target
+
+output:
+  base_dir: experiment-data
+  save_logs: true
+  save_metrics: true

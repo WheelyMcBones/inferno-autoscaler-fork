@@ -1,0 +1,127 @@
+---
+# ClusterRole: Allow Prometheus Adapter to query user workload monitoring
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: prometheus-adapter-user-workload-monitoring
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  - pods
+  - services
+  verbs:
+  - get
+  - list
+  - watch
+# Permission to query Thanos/Prometheus metrics
+- nonResourceURLs:
+  - /metrics
+  verbs:
+  - get
+
+---
+# ClusterRoleBinding: Bind the role to Prometheus Adapter service account
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: prometheus-adapter-user-workload-monitoring
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: prometheus-adapter-user-workload-monitoring
+subjects:
+- kind: ServiceAccount
+  name: prometheus-adapter
+  namespace: openshift-user-workload-monitoring
+
+---
+# Role: Allow reading metrics from openshift-monitoring namespace (where Thanos lives)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: prometheus-adapter-thanos-query
+  namespace: openshift-monitoring
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - services
+  - endpoints
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+
+---
+# RoleBinding: Bind the Thanos query role
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: prometheus-adapter-thanos-query
+  namespace: openshift-monitoring
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: prometheus-adapter-thanos-query
+subjects:
+- kind: ServiceAccount
+  name: prometheus-adapter
+  namespace: openshift-user-workload-monitoring
+
+---
+# ClusterRole: Specific permission to query user workload metrics via Thanos
+# OpenShift requires this for cross-namespace metric queries
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: thanos-metrics-reader
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  verbs:
+  - get
+# This is the KEY permission for querying Prometheus/Thanos API in OpenShift
+- apiGroups:
+  - monitoring.coreos.com
+  resources:
+  - prometheuses/api
+  verbs:
+  - get
+  - create
+  - update
+# Additional monitoring resources
+- apiGroups:
+  - monitoring.coreos.com
+  resources:
+  - servicemonitors
+  - prometheusrules
+  verbs:
+  - get
+  - list
+  - watch
+
+---
+# ClusterRoleBinding for Thanos metrics reader
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: prometheus-adapter-thanos-metrics-reader
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: thanos-metrics-reader
+subjects:
+- kind: ServiceAccount
+  name: prometheus-adapter
+  namespace: openshift-user-workload-monitoring

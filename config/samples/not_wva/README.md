@@ -61,11 +61,17 @@ kubectl get endpoints vllm-service -n llm-d-inference-scheduler
 ./scripts/create-prometheus-ca.sh
 
 # Deploy Prometheus Adapter
-helm upgrade prometheus-adapter prometheus-community/prometheus-adapter \
+helm upgrade -i prometheus-adapter prometheus-community/prometheus-adapter \
   -n openshift-user-workload-monitoring \
   -f manifests/prometheus-adapter-vllm-values.yaml
 
-# Verify custom metrics
+# Apply RBAC permissions (required for OpenShift user workload monitoring)
+kubectl apply -f manifests/prometheus-adapter-rbac.yaml
+
+# Restart adapter to pick up permissions
+kubectl rollout restart deployment prometheus-adapter -n openshift-user-workload-monitoring
+
+# Verify custom metrics (will show vLLM metrics once pods are running)
 kubectl get --raw "/apis/custom.metrics.k8s.io/v1beta1" | jq .
 ```
 
