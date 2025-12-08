@@ -680,7 +680,6 @@ func (r *VariantAutoscalingReconciler) runSaturationAnalysis(
 
 	// Collect Saturation metrics from Prometheus
 	metricsCollector := collector.NewSaturationMetricsCollector(r.PromAPI)
-	metricsCollector.SetK8sClient(r.Client)
 	replicaMetrics, err := metricsCollector.CollectReplicaMetrics(ctx, modelID, namespace, deployments, variantAutoscalings, variantCosts)
 	if err != nil {
 		return nil, nil, nil, fmt.Errorf("failed to collect Saturation metrics for model %s: %w", modelID, err)
@@ -803,13 +802,14 @@ func (r *VariantAutoscalingReconciler) collectMetricsForSaturationMode(
 		// Update vaMap with the VA that has CurrentAlloc populated
 		vaMap[updateVA.Name] = &updateVA
 
-		logger.Log.Infof("Metrics collected for VA: variant=%s, replicas=%d, accelerator=%s, ttft=%sms, itl=%sms, cost=%s",
+		logger.Log.Infof("Metrics collected for VA: variant=%s, replicas=%d, accelerator=%s, ttft=%sms, itl=%sms, cost=%s, arrivalRate=%s",
 			updateVA.Name,
 			currentAllocation.NumReplicas,
 			currentAllocation.Accelerator,
 			currentAllocation.TTFTAverage,
 			currentAllocation.ITLAverage,
-			currentAllocation.VariantCost)
+			currentAllocation.VariantCost,
+			currentAllocation.Load.ArrivalRate)
 	}
 
 	return nil
