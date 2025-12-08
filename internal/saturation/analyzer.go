@@ -310,48 +310,38 @@ func (a *Analyzer) CalculateSaturationTargets(
 		stateMap[state.VariantName] = state
 	}
 
-	// Initialize all targets to current ready replicas (those with metrics) from deployment status
+	// Initialize all targets to ready replicas (those with metrics)
 	// This prevents excessive scale-up when replicas are not yet ready
 	for _, va := range saturationAnalysis.VariantAnalyses {
-		state := stateMap[va.VariantName]
-
-		// TODO: will need to adjust this logic to address readiness based on metrics
-		// Check if the VA state is stable (DesiredReplicas and CurrentReplicas match) and all expected pods are reporting metrics
-		isStable := (state.DesiredReplicas == 0 || state.DesiredReplicas == state.CurrentReplicas)
-		allMetricsAvailable := (va.ReplicaCount == state.CurrentReplicas)
-
-		if isStable && allMetricsAvailable {
-			// Stable VA state and all pods have report metrics: use metrics count
-			targets[va.VariantName] = va.ReplicaCount
-			logger.Log.Debugf("Target initialized to metrics count (stable): variant=%s, count=%d",
-				va.VariantName, va.ReplicaCount)
-		} else {
-			// Transitional state or incomplete metrics: preserve current replica count
-			targets[va.VariantName] = state.CurrentReplicas
-			if !allMetricsAvailable {
-				logger.Log.Debugf("Target initialized to current replicas (incomplete metrics): variant=%s, currentReplicas=%d, metricsCount=%d",
-					va.VariantName, state.CurrentReplicas, va.ReplicaCount)
-			} else if !isStable {
-				logger.Log.Debugf("Target initialized to current replicas (transitioning): variant=%s, desired=%d, current=%d, metricsCount=%d",
-					va.VariantName, state.DesiredReplicas, state.CurrentReplicas, va.ReplicaCount)
-			}
-		}
+		targets[va.VariantName] = va.ReplicaCount
+		logger.Log.Debugf("Target initialized to metrics count: variant=%s, count=%d",
+			va.VariantName, va.ReplicaCount)
 	}
 
-	// Check if we should preserve any desired replicas
-	// If desired ≠ 0 and desired ≠ current, preserve desired
+	// Check for transitioning variants and preserve their desired replicas
+	// If any variant is transitioning (desired ≠ 0 and desired ≠ current), wait for stabilization
+	// This ensures sequential scaling: only one variant scales at a time
 	preservedVariants := make(map[string]bool)
+	transitionInProgress := false
 	for _, va := range saturationAnalysis.VariantAnalyses {
 		state := stateMap[va.VariantName]
 		if state.DesiredReplicas != 0 && state.DesiredReplicas != state.CurrentReplicas {
+			// Preserve the desired replicas for this transitioning variant
 			targets[va.VariantName] = state.DesiredReplicas
 			preservedVariants[va.VariantName] = true
+			transitionInProgress = true
+
 			logger.Log.Debugf("Preserving desired replicas: variant=%s, currentReplicas=%d, readyReplicas=%d, desired=%d",
 				va.VariantName, state.CurrentReplicas, va.ReplicaCount, state.DesiredReplicas)
 		}
 	}
 
-	// Determine Saturation action
+	// If any variant is transitioning, block all other scaling
+	if transitionInProgress {
+		return targets
+	}
+
+	// Determine capacity action
 	if saturationAnalysis.ShouldScaleUp {
 		// Find cheapest variant that doesn't have preserved desired
 		var cheapestNonPreserved *interfaces.VariantSaturationAnalysis
