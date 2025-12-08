@@ -583,4 +583,374 @@ var _ = Describe("Collector", func() {
 			Expect(vendors).To(ConsistOf(expectedVendors))
 		})
 	})
+
+	Context("When testing matchToDeploymentByName", func() {
+		var deployments map[string]*appsv1.Deployment
+
+		BeforeEach(func() {
+			deployments = map[string]*appsv1.Deployment{
+				"llama-v1-cheap":     {},
+				"llama-v2-expensive": {},
+				"llama-v1":           {},
+			}
+		})
+
+		It("should match pod name with exact deployment prefix", func() {
+			podName := "llama-v1-cheap-abc123-xyz789"
+			result := matchToDeploymentByName(podName, deployments)
+			Expect(result).To(Equal("llama-v1-cheap"))
+		})
+
+		It("should match replicaset name with deployment prefix", func() {
+			rsName := "llama-v2-expensive-7f8d9c6b5a"
+			result := matchToDeploymentByName(rsName, deployments)
+			Expect(result).To(Equal("llama-v2-expensive"))
+		})
+
+		It("should use longest matching prefix for nested names", func() {
+			// Both "llama-v1" and "llama-v1-cheap" could match
+			// Should return the longest prefix match
+			podName := "llama-v1-cheap-abc123"
+			result := matchToDeploymentByName(podName, deployments)
+			Expect(result).To(Equal("llama-v1-cheap"))
+
+			// Should match shorter prefix when longer doesn't match
+			podName2 := "llama-v1-xyz789"
+			result2 := matchToDeploymentByName(podName2, deployments)
+			Expect(result2).To(Equal("llama-v1"))
+		})
+
+		It("should return empty string for no match", func() {
+			podName := "mistral-v1-abc123"
+			result := matchToDeploymentByName(podName, deployments)
+			Expect(result).To(Equal(""))
+		})
+
+		It("should return empty string for partial prefix match", func() {
+			// "llama" without hyphen should not match "llama-v1"
+			podName := "llamav1-cheap-abc123"
+			result := matchToDeploymentByName(podName, deployments)
+			Expect(result).To(Equal(""))
+		})
+
+		It("should handle empty deployments map", func() {
+			emptyDeployments := map[string]*appsv1.Deployment{}
+			podName := "llama-v1-cheap-abc123"
+			result := matchToDeploymentByName(podName, emptyDeployments)
+			Expect(result).To(Equal(""))
+		})
+
+		It("should match exact deployment name", func() {
+			// For StatefulSets or DaemonSets that use the exact deployment name
+			ownerName := "llama-v1-cheap"
+			result := matchToDeploymentByName(ownerName, deployments)
+			Expect(result).To(Equal("llama-v1-cheap"))
+		})
+	})
+
+	Context("When testing contextWithRespectedDeadline", func() {
+		It("should use desired timeout when parent has no deadline", func() {
+			parent := context.Background()
+			desiredTimeout := 5 * time.Second
+
+			ctx, cancel := contextWithRespectedDeadline(parent, desiredTimeout)
+			defer cancel()
+
+			deadline, hasDeadline := ctx.Deadline()
+			Expect(hasDeadline).To(BeTrue())
+
+			// Deadline should be approximately now + desiredTimeout
+			expectedDeadline := time.Now().Add(desiredTimeout)
+			Expect(deadline).To(BeTemporally("~", expectedDeadline, 100*time.Millisecond))
+		})
+
+		It("should use desired timeout when parent deadline is generous", func() {
+			parent, parentCancel := context.WithTimeout(context.Background(), 10*time.Second)
+			defer parentCancel()
+			desiredTimeout := 2 * time.Second
+
+			ctx, cancel := contextWithRespectedDeadline(parent, desiredTimeout)
+			defer cancel()
+
+			deadline, hasDeadline := ctx.Deadline()
+			Expect(hasDeadline).To(BeTrue())
+
+			// Deadline should be approximately now + desiredTimeout
+			expectedDeadline := time.Now().Add(desiredTimeout)
+			Expect(deadline).To(BeTemporally("~", expectedDeadline, 100*time.Millisecond))
+		})
+
+		It("should use remaining time minus buffer when parent deadline is shorter", func() {
+			// Parent has 1 second remaining
+			parent, parentCancel := context.WithTimeout(context.Background(), 1*time.Second)
+			defer parentCancel()
+			desiredTimeout := 5 * time.Second
+
+			ctx, cancel := contextWithRespectedDeadline(parent, desiredTimeout)
+			defer cancel()
+
+			deadline, hasDeadline := ctx.Deadline()
+			Expect(hasDeadline).To(BeTrue())
+
+			// Deadline should be less than parent's deadline (by buffer amount)
+			parentDeadline, _ := parent.Deadline()
+			Expect(deadline).To(BeTemporally("<", parentDeadline))
+
+			// Should be approximately 1s - 100ms = 900ms from now
+			expectedDeadline := time.Now().Add(900 * time.Millisecond)
+			Expect(deadline).To(BeTemporally("~", expectedDeadline, 200*time.Millisecond))
+		})
+
+		It("should use minimal timeout when parent is already expired", func() {
+			parent, parentCancel := context.WithDeadline(context.Background(), time.Now().Add(-1*time.Second))
+			defer parentCancel()
+			desiredTimeout := 5 * time.Second
+
+			ctx, cancel := contextWithRespectedDeadline(parent, desiredTimeout)
+			defer cancel()
+
+			deadline, hasDeadline := ctx.Deadline()
+			Expect(hasDeadline).To(BeTrue())
+
+			// When parent is already expired, child context inherits parent's deadline (in the past)
+			// So the context should already be done or will be done very soon
+			parentDeadline, _ := parent.Deadline()
+			Expect(deadline).To(BeTemporally("<=", parentDeadline.Add(2*time.Millisecond)))
+
+			// Context should be cancelled almost immediately
+			select {
+			case <-ctx.Done():
+				// Expected - context is already done
+			case <-time.After(10 * time.Millisecond):
+				Fail("Context should have been cancelled already")
+			}
+		})
+
+		It("should use minimal timeout when remaining time is very small", func() {
+			// Parent has 50ms remaining (less than buffer of 100ms)
+			parent, parentCancel := context.WithTimeout(context.Background(), 50*time.Millisecond)
+			defer parentCancel()
+			desiredTimeout := 5 * time.Second
+
+			ctx, cancel := contextWithRespectedDeadline(parent, desiredTimeout)
+			defer cancel()
+
+			deadline, hasDeadline := ctx.Deadline()
+			Expect(hasDeadline).To(BeTrue())
+
+			// Should use minimal timeout (1ms)
+			expectedDeadline := time.Now().Add(1 * time.Millisecond)
+			Expect(deadline).To(BeTemporally("~", expectedDeadline, 50*time.Millisecond))
+		})
+	})
+
+	Context("When testing getExistingPodsForDeploymentsFromPrometheus", func() {
+		var (
+			collector     *SaturationMetricsCollector
+			mockPromAPI   *utils.MockPromAPI
+			namespace     string
+			deployments   map[string]*appsv1.Deployment
+			candidatePods map[string]bool
+		)
+
+		BeforeEach(func() {
+			mockPromAPI = &utils.MockPromAPI{
+				QueryResults: make(map[string]model.Value),
+				QueryErrors:  make(map[string]error),
+			}
+			collector = NewSaturationMetricsCollector(mockPromAPI)
+			namespace = "test-namespace"
+			deployments = map[string]*appsv1.Deployment{
+				"llama-v1-cheap":     {},
+				"llama-v2-expensive": {},
+			}
+			candidatePods = map[string]bool{
+				"llama-v1-cheap-abc123-xyz789":     true,
+				"llama-v2-expensive-def456-uvw123": true,
+				"llama-v1-cheap-ghi789-rst456":     true,
+			}
+		})
+
+		It("should map pods to deployments using kube_pod_info", func() {
+			// Mock kube_pod_info response
+			vector := model.Vector{
+				&model.Sample{
+					Metric: model.Metric{
+						"pod":             "llama-v1-cheap-abc123-xyz789",
+						"namespace":       model.LabelValue(namespace),
+						"created_by_kind": "ReplicaSet",
+						"created_by_name": "llama-v1-cheap-abc123",
+					},
+					Value: 1,
+				},
+				&model.Sample{
+					Metric: model.Metric{
+						"pod":             "llama-v2-expensive-def456-uvw123",
+						"namespace":       model.LabelValue(namespace),
+						"created_by_kind": "ReplicaSet",
+						"created_by_name": "llama-v2-expensive-def456",
+					},
+					Value: 1,
+				},
+				&model.Sample{
+					Metric: model.Metric{
+						"pod":             "llama-v1-cheap-ghi789-rst456",
+						"namespace":       model.LabelValue(namespace),
+						"created_by_kind": "ReplicaSet",
+						"created_by_name": "llama-v1-cheap-ghi789",
+					},
+					Value: 1,
+				},
+			}
+			// Expected query pattern
+			query1 := `kube_pod_info{namespace="test-namespace",pod=~"llama-v1-cheap-.*|llama-v2-expensive-.*"}`
+			query2 := `kube_pod_info{namespace="test-namespace",pod=~"llama-v2-expensive-.*|llama-v1-cheap-.*"}`
+			mockPromAPI.QueryResults[query1] = vector
+			mockPromAPI.QueryResults[query2] = vector
+
+			result := collector.getExistingPodsForDeploymentsFromPrometheus(ctx, namespace, deployments, candidatePods)
+			Expect(result).To(HaveLen(3))
+			Expect(result["llama-v1-cheap-abc123-xyz789"]).To(Equal("llama-v1-cheap"))
+			Expect(result["llama-v2-expensive-def456-uvw123"]).To(Equal("llama-v2-expensive"))
+			Expect(result["llama-v1-cheap-ghi789-rst456"]).To(Equal("llama-v1-cheap"))
+		})
+
+		It("should filter out pods not in candidate set", func() {
+			query1 := `kube_pod_info{namespace="test-namespace",pod=~"llama-v1-cheap-.*|llama-v2-expensive-.*"}`
+			query2 := `kube_pod_info{namespace="test-namespace",pod=~"llama-v2-expensive-.*|llama-v1-cheap-.*"}`
+
+			// Mock includes a pod not in candidates
+			vector := model.Vector{
+				&model.Sample{
+					Metric: model.Metric{
+						"pod":             "llama-v1-cheap-abc123-xyz789",
+						"namespace":       model.LabelValue(namespace),
+						"created_by_kind": "ReplicaSet",
+						"created_by_name": "llama-v1-cheap-abc123",
+					},
+					Value: 1,
+				},
+				&model.Sample{
+					Metric: model.Metric{
+						"pod":             "other-pod-not-in-candidates",
+						"namespace":       model.LabelValue(namespace),
+						"created_by_kind": "ReplicaSet",
+						"created_by_name": "llama-v1-cheap-other",
+					},
+					Value: 1,
+				},
+			}
+			mockPromAPI.QueryResults[query1] = vector
+			mockPromAPI.QueryResults[query2] = vector
+
+			result := collector.getExistingPodsForDeploymentsFromPrometheus(ctx, namespace, deployments, candidatePods)
+
+			Expect(result).To(HaveLen(1))
+			Expect(result["llama-v1-cheap-abc123-xyz789"]).To(Equal("llama-v1-cheap"))
+			Expect(result).NotTo(HaveKey("other-pod-not-in-candidates"))
+		})
+
+		It("should skip pods with owners that cannot be matched to deployments", func() {
+			query1 := `kube_pod_info{namespace="test-namespace",pod=~"llama-v1-cheap-.*|llama-v2-expensive-.*"}`
+			query2 := `kube_pod_info{namespace="test-namespace",pod=~"llama-v2-expensive-.*|llama-v1-cheap-.*"}`
+
+			// Mock includes pod managed by DaemonSet with name that doesn't match any deployment
+			vector := model.Vector{
+				&model.Sample{
+					Metric: model.Metric{
+						"pod":             "llama-v1-cheap-abc123-xyz789",
+						"namespace":       model.LabelValue(namespace),
+						"created_by_kind": "DaemonSet",
+						"created_by_name": "other-daemon", // Doesn't match any deployment
+					},
+					Value: 1,
+				},
+			}
+			mockPromAPI.QueryResults[query1] = vector
+			mockPromAPI.QueryResults[query2] = vector
+
+			result := collector.getExistingPodsForDeploymentsFromPrometheus(ctx, namespace, deployments, candidatePods)
+
+			Expect(result).To(BeEmpty())
+		})
+
+		It("should skip pods that cannot be matched to known deployments", func() {
+			query1 := `kube_pod_info{namespace="test-namespace",pod=~"llama-v1-cheap-.*|llama-v2-expensive-.*"}`
+			query2 := `kube_pod_info{namespace="test-namespace",pod=~"llama-v2-expensive-.*|llama-v1-cheap-.*"}`
+
+			// Mock includes pod with ReplicaSet name that doesn't match any deployment
+			vector := model.Vector{
+				&model.Sample{
+					Metric: model.Metric{
+						"pod":             "llama-v1-cheap-abc123-xyz789",
+						"namespace":       model.LabelValue(namespace),
+						"created_by_kind": "ReplicaSet",
+						"created_by_name": "mistral-v1-abc123", // No "mistral" deployment
+					},
+					Value: 1,
+				},
+			}
+			mockPromAPI.QueryResults[query1] = vector
+			mockPromAPI.QueryResults[query2] = vector
+
+			result := collector.getExistingPodsForDeploymentsFromPrometheus(ctx, namespace, deployments, candidatePods)
+
+			Expect(result).To(BeEmpty())
+		})
+
+		It("should fall back to name-based matching on Prometheus error", func() {
+			query1 := `kube_pod_info{namespace="test-namespace",pod=~"llama-v1-cheap-.*|llama-v2-expensive-.*"}`
+			query2 := `kube_pod_info{namespace="test-namespace",pod=~"llama-v2-expensive-.*|llama-v1-cheap-.*"}`
+
+			// Mock Prometheus error
+			mockPromAPI.QueryErrors[query1] = fmt.Errorf("prometheus unavailable")
+			mockPromAPI.QueryErrors[query2] = fmt.Errorf("prometheus unavailable")
+
+			result := collector.getExistingPodsForDeploymentsFromPrometheus(ctx, namespace, deployments, candidatePods)
+
+			// Should fall back to name-based matching for all candidates
+			Expect(result).To(HaveLen(3))
+			Expect(result["llama-v1-cheap-abc123-xyz789"]).To(Equal("llama-v1-cheap"))
+			Expect(result["llama-v2-expensive-def456-uvw123"]).To(Equal("llama-v2-expensive"))
+			Expect(result["llama-v1-cheap-ghi789-rst456"]).To(Equal("llama-v1-cheap"))
+		})
+
+		It("should handle empty pod name in metrics", func() {
+			query1 := `kube_pod_info{namespace="test-namespace",pod=~"llama-v1-cheap-.*|llama-v2-expensive-.*"}`
+			query2 := `kube_pod_info{namespace="test-namespace",pod=~"llama-v2-expensive-.*|llama-v1-cheap-.*"}`
+
+			// Mock with empty pod name
+			vector := model.Vector{
+				&model.Sample{
+					Metric: model.Metric{
+						"pod":             "", // Empty pod name
+						"namespace":       model.LabelValue(namespace),
+						"created_by_kind": "ReplicaSet",
+						"created_by_name": "llama-v1-cheap-abc123",
+					},
+					Value: 1,
+				},
+			}
+			mockPromAPI.QueryResults[query1] = vector
+			mockPromAPI.QueryResults[query2] = vector
+
+			result := collector.getExistingPodsForDeploymentsFromPrometheus(ctx, namespace, deployments, candidatePods)
+
+			Expect(result).To(BeEmpty())
+		})
+
+		It("should handle no matching pods in Prometheus", func() {
+			query1 := `kube_pod_info{namespace="test-namespace",pod=~"llama-v1-cheap-.*|llama-v2-expensive-.*"}`
+			query2 := `kube_pod_info{namespace="test-namespace",pod=~"llama-v2-expensive-.*|llama-v1-cheap-.*"}`
+
+			// Mock returns empty vector
+			vector := model.Vector{}
+			mockPromAPI.QueryResults[query1] = vector
+			mockPromAPI.QueryResults[query2] = vector
+
+			result := collector.getExistingPodsForDeploymentsFromPrometheus(ctx, namespace, deployments, candidatePods)
+
+			Expect(result).To(BeEmpty())
+		})
+	})
 })

@@ -432,9 +432,10 @@ func TestCalculatesaturationTargets_PreserveDesired(t *testing.T) {
 		t.Errorf("expected v1-expensive target=4 (preserved desired), got %d", targets["v1-expensive"])
 	}
 
-	// v2 should be scaled up (cheapest non-preserved variant) since Saturation still needs scale-up
-	if targets["v2-cheap"] != 3 {
-		t.Errorf("expected v2-cheap target=3 (cheapest for Saturation scale-up), got %d", targets["v2-cheap"])
+	// v2 should NOT be scaled up because v1 is transitioning (sequential scaling)
+	// Transition blocking prevents multiple variants from scaling simultaneously
+	if targets["v2-cheap"] != 2 {
+		t.Errorf("expected v2-cheap to keep target=2 (blocked by other VA transition), got %d", targets["v2-cheap"])
 	}
 }
 
