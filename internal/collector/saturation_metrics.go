@@ -16,28 +16,18 @@ import (
 	promv1 "github.com/prometheus/client_golang/api/prometheus/v1"
 	"github.com/prometheus/common/model"
 	appsv1 "k8s.io/api/apps/v1"
-	corev1 "k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // SaturationMetricsCollector collects vLLM metrics from Prometheus
 type SaturationMetricsCollector struct {
-	promAPI   promv1.API
-	k8sClient client.Client
+	promAPI promv1.API
 }
 
 // NewSaturationMetricsCollector creates a new metrics collector
 func NewSaturationMetricsCollector(promAPI promv1.API) *SaturationMetricsCollector {
 	return &SaturationMetricsCollector{
-		promAPI:   promAPI,
-		k8sClient: nil, // Will be set when available
+		promAPI: promAPI,
 	}
-}
-
-// SetK8sClient sets the Kubernetes client for pod ownership lookups
-func (cmc *SaturationMetricsCollector) SetK8sClient(k8sClient client.Client) {
-	cmc.k8sClient = k8sClient
 }
 
 // escapePrometheusLabelValue escapes a label value for safe use in Prometheus queries.
@@ -280,14 +270,7 @@ func (cmc *SaturationMetricsCollector) queryQueueMetrics(
 }
 
 // mergeMetrics combines KV cache and queue metrics into ReplicaMetrics structs.
-// Uses deployment label selectors to match pods to variants.
-//
-// Matching strategy:
-// 1. Query for pods using deployment label selectors
-// 2. Fallback: Use naming convention (deployment-name prefix matching)
-//
-// This approach is more robust than pure name-based matching and aligns with
-// Kubernetes best practices for pod-to-controller attribution.
+// It uses deployment-to-pod mapping to assign pods to variants.
 func (cmc *SaturationMetricsCollector) mergeMetrics(
 	ctx context.Context,
 	kvMetrics map[string]float64,
@@ -308,18 +291,14 @@ func (cmc *SaturationMetricsCollector) mergeMetrics(
 		podSet[pod] = true
 	}
 
-	// Prometheus retains metrics from terminated pods for a time period, causing stale metrics to be pulled.
-	// Verify pod existence using Prometheus kube-state-metrics to filter out stale pods.
-	// Note: this may still be subject to staleness due to scrape intervals - the observed lag is typically ~30s.
-	existingPods := cmc.getExistingPods(ctx, namespace, deployments, podSet)
-	stalePodCount := 0
+	// Query kube_pod_info to get existing pods with their deployment owners.
+	// This returns a map of the existing pods to their deployment names via a single Prometheus query.
+	podToDeployment := cmc.getExistingPodsForDeploymentsFromPrometheus(ctx, namespace, deployments, podSet)
 
-	// Filter out pods that don't exist according to the queried Prometheus kube-state-metrics
+	// Filter out deleted pods (pods with stale reported vLLM metrics)
 	for podName := range podSet {
-		if !existingPods[podName] {
-			stalePodCount++
-			// TODO: remove debug log after verification
-			logger.Log.Debugf("Filtering pod from stale vLLM metrics: pod=%s, namespace=%s, model=%s",
+		if _, exists := podToDeployment[podName]; !exists {
+			logger.Log.Debugf("Filtering deleted pod: pod=%s, namespace=%s, model=%s",
 				podName, namespace, modelID)
 			delete(podSet, podName)
 		}
@@ -327,38 +306,13 @@ func (cmc *SaturationMetricsCollector) mergeMetrics(
 
 	replicaMetrics := make([]interfaces.ReplicaMetrics, 0, len(podSet))
 
-	// Track variant matching statistics for logging
-	variantPodCounts := make(map[string]int)
-	unmatchedPods := 0
-
 	for podName := range podSet {
-		// Check for missing metrics and warn (prevents silent data loss)
-		kvUsage, hasKv := kvMetrics[podName]
-		queueLen, hasQueue := queueMetrics[podName]
+		// Get VariantAutoscaling name as Deployment name
+		variantName := podToDeployment[podName]
 
-		if !hasKv {
-			logger.Log.Warnf("Pod missing KV cache metrics, using 0 (may cause incorrect saturation analysis): pod=%s, model=%s, namespace=%s",
-				podName, modelID, namespace)
-			kvUsage = 0
-		}
-		if !hasQueue {
-			logger.Log.Warnf("Pod missing queue metrics, using 0 (may cause incorrect saturation analysis): pod=%s, model=%s, namespace=%s",
-				podName, modelID, namespace)
-			queueLen = 0
-		}
-
-		// Match pod to variant using deployment label selectors or owner references
-		variantName := cmc.findDeploymentForPod(ctx, podName, namespace, deployments)
-
-		// Skip pods that don't match any known deployment
-		if variantName == "" {
-			logger.Log.Warnf("Skipping pod that doesn't match any deployment: pod=%s, deployments=%v",
-				podName, getDeploymentNames(deployments))
-			unmatchedPods++
-			continue
-		}
-
-		variantPodCounts[variantName]++
+		// Get metrics (defaults to 0 if not present)
+		kvUsage := kvMetrics[podName]
+		queueLen := queueMetrics[podName]
 
 		// Get accelerator name from VariantAutoscaling label
 		acceleratorName := ""
@@ -396,113 +350,35 @@ func (cmc *SaturationMetricsCollector) mergeMetrics(
 		replicaMetrics = append(replicaMetrics, metric)
 	}
 
-	// Log pod-to-variant matching summary
-	if unmatchedPods > 0 {
-		logger.Log.Warnf("Pod-to-variant matching summary: totalPods=%d, unmatchedPods=%d, variantCounts=%v",
-			len(podSet), unmatchedPods, variantPodCounts)
-	} else {
-		logger.Log.Debugf("Pod-to-variant matching successful: totalPods=%d, variantCounts=%v",
-			len(podSet), variantPodCounts)
-	}
-
 	return replicaMetrics
 }
 
-// getDeploymentNames extracts deployment names from the deployments map for logging
-func getDeploymentNames(deployments map[string]*appsv1.Deployment) []string {
-	names := make([]string, 0, len(deployments))
-	for name := range deployments {
-		names = append(names, name)
-	}
-	return names
-}
-
-// findDeploymentForPod finds which deployment owns a pod using Kubernetes API.
+// getExistingPodsForDeploymentsFromPrometheus queries kube_pod_info to get existing pods and their Deployment owners.
+// This combines deleted Pods filtering with Deployment matching in a single Prometheus query.
 //
-// Matching strategies (in order of preference):
-// 1. If k8sClient is available: Query pods for each deployment using label selectors
-// 2. Fallback: Use Kubernetes naming convention (deployment-name prefix matching)
+// Returns a map of podName → deploymentName for Pods that:
+// 1. Currently exist (non-deleted Pods with stale metrics)
+// 2. Are in the candidate set (from vLLM metrics)
+// 3. Can be matched to a Deployment corresponding to an existing VariantAutoscaling
 //
-// The label selector approach is the proper Kubernetes way as it uses the deployment's
-// spec.selector to find matching pods, which is how Deployments actually manage pods.
-//
-// Returns the deployment name if found, empty string otherwise.
-func (cmc *SaturationMetricsCollector) findDeploymentForPod(
-	ctx context.Context,
-	podName string,
-	namespace string,
-	deployments map[string]*appsv1.Deployment,
-) string {
-	// Strategy 1: Use Kubernetes API with label selectors (preferred)
-	if cmc.k8sClient != nil {
-		for deploymentName, deployment := range deployments {
-			// Use deployment's label selector to check if pod belongs to it
-			selector, err := metav1.LabelSelectorAsSelector(deployment.Spec.Selector)
-			if err != nil {
-				logger.Log.Warnf("Invalid label selector for deployment: deployment=%s, error=%v", deploymentName, err)
-				continue
-			}
-
-			// List pods matching this deployment's selector
-			podList := &corev1.PodList{}
-			listOpts := &client.ListOptions{
-				Namespace:     namespace,
-				LabelSelector: selector,
-			}
-
-			if err := cmc.k8sClient.List(ctx, podList, listOpts); err != nil {
-				logger.Log.Warnf("Failed to list pods for deployment: deployment=%s, error=%v", deploymentName, err)
-				continue
-			}
-
-			// Check if our pod is in the list
-			for _, pod := range podList.Items {
-				if pod.Name == podName {
-					return deploymentName
-				}
-			}
-		}
-	}
-
-	// Strategy 2: Fallback to naming convention
-	var matchedDeployment string
-	maxPrefixLen := 0
-
-	for deploymentName := range deployments {
-		prefix := deploymentName + "-"
-		if strings.HasPrefix(podName, prefix) {
-			// Use longest matching prefix to handle nested deployment names
-			if len(prefix) > maxPrefixLen {
-				matchedDeployment = deploymentName
-				maxPrefixLen = len(prefix)
-			}
-		}
-	}
-
-	return matchedDeployment
-}
-
-// getExistingPods filters candidate pods using Prometheus kube_pod_info metric.
-// Queries for the current state from kube-state-metrics using deployment name filtering
+// Matching strategy:
+// - For ReplicaSet-managed pods: matches ReplicaSet name to Deployment name
 //
 // TODO(note): this approach may still be subject to staleness, as the scrape interval (typically 15-30s)
 // adds latency between pod termination and metric removal
-// Returns a map of pod names that have current metrics in Prometheus.
-func (cmc *SaturationMetricsCollector) getExistingPods(
+func (cmc *SaturationMetricsCollector) getExistingPodsForDeploymentsFromPrometheus(
 	ctx context.Context,
 	namespace string,
 	deployments map[string]*appsv1.Deployment,
 	candidatePods map[string]bool,
-) map[string]bool {
-	existingPods := make(map[string]bool)
+) map[string]string {
+	podToDeployment := make(map[string]string)
 
-	// Build pod name regex filter from deployment names (pod=~"deployment1-.*|deployment2-.*|deployment3-.*")
-	// To reduce the query scope
+	// Build Pod name regex filter from Deployment names
 	var podQueryFilter string
 	if len(deployments) > 0 {
 		deploymentNames := make([]string, 0, len(deployments))
 		for deploymentName := range deployments {
-			// Escape deployment name for regex and add suffix pattern
 			escapedName := escapePrometheusLabelValue(deploymentName)
 			deploymentNames = append(deploymentNames, escapedName+"-.*")
 		}
@@ -516,16 +392,21 @@ func (cmc *SaturationMetricsCollector) getExistingPods(
 
 	result, warnings, err := utils.QueryPrometheusWithBackoff(ctx, cmc.promAPI, query)
 	if err != nil {
-		logger.Log.Errorf("Failed to query Prometheus for pod existence: namespace=%s, error=%v", namespace, err)
-		// On error, assume all candidate pods exist to prevent false negatives
-		return candidatePods
+		logger.Log.Errorf("Failed to query kube_pod_info: namespace=%s, error=%v", namespace, err)
+		// On error, fall back to name-based matching for all candidates
+		for podName := range candidatePods {
+			if deploymentName := matchToDeploymentByName(podName, deployments); deploymentName != "" {
+				podToDeployment[podName] = deploymentName
+			}
+		}
+		return podToDeployment
 	}
 
 	if len(warnings) > 0 {
-		logger.Log.Warnf("Prometheus pod existence query warnings: query=%s, warnings=%v", query, warnings)
+		logger.Log.Warnf("Prometheus query warnings: query=%s, warnings=%v", query, warnings)
 	}
 
-	// Extract pod names from result
+	// Extract Pod and Deployment from kube_pod_info labels
 	if result.Type() == model.ValVector {
 		vector := result.(model.Vector)
 		for _, sample := range vector {
@@ -538,9 +419,53 @@ func (cmc *SaturationMetricsCollector) getExistingPods(
 			if !candidatePods[podName] {
 				continue
 			}
-			existingPods[podName] = true
+
+			// Extract owner information from kube_pod_info labels
+			createdByKind := string(sample.Metric["created_by_kind"])
+			createdByName := string(sample.Metric["created_by_name"])
+
+			if createdByName == "" {
+				logger.Log.Debugf("Pod has no owner: pod=%s", podName)
+				continue
+			}
+
+			// Try to match owner name to known Deployments
+			deploymentName := matchToDeploymentByName(createdByName, deployments)
+			if deploymentName == "" {
+				logger.Log.Warnf("Could not match pod to owner: pod=%s, owner_kind=%s, owner_name=%s",
+					podName, createdByKind, createdByName)
+				continue
+			}
+
+			podToDeployment[podName] = deploymentName
 		}
 	}
 
-	return existingPods
+	logger.Log.Debugf("Pod to owner mapping: namespace=%s, candidatePods=%d, matched=%d",
+		namespace, len(candidatePods), len(podToDeployment))
+
+	return podToDeployment
+}
+
+// matchToDeploymentByName matches a name (of a Pod, ReplicaSet) to a Deployment.
+// Returns the Deployment name with the longest matching prefix, or exact match, or empty string if no match is found.
+func matchToDeploymentByName(name string, deployments map[string]*appsv1.Deployment) string {
+	// Check for exact match
+	if _, exists := deployments[name]; exists {
+		return name
+	}
+
+	// Check for prefix match (for ReplicaSets and Pods)
+	var matchedDeployment string
+	maxPrefixLen := 0
+
+	for deploymentName := range deployments {
+		prefix := deploymentName + "-"
+		if strings.HasPrefix(name, prefix) && len(prefix) > maxPrefixLen {
+			matchedDeployment = deploymentName
+			maxPrefixLen = len(prefix)
+		}
+	}
+
+	return matchedDeployment
 }
