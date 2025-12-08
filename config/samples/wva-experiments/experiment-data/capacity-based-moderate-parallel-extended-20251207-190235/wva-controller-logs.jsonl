@@ -1,0 +1,850 @@
+{"level":"INFO","ts":"2025-12-07T23:59:10.827Z","msg":"Zap logger initialized"}
+{"level":"INFO","ts":"2025-12-07T23:59:10.828Z","msg":"Creating metrics emitter instance"}
+{"level":"INFO","ts":"2025-12-07T23:59:10.828Z","msg":"Metrics emitter created successfully"}
+{"level":"INFO","ts":"2025-12-07T23:59:10.828Z","msg":"Using Prometheus configuration from environment variables: address=https://thanos-querier.openshift-monitoring.svc.cluster.local:9091"}
+{"level":"INFO","ts":"2025-12-07T23:59:10.828Z","msg":"Initializing Prometheus client -> address: https://thanos-querier.openshift-monitoring.svc.cluster.local:9091, tls_enabled: true"}
+{"level":"INFO","ts":"2025-12-07T23:59:10.829Z","msg":"CA certificate loaded successfullypath/etc/ssl/certs/prometheus-ca.crt"}
+{"level":"INFO","ts":"2025-12-07T23:59:10.829Z","msg":"TLS configuration applied to Prometheus HTTPS transport"}
+{"level":"INFO","ts":"2025-12-07T23:59:10.829Z","msg":"Bearer token loaded from filepath/var/run/secrets/kubernetes.io/serviceaccount/token"}
+{"level":"INFO","ts":"2025-12-07T23:59:10.875Z","msg":"Prometheus API validation successful with queryqueryup"}
+{"level":"INFO","ts":"2025-12-07T23:59:10.875Z","msg":"Prometheus client and API wrapper initialized and validated successfully"}
+{"level":"INFO","ts":"2025-12-07T23:59:10.875Z","msg":"Starting manager"}
+{"level":"INFO","ts":"2025-12-07T23:59:10.875Z","msg":"Registering custom metrics with Prometheus registry"}
+{"level":"info","ts":"2025-12-07T23:59:10Z","logger":"controller-runtime.metrics","msg":"Starting metrics server"}
+{"level":"INFO","ts":"2025-12-07T23:59:10.875Z","msg":"disabling http/2"}
+{"level":"info","ts":"2025-12-07T23:59:10Z","msg":"starting server","name":"health probe","addr":"[::]:8081"}
+I1207 23:59:10.877280       1 leaderelection.go:257] attempting to acquire leader lease workload-variant-autoscaler-system/72dd1cf1.llm-d.ai...
+I1207 23:59:10.917155       1 leaderelection.go:271] successfully acquired lease workload-variant-autoscaler-system/72dd1cf1.llm-d.ai
+{"level":"info","ts":"2025-12-07T23:59:10Z","msg":"Starting EventSource","controller":"variantAutoscaling","controllerGroup":"llmd.ai","controllerKind":"VariantAutoscaling","source":"kind source: *v1.ServiceMonitor"}
+{"level":"info","ts":"2025-12-07T23:59:10Z","msg":"Starting EventSource","controller":"variantAutoscaling","controllerGroup":"llmd.ai","controllerKind":"VariantAutoscaling","source":"kind source: *v1.ConfigMap"}
+{"level":"info","ts":"2025-12-07T23:59:10Z","msg":"Starting EventSource","controller":"variantAutoscaling","controllerGroup":"llmd.ai","controllerKind":"VariantAutoscaling","source":"kind source: *v1alpha1.VariantAutoscaling"}
+{"level":"info","ts":"2025-12-07T23:59:11Z","logger":"controller-runtime.metrics","msg":"Serving metrics server","bindAddress":":8443","secure":true}
+{"level":"info","ts":"2025-12-07T23:59:12Z","msg":"Starting Controller","controller":"variantAutoscaling","controllerGroup":"llmd.ai","controllerKind":"VariantAutoscaling"}
+{"level":"info","ts":"2025-12-07T23:59:12Z","msg":"Starting workers","controller":"variantAutoscaling","controllerGroup":"llmd.ai","controllerKind":"VariantAutoscaling","worker count":1}
+{"level":"INFO","ts":"2025-12-07T23:59:12.231Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.231Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.231Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.231Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.231Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.343Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=10.00, arrivalRate=0.00"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.344Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.344Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.000 (0.0%)"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.346Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.346Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.346Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.346Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.346Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.346Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.351Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.351Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.351Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.351Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.351Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.351Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.351Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.359Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=10.00, arrivalRate=0.00"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.360Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.361Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.000 (0.0%)"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.362Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.362Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.362Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.362Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.362Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.362Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.366Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-07T23:59:12.366Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.352Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.352Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.352Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.352Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.352Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.368Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=10.00, arrivalRate=0.00"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.369Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.370Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.000 (0.0%)"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.371Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.371Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.371Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.371Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.371Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.371Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.375Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.375Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.375Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.375Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.375Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.376Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.376Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.387Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=10.00, arrivalRate=0.00"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.388Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.388Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.000 (0.0%)"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.390Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.390Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.390Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.390Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.390Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.390Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.394Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:00:12.394Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.376Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.376Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.376Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.376Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.376Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.390Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=10.00, arrivalRate=0.00"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.391Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.391Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.000 (0.0%)"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.393Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.393Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.393Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.393Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.393Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.393Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.398Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.398Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.398Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.398Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.398Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.398Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.398Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.406Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=10.00, arrivalRate=0.00"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.407Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.000 (0.0%)"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.407Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.409Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.409Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.409Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.409Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.409Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.409Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.413Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:01:12.413Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.399Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.399Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.399Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.399Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.399Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.411Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=10.00, arrivalRate=0.00"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.412Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.000 (0.0%)"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.412Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.414Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.414Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.414Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.414Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.414Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.414Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.420Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.420Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.420Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.420Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.420Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.421Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.421Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.429Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=10.00, arrivalRate=0.00"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.430Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.430Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.000 (0.0%)"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.432Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.432Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.432Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.432Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.432Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.432Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.437Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:02:12.437Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.421Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.421Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.421Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.421Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.421Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.433Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=10.00, arrivalRate=0.00"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.434Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.000 (0.0%)"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.434Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.436Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.436Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.436Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.436Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.436Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.436Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.441Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.441Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.441Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.441Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.441Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.441Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.441Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.447Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=10.00, arrivalRate=0.00"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.449Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.000 (0.0%)"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.451Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.453Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.453Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.453Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.453Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.453Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.453Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.457Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:03:12.457Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.442Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.442Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.442Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.442Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.442Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.454Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=21.02ms, itl=10.78ms, cost=10.00, arrivalRate=487.53"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.455Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.455Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.076 (7.6%)"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.457Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.457Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.457Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.457Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.457Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.457Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.476Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.476Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.476Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.476Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.476Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.476Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.476Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.485Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=21.02ms, itl=10.78ms, cost=10.00, arrivalRate=487.53"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.486Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.486Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.076 (7.6%)"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.488Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.488Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.488Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.488Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.488Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.488Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.492Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:04:12.492Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.477Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.477Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.477Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.477Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.477Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.489Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=21.61ms, itl=10.72ms, cost=10.00, arrivalRate=581.10"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.491Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.068 (6.8%)"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.491Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.493Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.493Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.493Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.493Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.493Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.493Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.497Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.497Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.497Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.497Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.497Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.497Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.497Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.505Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=21.61ms, itl=10.72ms, cost=10.00, arrivalRate=581.10"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.506Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.068 (6.8%)"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.507Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.508Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.508Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.508Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.508Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.508Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.508Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.512Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:05:12.512Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.498Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.498Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.498Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.498Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.498Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.509Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=21.28ms, itl=10.82ms, cost=10.00, arrivalRate=640.20"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.510Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.079 (7.9%)"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.511Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.512Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.512Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.512Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.512Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.512Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.512Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.517Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.517Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.517Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.517Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.517Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.517Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.517Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.525Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=21.28ms, itl=10.82ms, cost=10.00, arrivalRate=640.20"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.526Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.526Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.079 (7.9%)"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.528Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.528Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.528Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.528Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.528Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.528Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.532Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:06:12.532Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.518Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.518Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.518Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.518Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.518Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.532Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=30.21ms, itl=16.36ms, cost=10.00, arrivalRate=982.46"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.533Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.533Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.286 (28.6%)"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.535Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.535Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.535Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.535Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.535Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.535Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.539Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.539Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.539Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.539Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.539Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.539Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.539Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.553Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=30.21ms, itl=16.36ms, cost=10.00, arrivalRate=982.46"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.554Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.286 (28.6%)"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.554Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.556Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.556Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.556Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.556Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.556Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.556Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.560Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:07:12.560Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.540Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.540Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.540Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.540Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.540Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.552Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=35.72ms, itl=19.91ms, cost=10.00, arrivalRate=1296.40"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.553Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.292 (29.2%)"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.553Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.555Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.555Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.555Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.555Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.555Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.555Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.560Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.560Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.561Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.561Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.561Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.561Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.561Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.569Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=35.72ms, itl=19.91ms, cost=10.00, arrivalRate=1296.40"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.570Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.570Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.292 (29.2%)"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.571Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.571Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.571Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.571Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.571Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.571Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.575Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:08:12.575Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.560Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.560Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.560Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.560Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.560Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.576Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=37.18ms, itl=20.73ms, cost=10.00, arrivalRate=1371.50"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.577Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.289 (28.9%)"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.577Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.579Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.579Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.579Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.579Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.579Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.579Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.584Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.584Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.584Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.584Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.584Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.584Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.584Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.591Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=37.18ms, itl=20.73ms, cost=10.00, arrivalRate=1371.50"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.592Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.289 (28.9%)"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.592Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.594Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.594Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.594Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.594Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.594Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.594Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.606Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:09:12.606Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.584Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.584Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.584Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.584Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.584Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.603Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=43.25ms, itl=24.68ms, cost=10.00, arrivalRate=1429.36"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.606Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.523 (52.3%)"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.606Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.608Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=0, shouldScaleUp=true, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.608Z","msg":"Saturation target: scale-up cheapest variant: variant=ms-inference-scheduling-llm-d-modelservice-decode, cost=10.00, currentReplicas=1, readyReplicas=1, baseTarget=1, target=2, reason=both KV spare (0.000 < 0.100) and queue spare (0.0 < 3.0)"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.608Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.608Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.608Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-up, current=1→target=2"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.609Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 2, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.609Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=2, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.613Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-up, current=1, target=2, reason=saturation-only mode: scale-up"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.613Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.613Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.613Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.613Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.613Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.613Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.625Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=43.25ms, itl=24.68ms, cost=10.00, arrivalRate=1429.36"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.626Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.523 (52.3%)"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.626Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.628Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=0, shouldScaleUp=true, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.628Z","msg":"Saturation target: scale-up cheapest variant: variant=ms-inference-scheduling-llm-d-modelservice-decode, cost=10.00, currentReplicas=1, readyReplicas=1, baseTarget=1, target=2, reason=both KV spare (0.000 < 0.100) and queue spare (0.0 < 3.0)"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.628Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.628Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.628Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-up, current=1→target=2"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.628Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 2, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.628Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=2, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.633Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-up, current=1, target=2, reason=saturation-only mode: scale-up"}
+{"level":"INFO","ts":"2025-12-08T00:10:12.633Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.614Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.614Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.614Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.614Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.614Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.636Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=2, accelerator=H100, ttft=77.83ms, itl=48.07ms, cost=20.00, arrivalRate=1375.19"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.638Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.638Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.829 (82.9%)"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.641Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=0, shouldScaleUp=true, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.641Z","msg":"Saturation target: scale-up cheapest variant: variant=ms-inference-scheduling-llm-d-modelservice-decode, cost=10.00, currentReplicas=2, readyReplicas=1, baseTarget=1, target=2, reason=both KV spare (0.000 < 0.100) and queue spare (0.0 < 3.0)"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.641Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.641Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.641Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=2→target=2"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.641Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 2, desired-replicas: 2, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.641Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=2, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.647Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=2, target=2, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.647Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.647Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.647Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.647Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.647Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.647Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.668Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=2, accelerator=H100, ttft=77.83ms, itl=48.07ms, cost=20.00, arrivalRate=1375.19"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.670Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.670Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.829 (82.9%)"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.673Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=0, shouldScaleUp=true, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.673Z","msg":"Saturation target: scale-up cheapest variant: variant=ms-inference-scheduling-llm-d-modelservice-decode, cost=10.00, currentReplicas=2, readyReplicas=1, baseTarget=1, target=2, reason=both KV spare (0.000 < 0.100) and queue spare (0.0 < 3.0)"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.673Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.673Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.673Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=2→target=2"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.673Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 2, desired-replicas: 2, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.673Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=2, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.679Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=2, target=2, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:11:12.679Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.648Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.648Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.648Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.648Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.648Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.667Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=2, accelerator=H100, ttft=35.15ms, itl=20.60ms, cost=20.00, arrivalRate=1333.33"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.668Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.668Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.679 (67.9%)"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.670Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=0, shouldScaleUp=true, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.670Z","msg":"Saturation target: scale-up cheapest variant: variant=ms-inference-scheduling-llm-d-modelservice-decode, cost=10.00, currentReplicas=2, readyReplicas=1, baseTarget=1, target=2, reason=both KV spare (0.000 < 0.100) and queue spare (0.0 < 3.0)"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.670Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.670Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.670Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=2→target=2"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.670Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 2, desired-replicas: 2, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.670Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=2, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.676Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=2, target=2, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.676Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.680Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.680Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.680Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.680Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.680Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.689Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=2, accelerator=H100, ttft=35.15ms, itl=20.60ms, cost=20.00, arrivalRate=1333.33"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.690Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.690Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.679 (67.9%)"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.692Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=0, shouldScaleUp=true, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.692Z","msg":"Saturation target: scale-up cheapest variant: variant=ms-inference-scheduling-llm-d-modelservice-decode, cost=10.00, currentReplicas=2, readyReplicas=1, baseTarget=1, target=2, reason=both KV spare (0.000 < 0.100) and queue spare (0.0 < 3.0)"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.692Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.692Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.692Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=2→target=2"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.692Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 2, desired-replicas: 2, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.692Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=2, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.696Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=2, target=2, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:12:12.696Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.677Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.677Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.677Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.677Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.677Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.693Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=2, accelerator=H100, ttft=30.90ms, itl=17.05ms, cost=20.00, arrivalRate=2141.21"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.694Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c87mpz, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.694Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c87mpz, usage=0.192 (19.2%)"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.694Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.255 (25.5%)"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.694Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.696Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=2, nonSaturated=2, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.696Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.696Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.696Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=2→target=2"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.696Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 2, desired-replicas: 2, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.696Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=2, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.701Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=2, target=2, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.701Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.701Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.701Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.701Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.701Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.701Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.709Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=2, accelerator=H100, ttft=30.90ms, itl=17.05ms, cost=20.00, arrivalRate=2141.53"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.710Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c87mpz, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.710Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.710Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c87mpz, usage=0.192 (19.2%)"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.710Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.255 (25.5%)"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.712Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=2, nonSaturated=2, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.712Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.712Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.712Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=2→target=2"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.712Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 2, desired-replicas: 2, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.712Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=2, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.717Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=2, target=2, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:13:12.717Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.702Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.702Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.702Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.702Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.702Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.715Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=2, accelerator=H100, ttft=26.57ms, itl=14.08ms, cost=20.00, arrivalRate=1931.50"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.716Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c87mpz, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.716Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.716Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c87mpz, usage=0.137 (13.7%)"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.716Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.184 (18.4%)"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.718Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=2, nonSaturated=2, shouldScaleUp=false, scaleDownSafe=true"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.718Z","msg":"Saturation target: scale-down most expensive variant: variant=ms-inference-scheduling-llm-d-modelservice-decode, cost=10.00, currentReplicas=2, readyReplicas=2, baseTarget=2, target=1"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.718Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.718Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.718Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-down, current=2→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.718Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 2, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.718Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.723Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-down, current=2, target=1, reason=saturation-only mode: scale-down"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.723Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.723Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.723Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.723Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.723Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.723Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.731Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=2, accelerator=H100, ttft=26.57ms, itl=14.08ms, cost=20.00, arrivalRate=1931.50"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.732Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c87mpz, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.732Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.732Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c87mpz, usage=0.137 (13.7%)"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.732Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.184 (18.4%)"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.734Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=2, nonSaturated=2, shouldScaleUp=false, scaleDownSafe=true"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.734Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.734Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.734Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-down, current=2→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.734Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 2, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.734Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.738Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-down, current=2, target=1, reason=saturation-only mode: scale-down"}
+{"level":"INFO","ts":"2025-12-08T00:14:12.738Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.723Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.723Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.723Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.723Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.723Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.739Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=37.24ms, itl=20.39ms, cost=10.00, arrivalRate=1258.23"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.741Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c87mpz, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.741Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.741Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c87mpz, usage=0.140 (14.0%)"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.741Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.427 (42.7%)"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.743Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=2, nonSaturated=2, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.743Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.743Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.743Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-up, current=1→target=2"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.743Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 2, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.743Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=2, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.748Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-up, current=1, target=2, reason=saturation-only mode: scale-up"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.748Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.748Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.748Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.748Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.748Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.748Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.756Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=37.24ms, itl=20.39ms, cost=10.00, arrivalRate=1258.23"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.757Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c87mpz, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.757Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.757Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c87mpz, usage=0.140 (14.0%)"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.757Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.427 (42.7%)"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.759Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=2, nonSaturated=2, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.759Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.759Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.759Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-up, current=1→target=2"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.759Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 2, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.759Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=2, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.763Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-up, current=1, target=2, reason=saturation-only mode: scale-up"}
+{"level":"INFO","ts":"2025-12-08T00:15:12.763Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.749Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.749Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.749Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.749Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.749Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.760Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=2, accelerator=H100, ttft=69.29ms, itl=41.66ms, cost=20.00, arrivalRate=1468.76"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.762Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.762Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.696 (69.6%)"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.764Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=0, shouldScaleUp=true, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.764Z","msg":"Saturation target: scale-up cheapest variant: variant=ms-inference-scheduling-llm-d-modelservice-decode, cost=10.00, currentReplicas=2, readyReplicas=1, baseTarget=1, target=2, reason=both KV spare (0.000 < 0.100) and queue spare (0.0 < 3.0)"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.764Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.764Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.764Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=2→target=2"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.764Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 2, desired-replicas: 2, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.764Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=2, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.769Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=2, target=2, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.769Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.769Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.769Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.769Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.769Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.769Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.776Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=2, accelerator=H100, ttft=69.29ms, itl=41.66ms, cost=20.00, arrivalRate=1468.76"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.778Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.696 (69.6%)"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.778Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.779Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=0, shouldScaleUp=true, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.779Z","msg":"Saturation target: scale-up cheapest variant: variant=ms-inference-scheduling-llm-d-modelservice-decode, cost=10.00, currentReplicas=2, readyReplicas=1, baseTarget=1, target=2, reason=both KV spare (0.000 < 0.100) and queue spare (0.0 < 3.0)"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.779Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.779Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.779Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=2→target=2"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.779Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 2, desired-replicas: 2, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.779Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=2, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.783Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=2, target=2, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:16:12.783Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.770Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.770Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.770Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.770Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.770Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.783Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=2, accelerator=H100, ttft=22.18ms, itl=11.79ms, cost=20.00, arrivalRate=717.76"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.784Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.785Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.219 (21.9%)"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.786Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.786Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.786Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.786Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-down, current=2→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.786Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 2, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.786Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.791Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-down, current=2, target=1, reason=saturation-only mode: scale-down"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.791Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.791Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.791Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.791Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.791Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.791Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.799Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=2, accelerator=H100, ttft=22.18ms, itl=11.79ms, cost=20.00, arrivalRate=717.76"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.800Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.800Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.219 (21.9%)"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.802Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.802Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.802Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.802Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-down, current=2→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.802Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 2, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.802Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.807Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=scale-down, current=2, target=1, reason=saturation-only mode: scale-down"}
+{"level":"INFO","ts":"2025-12-08T00:17:12.807Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.792Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.792Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.792Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.792Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.792Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.803Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=25.19ms, itl=13.31ms, cost=10.00, arrivalRate=819.94"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.804Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4ch5tw2, usage=0.012 (1.2%)"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.804Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.195 (19.5%)"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.804Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4ch5tw2, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.805Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.806Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=2, nonSaturated=2, shouldScaleUp=false, scaleDownSafe=true"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.806Z","msg":"Saturation target: scale-down most expensive variant: variant=ms-inference-scheduling-llm-d-modelservice-decode, cost=10.00, currentReplicas=1, readyReplicas=2, baseTarget=2, target=1"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.806Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.806Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.806Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.806Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.806Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.812Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.812Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.812Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.812Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.812Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.812Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.812Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.821Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=25.19ms, itl=13.31ms, cost=10.00, arrivalRate=819.94"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.823Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4ch5tw2, usage=0.012 (1.2%)"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.823Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.195 (19.5%)"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.823Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4ch5tw2, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.823Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.824Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=2, nonSaturated=2, shouldScaleUp=false, scaleDownSafe=true"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.824Z","msg":"Saturation target: scale-down most expensive variant: variant=ms-inference-scheduling-llm-d-modelservice-decode, cost=10.00, currentReplicas=1, readyReplicas=2, baseTarget=2, target=1"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.824Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.824Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.824Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.824Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.824Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.829Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:18:12.829Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.812Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.812Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.812Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.812Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.812Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.829Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=31.81ms, itl=17.20ms, cost=10.00, arrivalRate=1192.98"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.830Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.830Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.237 (23.7%)"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.832Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.832Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.832Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.832Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.832Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.832Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.837Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.837Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.838Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.838Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.838Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.838Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.838Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.846Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=31.81ms, itl=17.20ms, cost=10.00, arrivalRate=1192.98"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.847Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.237 (23.7%)"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.847Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.849Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.849Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.849Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.849Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.849Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.849Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.853Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:19:12.853Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.838Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.838Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.838Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.838Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.838Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.851Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=21.44ms, itl=10.65ms, cost=10.00, arrivalRate=602.03"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.852Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.852Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.097 (9.7%)"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.854Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.854Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.854Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.854Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.854Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.854Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.859Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.859Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.859Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.859Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.859Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.859Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.859Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.867Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=21.44ms, itl=10.65ms, cost=10.00, arrivalRate=602.03"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.868Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.868Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.097 (9.7%)"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.870Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.870Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.870Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.870Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.870Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.870Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.874Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:20:12.874Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.860Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.860Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.860Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.860Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.860Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.878Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=20.95ms, itl=10.44ms, cost=10.00, arrivalRate=599.57"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.879Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.879Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.090 (9.0%)"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.881Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.881Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.881Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.881Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.881Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.881Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.886Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.886Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.887Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.887Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.887Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.887Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.887Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.895Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=20.95ms, itl=10.44ms, cost=10.00, arrivalRate=599.57"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.896Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.090 (9.0%)"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.896Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.898Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.898Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.898Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.898Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.898Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.898Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.902Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:21:12.902Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.887Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.887Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.887Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.887Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.887Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.899Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=20.87ms, itl=10.64ms, cost=10.00, arrivalRate=584.80"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.901Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.901Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.081 (8.1%)"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.902Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.902Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.902Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.902Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.902Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.902Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.908Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.908Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.908Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.908Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.908Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.908Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.908Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.915Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=20.87ms, itl=10.64ms, cost=10.00, arrivalRate=584.80"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.916Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.917Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.081 (8.1%)"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.918Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.918Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.918Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.918Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.918Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.918Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.922Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:22:12.922Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.909Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.909Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.909Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.909Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.909Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.924Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=10.00, arrivalRate=0.00"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.926Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.926Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.000 (0.0%)"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.927Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.927Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.927Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.927Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.927Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.927Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.932Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.932Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.933Z","msg":"saturation scaling config cache updated: entries=1, has_default=true"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.933Z","msg":"saturation scaling configuration loaded successfully"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.933Z","msg":"Operating in saturation-only mode: reactive saturation-based scaling only"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.933Z","msg":"Grouped VAs by model: modelCount=1, totalVAs=1"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.933Z","msg":"Processing model: modelID=unsloth/Meta-Llama-3.1-8B, variantCount=1"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.940Z","msg":"Metrics collected for VA: variant=ms-inference-scheduling-llm-d-modelservice-decode, replicas=1, accelerator=H100, ttft=0.00ms, itl=0.00ms, cost=10.00, arrivalRate=0.00"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.942Z","msg":"Queue metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, queueLength=0"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.942Z","msg":"KV cache metric: pod=ms-inference-scheduling-llm-d-modelservice-decode-666b5f4c46p59, usage=0.000 (0.0%)"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.943Z","msg":"saturation analysis completed: modelID=unsloth/Meta-Llama-3.1-8B, totalReplicas=1, nonSaturated=1, shouldScaleUp=false, scaleDownSafe=false"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.943Z","msg":"saturation-only decisions made for model: unsloth/Meta-Llama-3.1-8B - decision count: 1"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.943Z","msg":"Applying scaling decisions: totalDecisions=1"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.943Z","msg":"Processing decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1→target=1"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.943Z","msg":"EmitReplicaMetrics completed - variant: ms-inference-scheduling-llm-d-modelservice-decode, current-replicas: 1, desired-replicas: 1, accelerator: H100"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.943Z","msg":"Successfully emitted metrics for external autoscalers: variant=ms-inference-scheduling-llm-d-modelservice-decode, targetReplicas=1, accelerator=H100, SaturationOnly=true"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.948Z","msg":"Applied Saturation decision: variant=ms-inference-scheduling-llm-d-modelservice-decode, action=no-change, current=1, target=1, reason=saturation-only mode: no-change"}
+{"level":"INFO","ts":"2025-12-08T00:23:12.948Z","msg":"Reconciliation completed successfully: mode=saturation-only, modelsProcessed=1, decisionsApplied=1"}
