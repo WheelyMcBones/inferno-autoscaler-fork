@@ -192,6 +192,7 @@ echo ""
 # Initialize job tracking arrays (used by cleanup trap)
 declare -a JOB_NAMES_ARRAY=()
 declare -a JOB_PIDS=()
+declare -a PROCESSED_JOBS=()  # Jobs that have been processed (logs collected)
 
 # Helper function to wait for pod completion and collect logs with verification
 wait_and_collect_job_logs() {
@@ -344,6 +345,12 @@ cleanup() {
         for job_name in "${JOB_NAMES_ARRAY[@]}"; do
             # Skip empty entries
             [[ -z "$job_name" ]] && continue
+            
+            # Skip if already processed by background job handler
+            if [[ " ${PROCESSED_JOBS[*]} " =~ " ${job_name} " ]]; then
+                print_info "Skipping $job_name (already processed)"
+                continue
+            fi
             
             wait_and_collect_job_logs "$job_name" "$NAMESPACE" "$EXPERIMENT_DIR/job-logs" 300 || true
         done
@@ -670,6 +677,9 @@ if [[ "$HAS_START_DELAYS" == "true" ]]; then
             echo "[T+${ELAPSED}s] 📝 Collecting logs from: $WORKLOAD_NAME"
             wait_and_collect_job_logs "$ACTUAL_JOB_NAME" "$NAMESPACE" "$EXPERIMENT_DIR/job-logs" 300 || true
             
+            # Mark as processed so cleanup doesn't try again
+            PROCESSED_JOBS+=("$ACTUAL_JOB_NAME")
+            
             ELAPSED=$(($(date +%s) - EXPERIMENT_START))
             echo "[T+${ELAPSED}s] ✓ Job completed: $WORKLOAD_NAME"
             
@@ -775,6 +785,9 @@ else
             
             # Collect logs with verification
             wait_and_collect_job_logs "$JOB_NAME" "$NAMESPACE" "$EXPERIMENT_DIR/job-logs" 300 || true
+            
+            # Mark as processed
+            PROCESSED_JOBS+=("$JOB_NAME")
             
             # Delete job after completion
             print_info "Cleaning up job..."

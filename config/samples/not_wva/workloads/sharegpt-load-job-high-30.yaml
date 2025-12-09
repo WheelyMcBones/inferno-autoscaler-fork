@@ -49,8 +49,7 @@ spec:
         - "12346"
         - "--num-prompts"
         # Calculated: 30 req/s × 900s (15 min) = 27000 prompts
-        # Using high value to ensure job runs until manually terminated
-        - "50000"  # High enough to run continuously (previous: 10800 for 6min)
+        - "27000"  # High enough to run continuously (previous: 10800 for 6min)
         - "--max-concurrency"
         - "512"
         - "--request-rate"
