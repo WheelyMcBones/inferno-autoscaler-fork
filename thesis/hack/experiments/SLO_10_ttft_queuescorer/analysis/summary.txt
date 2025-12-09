@@ -1,0 +1,10 @@
+============================================================
+WVA PERFORMANCE ANALYSIS SUMMARY
+============================================================
+
+Experiment ID: 20251209_124804
+Duration: 41.0 minutes
+ITL Compliance: 90.5%
+TTFT Compliance: 100.0%
+Peak Load: 3377 rpm
+Scaling Pattern: 1 → 5 replicas

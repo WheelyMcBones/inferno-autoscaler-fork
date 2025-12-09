@@ -1,0 +1,10 @@
+Experiment ID: 20251209_124534
+Created: 2025-12-09 12:45:40
+Log File: ./txt_logs/ttft_queuescorer_logs.txt
+Duration: 33.1 minutes
+Data Points: 34
+
+Directory Structure:
+  - data/: Raw and processed data files
+  - plots/: Generated visualization plots
+  - analysis/: Statistical analysis results

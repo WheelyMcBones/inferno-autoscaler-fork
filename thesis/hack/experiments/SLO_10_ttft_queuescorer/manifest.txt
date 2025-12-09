@@ -1,0 +1,10 @@
+Experiment ID: 20251209_124804
+Created: 2025-12-09 12:48:11
+Log File: ./txt_logs/ttft_queuescorer_SLO_10_10_24.txt
+Duration: 41.0 minutes
+Data Points: 42
+
+Directory Structure:
+  - data/: Raw and processed data files
+  - plots/: Generated visualization plots
+  - analysis/: Statistical analysis results
