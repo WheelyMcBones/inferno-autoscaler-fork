@@ -1,0 +1,83 @@
+# HPA Baseline with Multi-Model Parallel Load
+# Baseline experiment using standard Kubernetes HPA for comparison
+# Pattern: Qwen (7 req/s, 30min) + Llama 8B (7 req/s, 18min) + Llama 8B peak (14 req/s, 6min)
+# This provides a baseline to compare against WVA's model-aware and capacity-aware scaling
+
+name: hpa-multi-model-parallel
+description: "HPA baseline with multi-model parallel load (mixed 7-14 req/s)"
+mode: hpa
+
+# Kubernetes Configuration
+namespace: llm-d-inference-scheduler
+controller_namespace: workload-variant-autoscaler-system
+controller_pod_prefix: workload-variant-autoscaler-controller-manager
+deployment: ms-inference-scheduling-llm-d-modelservice-decode
+model_name: mixed  # Multiple models in this experiment
+
+# Metrics Collection
+metrics:
+  interval: 5  # seconds between log polls
+  log_level: INFO
+
+# Multi-Model Parallel Workload Sequence
+# Job 1: Llama model baseline (30 minutes)
+# Job 2: Llama 8B overlapping (18 minutes)
+# Job 3: Llama 8B peak (6 minutes)
+workloads:
+  - name: llama-baseline
+    job_manifest: ../../not_wva/workloads/sharegpt-load-job-1.yaml  # 7 req/s, unsloth/Meta-Llama-3.1-8B
+    duration: 1800  # 30 minutes
+    start_delay: 0  # Start immediately
+    description: "Llama 3.1-8B: 7 req/s baseline for 30 minutes"
+    
+  - name: llama-moderate
+    job_manifest: ../../not_wva/workloads/sharegpt-load-job-2.yaml  # 7 req/s, Llama 3.1-8B
+    duration: 1080  # 18 minutes
+    start_delay: 60  # Start 1 minute after experiment begins
+    description: "Llama 3.1-8B: 7 req/s moderate load (overlaps with Qwen)"
+    
+  - name: llama-peak
+    job_manifest: ../../not_wva/workloads/sharegpt-load-job-3.yaml  # 14 req/s, Llama 3.1-8B
+    duration: 360  # 6 minutes
+    start_delay: 120  # Start 2 minutes after experiment begins
+    description: "Llama 3.1-8B: 14 req/s peak load (overlaps with both)"
+
+# Timeline visualization:
+# Time:    0s    60s   120s   480s       1140s      1800s
+# Job1:    [===============================================]  (Qwen 7 req/s, 30min)
+# Job2:         [============================]                (Llama 7 req/s, 18min)
+# Job3:              [======]                                 (Llama 14 req/s, 6min)
+# 
+# Qwen Load:  7     7     7     7          7          0
+# Llama Load: 0     7     21    7          0          0
+# Total:      7     14    28    14         7          0
+# 
+# Expected behavior with HPA:
+# - HPA scales based on CPU/memory metrics only (model-agnostic)
+# - 0-60s: 7 req/s Qwen (HPA monitors CPU/memory)
+# - 60-120s: 14 req/s total (HPA may start scaling based on utilization)
+# - 120-480s: 28 req/s total peak (HPA scales up based on resource usage)
+# - 480-1140s: 14 req/s (HPA may lag in scaling down)
+# - 1140-1800s: 7 req/s (HPA continues reactive scaling)
+
+# Output Configuration
+output:
+  base_dir: ./experiment-data
+  save_raw_logs: true
+  save_parsed_metrics: true
+
+# Expected Behavior (for validation)
+expected:
+  mode: "HPA baseline (CPU/memory-based)"
+  slo_itl: 10  # ms (not directly used by HPA)
+  slo_ttft: 1000  # ms (not directly used by HPA)
+  accelerator: H100
+  pattern: "multi_model_parallel"
+  peak_load: "28 req/s at t=120-480s (mixed models)"
+  models:
+    - "Qwen/Qwen3-0.6B"
+    - "unsloth/Meta-Llama-3.1-8B"
+  hpa_metrics:
+    - cpu_utilization
+    - memory_utilization
+  notes: "HPA is model-agnostic and reactive - may show different scaling behavior than WVA"

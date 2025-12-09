@@ -51,15 +51,39 @@ for cmd in kubectl yq jq; do
 done
 
 # Parse arguments
-if [[ $# -eq 0 ]]; then
-    print_error "Usage: $0 <config-file.yaml>"
+KEEP_JOBS_DURING_RUN=false
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -d|--keep-during-run)
+            KEEP_JOBS_DURING_RUN=true
+            shift
+            ;;
+        -*)
+            print_error "Unknown option: $1"
+            echo "Usage: $0 [-d|--keep-during-run] <config-file.yaml>"
+            echo ""
+            echo "Options:"
+            echo "  -d, --keep-during-run    Don't delete jobs during parallel execution (still deletes at end)"
+            exit 1
+            ;;
+        *)
+            CONFIG_FILE="$1"
+            shift
+            ;;
+    esac
+done
+
+if [[ -z "${CONFIG_FILE:-}" ]]; then
+    print_error "Usage: $0 [-d|--keep-during-run] <config-file.yaml>"
+    echo ""
+    echo "Options:"
+    echo "  -d, --keep-during-run    Don't delete jobs during parallel execution (still deletes at end)"
     echo ""
     echo "Available configurations:"
     ls -1 "$CONFIG_DIR"/*.yaml 2>/dev/null | xargs -n1 basename || echo "  No configurations found"
     exit 1
 fi
-
-CONFIG_FILE="$1"
 
 # Resolve config file path
 if [[ ! -f "$CONFIG_FILE" ]]; then
@@ -538,8 +562,10 @@ if [[ "$HAS_START_DELAYS" == "true" ]]; then
             ELAPSED=$(($(date +%s) - EXPERIMENT_START))
             echo "[T+${ELAPSED}s] ✓ Job completed: $WORKLOAD_NAME"
             
-            # Clean up job
-            kubectl delete -f "$JOB_PATH" -n "$NAMESPACE" --ignore-not-found=true &>/dev/null
+            # Clean up job (unless keeping jobs during run)
+            if [[ "$KEEP_JOBS_DURING_RUN" != "true" ]]; then
+                kubectl delete -f "$JOB_PATH" -n "$NAMESPACE" --ignore-not-found=true &>/dev/null
+            fi
         ) &
         JOB_PIDS+=($!)
         

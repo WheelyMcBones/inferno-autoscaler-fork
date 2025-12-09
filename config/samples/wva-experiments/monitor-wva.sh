@@ -120,13 +120,13 @@ while true; do
         fi
     fi
     
-    # Get logs from the controller pod
+    # Get logs from the controller pod, filtering out lines containing "Found"
     if [[ $LINE_COUNT -eq 0 ]]; then
         # First run: get recent logs (last 5 minutes to capture context)
-        LOGS=$(kubectl logs -n "$CONTROLLER_NS" "$POD" --since=5m 2>/dev/null || true)
+        LOGS=$(kubectl logs -n "$CONTROLLER_NS" "$POD" --since=5m 2>/dev/null | grep -v "Found" || grep -v "Token" || true)
     else
         # Subsequent runs: get logs since last poll interval + buffer
-        LOGS=$(kubectl logs -n "$CONTROLLER_NS" "$POD" --since="$((INTERVAL + 5))s" 2>/dev/null || true)
+        LOGS=$(kubectl logs -n "$CONTROLLER_NS" "$POD" --since="$((INTERVAL + 5))s" 2>/dev/null | grep -v "Found" || grep -v "Token" || true)
     fi
     
     if [[ -n "$LOGS" ]]; then

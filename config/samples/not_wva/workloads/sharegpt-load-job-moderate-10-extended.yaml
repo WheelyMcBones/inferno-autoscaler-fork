@@ -46,11 +46,11 @@ spec:
         - "--seed"
         - "12345"
         - "--num-prompts"
-        - "6000"  # 10 req/s for 10 minutes (600s)
+        - "3000"  # 5 req/s for 10 minutes (600s)
         - "--max-concurrency"
         - "512"
         - "--request-rate"
-        - "10"  # 10 requests per second
+        - "5"  # 5 requests per second
         - "--sharegpt-output-len"
         - "1024"
         volumeMounts:
