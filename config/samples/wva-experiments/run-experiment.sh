@@ -193,6 +193,98 @@ echo ""
 declare -a JOB_NAMES_ARRAY=()
 declare -a JOB_PIDS=()
 
+# Helper function to wait for pod completion and collect logs with verification
+wait_and_collect_job_logs() {
+    local job_name="$1"
+    local namespace="$2"
+    local output_dir="$3"
+    local max_wait="${4:-600}"  # Default 10 minutes
+    
+    # Check if job exists
+    if ! kubectl get job "$job_name" -n "$namespace" &>/dev/null; then
+        print_warn "Job $job_name not found, skipping"
+        return 1
+    fi
+    
+    # Check if job is already complete
+    local status=$(kubectl get job "$job_name" -n "$namespace" -o jsonpath='{.status.succeeded}' 2>/dev/null || echo "0")
+    if [[ "$status" != "0" ]] && [[ -n "$status" ]]; then
+        print_info "Job $job_name already completed"
+    else
+        print_info "Waiting for job $job_name to complete (max ${max_wait}s)..."
+        
+        # Wait for job to complete
+        local waited=0
+        local complete=false
+        
+        while [[ $waited -lt $max_wait ]]; do
+            # Check if job has completed
+            status=$(kubectl get job "$job_name" -n "$namespace" -o jsonpath='{.status.succeeded}' 2>/dev/null || echo "0")
+            if [[ "$status" != "0" ]] && [[ -n "$status" ]]; then
+                complete=true
+                break
+            fi
+            
+            sleep 5
+            waited=$((waited + 5))
+        done
+        
+        if [[ "$complete" != "true" ]]; then
+            print_warn "Job $job_name did not complete within ${max_wait}s timeout, collecting logs anyway"
+        fi
+    fi
+    
+    # Give pods a moment to finalize logs
+    sleep 2
+    
+    # Get all pods for this job
+    local pods=$(kubectl get pods -n "$namespace" -l "job-name=$job_name" -o jsonpath='{.items[*].metadata.name}' 2>/dev/null || true)
+    
+    if [[ -z "$pods" ]]; then
+        print_warn "No pods found for job: $job_name"
+        return 1
+    fi
+    
+    # Collect logs from each pod and verify content
+    mkdir -p "$output_dir"
+    local collected=0
+    
+    for pod in $pods; do
+        local log_file="$output_dir/${job_name}_${pod}.log"
+        
+        # Wait for pod to be in completed state
+        local pod_status=$(kubectl get pod "$pod" -n "$namespace" -o jsonpath='{.status.phase}' 2>/dev/null || echo "Unknown")
+        local retry=0
+        while [[ "$pod_status" == "Running" ]] && [[ $retry -lt 12 ]]; do
+            sleep 5
+            pod_status=$(kubectl get pod "$pod" -n "$namespace" -o jsonpath='{.status.phase}' 2>/dev/null || echo "Unknown")
+            retry=$((retry + 1))
+        done
+        
+        # Collect logs
+        kubectl logs "$pod" -n "$namespace" > "$log_file" 2>&1 || {
+            print_warn "Failed to collect logs from pod: $pod"
+            continue
+        }
+        
+        # Verify logs contain benchmark results
+        if grep -q "Serving Benchmark Result" "$log_file" 2>/dev/null; then
+            print_info "✓ Collected complete benchmark results from pod: $pod"
+            collected=$((collected + 1))
+        else
+            print_warn "⚠ Logs from pod $pod may be incomplete (no benchmark results found)"
+        fi
+    done
+    
+    if [[ $collected -gt 0 ]]; then
+        print_info "Successfully collected logs from $collected pod(s) for job: $job_name"
+        return 0
+    else
+        print_warn "No complete logs collected for job: $job_name"
+        return 1
+    fi
+}
+
 # Start WVA log collection in background
 print_section "Starting Log Collection"
 LOG_FILE="$EXPERIMENT_DIR/wva-controller-logs.jsonl"
@@ -242,6 +334,18 @@ cleanup() {
                 kill -KILL -"$pid" 2>/dev/null || true
                 kill -KILL "$pid" 2>/dev/null || true
             fi
+        done
+    fi
+    
+    # Collect logs from jobs before deletion
+    if [[ ${#JOB_NAMES_ARRAY[@]} -gt 0 ]]; then
+        print_info "Collecting job logs..."
+        
+        for job_name in "${JOB_NAMES_ARRAY[@]}"; do
+            # Skip empty entries
+            [[ -z "$job_name" ]] && continue
+            
+            wait_and_collect_job_logs "$job_name" "$NAMESPACE" "$EXPERIMENT_DIR/job-logs" 300 || true
         done
     fi
     
@@ -560,6 +664,13 @@ if [[ "$HAS_START_DELAYS" == "true" ]]; then
             sleep "$WORKLOAD_DURATION"
             
             ELAPSED=$(($(date +%s) - EXPERIMENT_START))
+            echo "[T+${ELAPSED}s] ⏳ Waiting for job completion: $WORKLOAD_NAME"
+            
+            # Collect logs with verification
+            echo "[T+${ELAPSED}s] 📝 Collecting logs from: $WORKLOAD_NAME"
+            wait_and_collect_job_logs "$ACTUAL_JOB_NAME" "$NAMESPACE" "$EXPERIMENT_DIR/job-logs" 300 || true
+            
+            ELAPSED=$(($(date +%s) - EXPERIMENT_START))
             echo "[T+${ELAPSED}s] ✓ Job completed: $WORKLOAD_NAME"
             
             # Clean up job (unless keeping jobs during run)
@@ -661,6 +772,9 @@ else
             }
             
             print_info "✓ Job completed: $JOB_NAME"
+            
+            # Collect logs with verification
+            wait_and_collect_job_logs "$JOB_NAME" "$NAMESPACE" "$EXPERIMENT_DIR/job-logs" 300 || true
             
             # Delete job after completion
             print_info "Cleaning up job..."

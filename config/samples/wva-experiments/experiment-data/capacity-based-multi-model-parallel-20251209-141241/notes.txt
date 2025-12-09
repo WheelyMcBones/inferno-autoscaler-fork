@@ -1,0 +1,2 @@
+Readiness branch - via Prometheus
+KV Threshold = 0.5
