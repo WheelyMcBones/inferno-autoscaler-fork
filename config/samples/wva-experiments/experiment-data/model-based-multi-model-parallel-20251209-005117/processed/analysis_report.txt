@@ -1,0 +1,33 @@
+Model-Based WVA Experiment Analysis Report
+================================================================================
+
+Experiment: model-based-multi-model-parallel-20251209-005117
+Data Directory: experiment-data/model-based-multi-model-parallel-20251209-005117
+Analysis Date: 2025-12-09 09:45:54
+
+## Summary Statistics
+
+### Predictions
+Total predictions: 33
+
+### Observations
+Total observations: 34
+Avg TTFT: 18.75 ms
+Avg ITL: 9.99 ms
+
+### Scaling Decisions
+Total scaling decisions: 33
+  no-change: 24
+  scale-up: 6
+  scale-down: 3
+
+### KV Cache Utilization
+Mean: 7.70%
+Max: 53.40%
+Min: 0.00%
+
+### Queue Length
+Mean: 0.00
+Max: 0.00
+Min: 0.00
+

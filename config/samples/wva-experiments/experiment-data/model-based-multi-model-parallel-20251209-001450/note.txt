@@ -1,0 +1,2 @@
+Scheduler failed and restarted - see plots.
+Ready replicas coming from Prometheus
