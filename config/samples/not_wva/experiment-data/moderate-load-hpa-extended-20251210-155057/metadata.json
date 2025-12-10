@@ -1,0 +1,14 @@
+{
+  "experiment_name": "moderate-load-hpa-extended",
+  "description": "Extended HPA test with overlapping 10-12 req/s jobs (20+ mins, peak ~32 req/s)",
+  "start_time": "2025-12-10 15:50:57",
+  "end_time": "2025-12-10 15:57:47",
+  "namespace": "llm-d-inference-scheduler",
+  "deployment_name": "ms-inference-scheduling-llm-d-modelservice-decode",
+  "hpa_name": "vllm-hpa-combined",
+  "model_name": "unsloth/Meta-Llama-3.1-8B",
+  "hpa_enabled": true,
+  "job_count": 4,
+  "cooldown_enabled": true,
+  "cooldown_duration": 120
+}

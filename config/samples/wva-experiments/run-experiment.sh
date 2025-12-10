@@ -347,7 +347,7 @@ cleanup() {
             [[ -z "$job_name" ]] && continue
             
             # Skip if already processed by background job handler
-            if [[ " ${PROCESSED_JOBS[*]} " =~ " ${job_name} " ]]; then
+            if [[ ${#PROCESSED_JOBS[@]} -gt 0 ]] && [[ " ${PROCESSED_JOBS[*]} " =~ " ${job_name} " ]]; then
                 print_info "Skipping $job_name (already processed)"
                 continue
             fi
