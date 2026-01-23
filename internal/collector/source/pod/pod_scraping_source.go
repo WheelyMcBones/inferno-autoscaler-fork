@@ -83,15 +83,6 @@ func NewPodScrapingSource(
 		cache:      source.NewCache(ctx, config.DefaultTTL, 1*time.Second),
 	}
 
-	// Register default query
-	podSource.registry.MustRegister(source.QueryTemplate{
-		Name:        "all_metrics",
-		Type:        source.QueryTypeMetricName,
-		Template:    "all_metrics",
-		Params:      []string{},
-		Description: "All metrics from pods scraped",
-	})
-
 	return podSource, nil
 }
 
@@ -101,12 +92,24 @@ func (p *PodScrapingSource) QueryList() *source.QueryList {
 }
 
 // Refresh executes queries and updates the cache.
-// Called by engine/reconciler on-demand.
+// If spec.Queries is empty, refreshes all registered queries for this source.
 func (p *PodScrapingSource) Refresh(ctx context.Context, spec source.RefreshSpec) (map[string]*source.MetricResult, error) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
 	logger := ctrl.LoggerFrom(ctx)
+
+	// Determine which metrics to scrape
+	queryNames := spec.Queries
+	if len(queryNames) == 0 {
+		// Get all registered query names for this source
+		queryNames = p.registry.List()
+	}
+
+	if len(queryNames) == 0 {
+		logger.V(logging.DEBUG).Info("No queries registered for this Pod source")
+		return map[string]*source.MetricResult{}, nil
+	}
 
 	// Discover pods
 	pods, err := p.discoverPods(ctx)
@@ -116,43 +119,46 @@ func (p *PodScrapingSource) Refresh(ctx context.Context, spec source.RefreshSpec
 
 	if len(pods) == 0 {
 		logger.V(logging.DEBUG).Info("No ready pods found for scraping")
-		return map[string]*source.MetricResult{
-			"all_metrics": {
-				QueryName:   "all_metrics",
-				Values:      []source.MetricValue{},
-				CollectedAt: time.Now(),
-			},
-		}, nil
+		return map[string]*source.MetricResult{}, nil
 	}
 
 	// Scrape all pods concurrently
-	results := p.scrapeAllPods(ctx, pods)
+	podResults := p.scrapeAllPods(ctx, pods)
 
-	// Aggregate results
-	aggregated := p.aggregateResults(results)
+	// Group metrics by name, filtering for requested metrics only
+	metricsByName := p.groupMetricsByName(podResults, queryNames)
 
-	// Cache the result
-	cacheKey := source.BuildCacheKey("all_metrics", nil)
-	p.cache.Set(cacheKey, *aggregated, p.config.DefaultTTL)
+	// Cache each metric result
+	results := make(map[string]*source.MetricResult)
+	for metricName, values := range metricsByName {
+		result := &source.MetricResult{
+			QueryName:   metricName,
+			Values:      values,
+			CollectedAt: time.Now(),
+		}
+		cacheKey := source.BuildCacheKey(metricName, nil)
+		p.cache.Set(cacheKey, *result, p.config.DefaultTTL)
+		results[metricName] = result
+	}
 
 	logger.V(logging.DEBUG).Info("Scraped metrics from pods",
 		"podCount", len(pods),
-		"successCount", len(results),
-		"metricCount", len(aggregated.Values))
+		"successCount", len(podResults),
+		"queriesExecuted", len(queryNames),
+		"queriesSucceeded", len(results))
 
-	return map[string]*source.MetricResult{
-		"all_metrics": aggregated,
-	}, nil
+	return results, nil
 }
 
-// Get retrieves cached metrics.
+// Get retrieves a cached metric by name (e.g., "vllm:kv_cache_usage_perc").
+// Returns nil if the metric is not cached or is expired.
 func (p *PodScrapingSource) Get(queryName string, params map[string]string) *source.CachedValue {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
 
 	cacheKey := source.BuildCacheKey(queryName, params)
 	cached, ok := p.cache.Get(cacheKey)
-	if !ok || cached.IsExpired() {
+	if !ok {
 		return nil
 	}
 
@@ -387,31 +393,32 @@ func (p *PodScrapingSource) parsePrometheusMetrics(reader io.Reader, podName str
 	}, nil
 }
 
-// aggregateResults combines metrics from all pods.
-func (p *PodScrapingSource) aggregateResults(results map[string]*source.MetricResult) *source.MetricResult {
-	allValues := []source.MetricValue{}
-	var latestCollectedAt time.Time
+// groupMetricsByName groups requested metrics from all pods by name, using the "__name__" label.
+// Returns a map of metric name to all values for that metric across all pods.
+func (p *PodScrapingSource) groupMetricsByName(results map[string]*source.MetricResult, requestedMetrics []string) map[string][]source.MetricValue {
+	// Create a set of requested metrics
+	requestedSet := make(map[string]bool, len(requestedMetrics))
+	for _, name := range requestedMetrics {
+		requestedSet[name] = true
+	}
+
+	metricsByName := make(map[string][]source.MetricValue)
 
 	for _, result := range results {
 		if result == nil {
 			continue
 		}
 
-		// Add all values (already have pod label)
-		allValues = append(allValues, result.Values...)
-
-		if result.CollectedAt.After(latestCollectedAt) {
-			latestCollectedAt = result.CollectedAt
+		// Group by metric name using the label "__name__", filtering for requested metrics
+		for _, value := range result.Values {
+			if metricName, ok := value.Labels["__name__"]; ok {
+				// Only include if this metric was requested
+				if requestedSet[metricName] {
+					metricsByName[metricName] = append(metricsByName[metricName], value)
+				}
+			}
 		}
 	}
 
-	if latestCollectedAt.IsZero() {
-		latestCollectedAt = time.Now()
-	}
-
-	return &source.MetricResult{
-		QueryName:   "all_metrics",
-		Values:      allValues,
-		CollectedAt: latestCollectedAt,
-	}
+	return metricsByName
 }

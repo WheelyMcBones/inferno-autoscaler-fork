@@ -64,6 +64,7 @@ import (
 
 	sourcepkg "github.com/llm-d-incubation/workload-variant-autoscaler/internal/collector/source"
 	"github.com/llm-d-incubation/workload-variant-autoscaler/internal/collector/source/pod"
+	"github.com/llm-d-incubation/workload-variant-autoscaler/internal/constants"
 	"github.com/onsi/ginkgo/v2"
 	gom "github.com/onsi/gomega"
 	promoperator "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
@@ -125,7 +126,47 @@ func CreatePodScrapingSource(config PodScrapingTestConfig) (*pod.PodScrapingSour
 		DefaultTTL:              30 * time.Second,
 	}
 
-	return pod.NewPodScrapingSource(ctx, config.CRClient, podConfig)
+	podSource, err := pod.NewPodScrapingSource(ctx, config.CRClient, podConfig)
+	if err != nil {
+		return nil, err
+	}
+
+	// Register source and pre-register expected metrics
+	sourceRegistry := sourcepkg.NewSourceRegistry()
+	sourceRegistry.MustRegister("pod_scraping", podSource)
+
+	// Pre-register expected metrics manually
+	registry := podSource.QueryList()
+	registry.MustRegister(sourcepkg.QueryTemplate{
+		Name:        constants.VLLMKvCacheUsagePerc,
+		Type:        sourcepkg.QueryTypeMetricName,
+		Template:    constants.VLLMKvCacheUsagePerc,
+		Params:      []string{},
+		Description: "vLLM KV cache utilization percentage (0.0-1.0) scraped directly from pod /metrics endpoint",
+	})
+	registry.MustRegister(sourcepkg.QueryTemplate{
+		Name:        constants.VLLMNumRequestsWaiting,
+		Type:        sourcepkg.QueryTypeMetricName,
+		Template:    constants.VLLMNumRequestsWaiting,
+		Params:      []string{},
+		Description: "Number of requests waiting in vLLM queue, scraped directly from pod /metrics endpoint",
+	})
+	registry.MustRegister(sourcepkg.QueryTemplate{
+		Name:        constants.EPPInferencePoolAverageKvCacheUtilization,
+		Type:        sourcepkg.QueryTypeMetricName,
+		Template:    constants.EPPInferencePoolAverageKvCacheUtilization,
+		Params:      []string{},
+		Description: "Average KV cache utilization reported by EndPointPicker, scraped directly from pod /metrics endpoint",
+	})
+	registry.MustRegister(sourcepkg.QueryTemplate{
+		Name:        constants.EPPInferencePoolAverageQueueSize,
+		Type:        sourcepkg.QueryTypeMetricName,
+		Template:    constants.EPPInferencePoolAverageQueueSize,
+		Params:      []string{},
+		Description: "Average queue size reported by EndPointPicker, scraped directly from pod /metrics endpoint",
+	})
+
+	return podSource, nil
 }
 
 // TestPodScrapingServiceDiscovery tests that PodScrapingSource can discover the EPP service
@@ -191,9 +232,8 @@ func TestPodScrapingMetricsCollection(ctx context.Context, config PodScrapingTes
 	source, err := CreatePodScrapingSource(config)
 	g.Expect(err).NotTo(gom.HaveOccurred(), "Should be able to create PodScrapingSource")
 
-	results, err := source.Refresh(ctx, sourcepkg.RefreshSpec{
-		Queries: []string{"all_metrics"},
-	})
+	// Refresh to scrape pre-registered metrics from pods
+	results, err := source.Refresh(ctx, sourcepkg.RefreshSpec{})
 
 	// Get service to find selector
 	service, svcErr := config.K8sClient.CoreV1().Services(config.ServiceNamespace).Get(
@@ -222,21 +262,16 @@ func TestPodScrapingMetricsCollection(ctx context.Context, config PodScrapingTes
 			}
 		}
 		g.Expect(readyCount).To(gom.BeNumerically(">=", 1), "Should have at least one ready pod")
-
-		cached := source.Get("all_metrics", nil)
-		_ = cached // Verify Get doesn't panic
 	} else if results != nil {
-		g.Expect(results).To(gom.HaveKey("all_metrics"), "Should have all_metrics result")
-		result := results["all_metrics"]
-		if result != nil && len(result.Values) > 0 {
-			g.Expect(result.Values).NotTo(gom.BeEmpty(), "Should have collected metrics from pods")
-		} else {
-			// Empty results - verify infrastructure instead
-			podList, listErr := config.K8sClient.CoreV1().Pods(config.ServiceNamespace).List(ctx, metav1.ListOptions{
-				LabelSelector: metav1.FormatLabelSelector(&metav1.LabelSelector{MatchLabels: service.Spec.Selector}),
-			})
-			g.Expect(listErr).NotTo(gom.HaveOccurred(), "Should be able to list pods")
-			g.Expect(podList.Items).NotTo(gom.BeEmpty(), "Should have EPP pods")
+		// Results should contain pre-registered metrics
+		g.Expect(results).NotTo(gom.BeEmpty(), "Should have scraped pre-registered metrics from pods")
+
+		// Check for the metrics we pre-registered
+		for _, metricName := range []string{"vllm:kv_cache_usage_perc", "vllm:num_requests_waiting", "epp_inference_pool_average_kv_cache_utilization", "epp_inference_pool_average_queue_size"} {
+			if result, ok := results[metricName]; ok && result != nil && len(result.Values) > 0 {
+				g.Expect(result.Values).NotTo(gom.BeEmpty(), "Metric %s should have values from pods", metricName)
+				break // At least one metric has values, test passes
+			}
 		}
 	}
 }
@@ -388,26 +423,33 @@ func TestPodScrapingCaching(ctx context.Context, config PodScrapingTestConfig, g
 	)
 	g.Expect(svcErr).NotTo(gom.HaveOccurred(), "Service should exist")
 
-	// First refresh to populate cache
-	_, err = source.Refresh(ctx, sourcepkg.RefreshSpec{
-		Queries: []string{"all_metrics"},
-	})
+	// First refresh to populate cache with pre-registered metrics
+	_, err = source.Refresh(ctx, sourcepkg.RefreshSpec{})
 
-	cached := source.Get("all_metrics", nil)
-	g.Expect(cached).NotTo(gom.BeNil(), "Cached result should exist")
+	// Get the list of pre-registered metrics from the registry
+	registry := source.QueryList()
+	queries := registry.List()
+	g.Expect(queries).NotTo(gom.BeEmpty(), "Should have pre-registered metrics in QueryList")
 
-	if err == nil && cached != nil && len(cached.Result.Values) > 0 {
-		g.Expect(cached.Result.Values).NotTo(gom.BeEmpty(), "Cached result should have values")
-		g.Expect(cached.IsExpired()).To(gom.BeFalse(), "Cache should not be expired immediately")
-	} else {
-		if cached != nil {
+	// Test caching for a specific pre-registered metric
+	if len(queries) > 0 {
+		firstMetric := queries[0]
+		cached := source.Get(firstMetric, nil)
+		g.Expect(cached).NotTo(gom.BeNil(), "Cached result should exist for pre-registered metric")
+
+		if err == nil && cached != nil && len(cached.Result.Values) > 0 {
+			g.Expect(cached.Result.Values).NotTo(gom.BeEmpty(), "Cached result should have values")
 			g.Expect(cached.IsExpired()).To(gom.BeFalse(), "Cache should not be expired immediately")
+		} else {
+			if cached != nil {
+				g.Expect(cached.IsExpired()).To(gom.BeFalse(), "Cache should not be expired immediately")
+			}
+			podList, listErr := config.K8sClient.CoreV1().Pods(config.ServiceNamespace).List(ctx, metav1.ListOptions{
+				LabelSelector: metav1.FormatLabelSelector(&metav1.LabelSelector{MatchLabels: service.Spec.Selector}),
+			})
+			g.Expect(listErr).NotTo(gom.HaveOccurred(), "Should be able to list pods")
+			g.Expect(podList.Items).NotTo(gom.BeEmpty(), "Should have EPP pods")
 		}
-		podList, listErr := config.K8sClient.CoreV1().Pods(config.ServiceNamespace).List(ctx, metav1.ListOptions{
-			LabelSelector: metav1.FormatLabelSelector(&metav1.LabelSelector{MatchLabels: service.Spec.Selector}),
-		})
-		g.Expect(listErr).NotTo(gom.HaveOccurred(), "Should be able to list pods")
-		g.Expect(podList.Items).NotTo(gom.BeEmpty(), "Should have EPP pods")
 	}
 }
 

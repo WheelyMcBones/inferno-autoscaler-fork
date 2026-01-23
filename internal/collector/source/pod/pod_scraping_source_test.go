@@ -15,7 +15,9 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 
+	"github.com/llm-d-incubation/workload-variant-autoscaler/internal/collector/registration"
 	sourcepkg "github.com/llm-d-incubation/workload-variant-autoscaler/internal/collector/source"
+	"github.com/llm-d-incubation/workload-variant-autoscaler/internal/constants"
 )
 
 var _ = Describe("PodScrapingSource", func() {
@@ -31,6 +33,10 @@ var _ = Describe("PodScrapingSource", func() {
 		Expect(corev1.AddToScheme(scheme)).To(Succeed())
 		fakeClient = fake.NewClientBuilder().WithScheme(scheme)
 	})
+
+	buildClient := func() *fake.ClientBuilder {
+		return fake.NewClientBuilder().WithScheme(scheme)
+	}
 
 	Describe("NewPodScrapingSource", func() {
 		It("should create source with provided service name", func() {
@@ -457,12 +463,12 @@ var _ = Describe("PodScrapingSource", func() {
 		})
 
 		It("should parse Prometheus text format", func() {
-			metricsText := `# HELP vllm_kv_cache_usage_perc KV cache usage percentage
-# TYPE vllm_kv_cache_usage_perc gauge
-vllm_kv_cache_usage_perc{namespace="test-ns"} 0.75
-# HELP vllm_num_requests_waiting Number of requests waiting
-# TYPE vllm_num_requests_waiting gauge
-vllm_num_requests_waiting{namespace="test-ns"} 5
+			metricsText := `# HELP vllm:kv_cache_usage_perc KV cache usage percentage
+# TYPE vllm:kv_cache_usage_perc gauge
+vllm:kv_cache_usage_perc{namespace="test-ns"} 0.75
+# HELP vllm:num_requests_waiting Number of requests waiting
+# TYPE vllm:num_requests_waiting gauge
+vllm:num_requests_waiting{namespace="test-ns"} 5
 `
 
 			result, err := source.parsePrometheusMetrics(
@@ -482,12 +488,12 @@ vllm_num_requests_waiting{namespace="test-ns"} 5
 			}
 
 			// Check first metric
-			Expect(metricsByName).To(HaveKey("vllm_kv_cache_usage_perc"))
-			Expect(metricsByName["vllm_kv_cache_usage_perc"].Value).To(Equal(0.75))
+			Expect(metricsByName).To(HaveKey(constants.VLLMKvCacheUsagePerc))
+			Expect(metricsByName[constants.VLLMKvCacheUsagePerc].Value).To(Equal(0.75))
 
 			// Check second metric
-			Expect(metricsByName).To(HaveKey("vllm_num_requests_waiting"))
-			Expect(metricsByName["vllm_num_requests_waiting"].Value).To(Equal(5.0))
+			Expect(metricsByName).To(HaveKey(constants.VLLMNumRequestsWaiting))
+			Expect(metricsByName[constants.VLLMNumRequestsWaiting].Value).To(Equal(5.0))
 		})
 
 		It("should handle empty metrics", func() {
@@ -551,12 +557,12 @@ vllm_num_requests_waiting{namespace="test-ns"} 5
 
 				w.Header().Set("Content-Type", "text/plain")
 				w.WriteHeader(http.StatusOK)
-				_, _ = fmt.Fprint(w, `# HELP vllm_kv_cache_usage_perc KV cache usage
-# TYPE vllm_kv_cache_usage_perc gauge
-vllm_kv_cache_usage_perc{namespace="test-ns"} 0.75
-# HELP vllm_num_requests_waiting Number of requests waiting
-# TYPE vllm_num_requests_waiting gauge
-vllm_num_requests_waiting{namespace="test-ns"} 5
+				_, _ = fmt.Fprint(w, `# HELP vllm:kv_cache_usage_perc KV cache usage
+# TYPE vllm:kv_cache_usage_perc gauge
+vllm:kv_cache_usage_perc{namespace="test-ns"} 0.75
+# HELP vllm:num_requests_waiting Number of requests waiting
+# TYPE vllm:num_requests_waiting gauge
+vllm:num_requests_waiting{namespace="test-ns"} 5
 `)
 			}))
 
@@ -567,12 +573,12 @@ vllm_num_requests_waiting{namespace="test-ns"} 5
 
 				w.Header().Set("Content-Type", "text/plain")
 				w.WriteHeader(http.StatusOK)
-				_, _ = fmt.Fprint(w, `# HELP vllm_kv_cache_usage_perc KV cache usage
-# TYPE vllm_kv_cache_usage_perc gauge
-vllm_kv_cache_usage_perc{namespace="test-ns"} 0.50
-# HELP vllm_num_requests_waiting Number of requests waiting
-# TYPE vllm_num_requests_waiting gauge
-vllm_num_requests_waiting{namespace="test-ns"} 3
+				_, _ = fmt.Fprint(w, `# HELP vllm:kv_cache_usage_perc KV cache usage
+# TYPE vllm:kv_cache_usage_perc gauge
+vllm:kv_cache_usage_perc{namespace="test-ns"} 0.50
+# HELP vllm:num_requests_waiting Number of requests waiting
+# TYPE vllm:num_requests_waiting gauge
+vllm:num_requests_waiting{namespace="test-ns"} 3
 `)
 			}))
 
@@ -671,16 +677,33 @@ vllm_num_requests_waiting{namespace="test-ns"} 3
 			source1, err := NewPodScrapingSource(ctx, client1, config1)
 			Expect(err).NotTo(HaveOccurred())
 
-			// Test scraping from first pod
+			// Pre-register the metrics we expect to scrape using centralized registration
+			sourceRegistry1 := sourcepkg.NewSourceRegistry()
+			sourceRegistry1.MustRegister("test-pod-source", source1)
+			registration.RegisterPodScrapingMetrics("test-pod-source", sourceRegistry1)
+
+			// Test scraping from first pod - with empty RefreshSpec, it will use all registered queries
 			results1, err := source1.Refresh(ctx, sourcepkg.RefreshSpec{})
 			Expect(err).NotTo(HaveOccurred())
-			Expect(results1).To(HaveKey("all_metrics"))
-			Expect(results1["all_metrics"].Values).To(HaveLen(2)) // 2 metrics from pod1
 
-			// Verify metrics have pod label
-			for _, value := range results1["all_metrics"].Values {
-				Expect(value.Labels["pod"]).To(Equal("epp-pod-1"))
-			}
+			// Should return 2 vLLM metrics that the mock server provides
+			// RegisterPodScrapingMetrics also registers EPP metrics, but mock server doesn't return them
+			Expect(results1).To(HaveLen(2))
+			Expect(results1).To(HaveKey(constants.VLLMKvCacheUsagePerc))
+			Expect(results1).To(HaveKey(constants.VLLMNumRequestsWaiting))
+
+			// Verify KV cache metric
+			kvCache := results1[constants.VLLMKvCacheUsagePerc]
+			Expect(kvCache.Values).To(HaveLen(1), "KV cache metric should have 1 value from pod1")
+			Expect(kvCache.Values[0].Value).To(Equal(0.75))
+			Expect(kvCache.Values[0].Labels["pod"]).To(Equal("epp-pod-1"))
+
+			// Verify queue metric
+			queue := results1[constants.VLLMNumRequestsWaiting]
+			Expect(queue.Values).To(HaveLen(1), "Queue metric should have 1 value from pod1")
+			Expect(queue.Values[0].Value).To(Equal(5.0))
+			Expect(queue.Values[0].Labels["pod"]).To(Equal("epp-pod-1"))
+
 		})
 
 		It("should handle unreachable pods gracefully", func() {
@@ -717,12 +740,16 @@ vllm_num_requests_waiting{namespace="test-ns"} 3
 			source, err := NewPodScrapingSource(ctx, client, config)
 			Expect(err).NotTo(HaveOccurred())
 
+			// Pre-register metrics
+			sourceRegistry := sourcepkg.NewSourceRegistry()
+			sourceRegistry.MustRegister("test-pod-source", source)
+			registration.RegisterPodScrapingMetrics("test-pod-source", sourceRegistry)
+
 			// Should return empty results (not error) when pods are unreachable
 			results, err := source.Refresh(ctx, sourcepkg.RefreshSpec{})
 			Expect(err).NotTo(HaveOccurred())
-			Expect(results).To(HaveKey("all_metrics"))
 			// Should have empty or no metrics due to unreachable pod
-			Expect(results["all_metrics"].Values).To(BeEmpty())
+			Expect(results).To(BeEmpty())
 		})
 
 		It("should handle authentication failures", func() {
@@ -786,69 +813,16 @@ vllm_num_requests_waiting{namespace="test-ns"} 3
 			source, err := NewPodScrapingSource(ctx, client, config)
 			Expect(err).NotTo(HaveOccurred())
 
+			// Pre-register metrics using centralized registration
+			sourceRegistry := sourcepkg.NewSourceRegistry()
+			sourceRegistry.MustRegister("test-pod-source", source)
+			registration.RegisterPodScrapingMetrics("test-pod-source", sourceRegistry)
+
 			// Should handle auth failure gracefully (empty results, not error)
 			results, err := source.Refresh(ctx, sourcepkg.RefreshSpec{})
 			Expect(err).NotTo(HaveOccurred())
-			Expect(results).To(HaveKey("all_metrics"))
-			// Should have no metrics due to auth failure
-			Expect(results["all_metrics"].Values).To(BeEmpty())
-		})
-	})
-
-	Describe("aggregateResults", func() {
-		var source *PodScrapingSource
-
-		BeforeEach(func() {
-			config := PodScrapingSourceConfig{
-				ServiceName:      "test-pool-epp",
-				ServiceNamespace: "test-ns",
-				MetricsPort:      9090,
-			}
-			var err error
-			source, err = NewPodScrapingSource(ctx, fakeClient.Build(), config)
-			Expect(err).NotTo(HaveOccurred())
-		})
-
-		It("should combine metrics from all pods", func() {
-			now := time.Now()
-			results := map[string]*sourcepkg.MetricResult{
-				"pod-1": {
-					QueryName:   "all_metrics",
-					Values:      []sourcepkg.MetricValue{{Value: 0.75, Labels: map[string]string{"pod": "pod-1"}}},
-					CollectedAt: now.Add(-1 * time.Second),
-				},
-				"pod-2": {
-					QueryName:   "all_metrics",
-					Values:      []sourcepkg.MetricValue{{Value: 0.50, Labels: map[string]string{"pod": "pod-2"}}},
-					CollectedAt: now,
-				},
-			}
-
-			aggregated := source.aggregateResults(results)
-			Expect(aggregated).NotTo(BeNil())
-			Expect(aggregated.Values).To(HaveLen(2))
-			Expect(aggregated.CollectedAt).To(Equal(now))
-		})
-
-		It("should handle empty results", func() {
-			aggregated := source.aggregateResults(map[string]*sourcepkg.MetricResult{})
-			Expect(aggregated).NotTo(BeNil())
-			Expect(aggregated.Values).To(BeEmpty())
-		})
-
-		It("should skip nil results", func() {
-			results := map[string]*sourcepkg.MetricResult{
-				"pod-1": {
-					QueryName:   "all_metrics",
-					Values:      []sourcepkg.MetricValue{{Value: 0.75}},
-					CollectedAt: time.Now(),
-				},
-				"pod-2": nil,
-			}
-
-			aggregated := source.aggregateResults(results)
-			Expect(aggregated).NotTo(BeNil())
-			Expect(aggregated.Values).To(HaveLen(1))
+			// Should be empty due to auth failure
+			Expect(results).To(BeEmpty())
 		})
 	})
 
@@ -860,7 +834,7 @@ vllm_num_requests_waiting{namespace="test-ns"} 3
 				ServiceName:      "test-pool-epp",
 				ServiceNamespace: "test-ns",
 				MetricsPort:      9090,
-				DefaultTTL:       1 * time.Hour, // Long TTL for testing
+				DefaultTTL:       1 * time.Hour,
 			}
 			var err error
 			source, err = NewPodScrapingSource(ctx, fakeClient.Build(), config)
@@ -868,61 +842,294 @@ vllm_num_requests_waiting{namespace="test-ns"} 3
 		})
 
 		It("should return nil for uncached query", func() {
-			cached := source.Get("all_metrics", nil)
+			cached := source.Get(constants.VLLMKvCacheUsagePerc, nil)
 			Expect(cached).To(BeNil())
 		})
 
 		It("should return cached value if fresh", func() {
 			// Manually set cache
-			cacheKey := sourcepkg.BuildCacheKey("all_metrics", nil)
+			metricName := constants.VLLMKvCacheUsagePerc
+			cacheKey := sourcepkg.BuildCacheKey(metricName, nil)
 			result := sourcepkg.MetricResult{
-				QueryName:   "all_metrics",
-				Values:      []sourcepkg.MetricValue{{Value: 1.0}},
+				QueryName:   metricName,
+				Values:      []sourcepkg.MetricValue{{Value: 0.75}},
 				CollectedAt: time.Now(),
 			}
 			source.cache.Set(cacheKey, result, 1*time.Hour)
 
-			cached := source.Get("all_metrics", nil)
+			cached := source.Get(metricName, nil)
 			Expect(cached).NotTo(BeNil())
-			Expect(cached.Result.QueryName).To(Equal("all_metrics"))
+			Expect(cached.Result.QueryName).To(Equal(metricName))
 			Expect(cached.Result.Values).To(HaveLen(1))
 		})
 
 		It("should return nil for expired cache", func() {
-			// Manually set cache with expired TTL
-			cacheKey := sourcepkg.BuildCacheKey("all_metrics", nil)
+			// Manually set cache with short TTL and wait for expiration
+			metricName := constants.VLLMKvCacheUsagePerc
+			cacheKey := sourcepkg.BuildCacheKey(metricName, nil)
 			result := sourcepkg.MetricResult{
-				QueryName:   "all_metrics",
-				Values:      []sourcepkg.MetricValue{{Value: 1.0}},
-				CollectedAt: time.Now().Add(-2 * time.Hour),
+				QueryName:   metricName,
+				Values:      []sourcepkg.MetricValue{{Value: 0.75}},
+				CollectedAt: time.Now(),
 			}
-			source.cache.Set(cacheKey, result, 1*time.Second)
+			source.cache.Set(cacheKey, result, 100*time.Millisecond)
 
-			// Wait for expiration
-			time.Sleep(2 * time.Second)
+			// Wait for cache to expire
+			time.Sleep(150 * time.Millisecond)
 
-			cached := source.Get("all_metrics", nil)
+			cached := source.Get(metricName, nil)
 			Expect(cached).To(BeNil())
+		})
+
+		Context("retrieving individual metrics after Refresh", func() {
+			var (
+				mockServer1 *httptest.Server
+				mockServer2 *httptest.Server
+				readyPod1   *corev1.Pod
+				readyPod2   *corev1.Pod
+				service     *corev1.Service
+			)
+
+			BeforeEach(func() {
+				// Setup mock servers for two pods
+				mockServer1 = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+					w.WriteHeader(http.StatusOK)
+					_, _ = w.Write([]byte(`# HELP vllm:kv_cache_usage_perc KV cache usage percentage
+# TYPE vllm:kv_cache_usage_perc gauge
+vllm:kv_cache_usage_perc 0.75
+# HELP vllm:num_requests_waiting Number of requests waiting
+# TYPE vllm:num_requests_waiting gauge
+vllm:num_requests_waiting 5
+`))
+				}))
+
+				mockServer2 = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+					w.WriteHeader(http.StatusOK)
+					_, _ = w.Write([]byte(`# HELP vllm:kv_cache_usage_perc KV cache usage percentage
+# TYPE vllm:kv_cache_usage_perc gauge
+vllm:kv_cache_usage_perc 0.85
+# HELP vllm:num_requests_waiting Number of requests waiting
+# TYPE vllm:num_requests_waiting gauge
+vllm:num_requests_waiting 3
+`))
+				}))
+
+				var port1, port2 int32
+				if _, err := fmt.Sscanf(mockServer1.URL, "http://127.0.0.1:%d", &port1); err != nil {
+					Fail(fmt.Sprintf("failed to parse port: %v", err))
+				}
+				if _, err := fmt.Sscanf(mockServer2.URL, "http://127.0.0.1:%d", &port2); err != nil {
+					Fail(fmt.Sprintf("failed to parse port: %v", err))
+				}
+
+				service = &corev1.Service{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "test-pool-epp",
+						Namespace: "test-ns",
+					},
+					Spec: corev1.ServiceSpec{
+						Selector: map[string]string{"app": "test"},
+					},
+				}
+
+				readyPod1 = &corev1.Pod{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "epp-pod-1",
+						Namespace: "test-ns",
+						Labels:    map[string]string{"app": "test"},
+					},
+					Status: corev1.PodStatus{
+						PodIP: "127.0.0.1:" + fmt.Sprint(port1),
+						Conditions: []corev1.PodCondition{
+							{Type: corev1.PodReady, Status: corev1.ConditionTrue},
+						},
+					},
+				}
+				readyPod1.Status.PodIP = "127.0.0.1"
+
+				readyPod2 = &corev1.Pod{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "epp-pod-2",
+						Namespace: "test-ns",
+						Labels:    map[string]string{"app": "test"},
+					},
+					Status: corev1.PodStatus{
+						PodIP: "127.0.0.1",
+						Conditions: []corev1.PodCondition{
+							{Type: corev1.PodReady, Status: corev1.ConditionTrue},
+						},
+					},
+				}
+
+				client := buildClient().WithObjects(service, readyPod1, readyPod2).Build()
+				config := PodScrapingSourceConfig{
+					ServiceName:      "test-pool-epp",
+					ServiceNamespace: "test-ns",
+					MetricsPort:      port1,
+					MetricsScheme:    "http",
+					MetricsPath:      "/metrics",
+				}
+				var err error
+				source, err = NewPodScrapingSource(ctx, client, config)
+				Expect(err).NotTo(HaveOccurred())
+
+				// Pre-register expected metrics using centralized registration
+				sourceRegistry := sourcepkg.NewSourceRegistry()
+				sourceRegistry.MustRegister("test-pod-source", source)
+				registration.RegisterPodScrapingMetrics("test-pod-source", sourceRegistry)
+
+				// Point pods to different servers
+				readyPod1.Status.PodIP = "127.0.0.1"
+				readyPod2.Status.PodIP = "127.0.0.1"
+			})
+
+			AfterEach(func() {
+				if mockServer1 != nil {
+					mockServer1.Close()
+				}
+				if mockServer2 != nil {
+					mockServer2.Close()
+				}
+			})
+
+			It("should cache each metric individually after Refresh", func() {
+				// Manually inject scraped data (simulating successful scrape)
+				now := time.Now()
+
+				// Cache metrics as Refresh() would
+				kvCacheMetric := sourcepkg.MetricResult{
+					QueryName: constants.VLLMKvCacheUsagePerc,
+					Values: []sourcepkg.MetricValue{
+						{Value: 0.75, Timestamp: now, Labels: map[string]string{"pod": "epp-pod-1", "__name__": constants.VLLMKvCacheUsagePerc}},
+						{Value: 0.85, Timestamp: now, Labels: map[string]string{"pod": "epp-pod-2", "__name__": constants.VLLMKvCacheUsagePerc}},
+					},
+					CollectedAt: now,
+				}
+				queueMetric := sourcepkg.MetricResult{
+					QueryName: constants.VLLMNumRequestsWaiting,
+					Values: []sourcepkg.MetricValue{
+						{Value: 5.0, Timestamp: now, Labels: map[string]string{"pod": "epp-pod-1", "__name__": constants.VLLMNumRequestsWaiting}},
+						{Value: 3.0, Timestamp: now, Labels: map[string]string{"pod": "epp-pod-2", "__name__": constants.VLLMNumRequestsWaiting}},
+					},
+					CollectedAt: now,
+				}
+
+				source.cache.Set(sourcepkg.BuildCacheKey(constants.VLLMKvCacheUsagePerc, nil), kvCacheMetric, 1*time.Hour)
+				source.cache.Set(sourcepkg.BuildCacheKey(constants.VLLMNumRequestsWaiting, nil), queueMetric, 1*time.Hour)
+
+				// Retrieve individual metrics
+				kvCache := source.Get(constants.VLLMKvCacheUsagePerc, nil)
+				Expect(kvCache).NotTo(BeNil())
+				Expect(kvCache.Result.QueryName).To(Equal(constants.VLLMKvCacheUsagePerc))
+				Expect(kvCache.Result.Values).To(HaveLen(2))
+
+				queue := source.Get(constants.VLLMNumRequestsWaiting, nil)
+				Expect(queue).NotTo(BeNil())
+				Expect(queue.Result.QueryName).To(Equal(constants.VLLMNumRequestsWaiting))
+				Expect(queue.Result.Values).To(HaveLen(2))
+			})
+
+			It("should return metrics from all pods for a specific metric name", func() {
+				now := time.Now()
+				metric := sourcepkg.MetricResult{
+					QueryName: constants.VLLMKvCacheUsagePerc,
+					Values: []sourcepkg.MetricValue{
+						{Value: 0.75, Timestamp: now, Labels: map[string]string{"pod": "epp-pod-1", "__name__": constants.VLLMKvCacheUsagePerc}},
+						{Value: 0.85, Timestamp: now, Labels: map[string]string{"pod": "epp-pod-2", "__name__": constants.VLLMKvCacheUsagePerc}},
+					},
+					CollectedAt: now,
+				}
+				source.cache.Set(sourcepkg.BuildCacheKey(constants.VLLMKvCacheUsagePerc, nil), metric, 1*time.Hour)
+				cached := source.Get(constants.VLLMKvCacheUsagePerc, nil)
+				Expect(cached).NotTo(BeNil())
+				Expect(cached.Result.Values).To(HaveLen(2))
+
+				// Verify both pods are present
+				pods := make(map[string]float64)
+				for _, value := range cached.Result.Values {
+					pods[value.Labels["pod"]] = value.Value
+				}
+				Expect(pods).To(HaveKey("epp-pod-1"))
+				Expect(pods).To(HaveKey("epp-pod-2"))
+				Expect(pods["epp-pod-1"]).To(Equal(0.75))
+				Expect(pods["epp-pod-2"]).To(Equal(0.85))
+			})
+
+			It("should return nil for non-existent metric", func() {
+				cached := source.Get("nonexistent_metric", nil)
+				Expect(cached).To(BeNil())
+			})
+
+			It("should preserve all labels for each metric", func() {
+				now := time.Now()
+				metric := sourcepkg.MetricResult{
+					QueryName: constants.EPPInferencePoolAverageQueueSize,
+					Values: []sourcepkg.MetricValue{
+						{
+							Value:     10.0,
+							Timestamp: now,
+							Labels: map[string]string{
+								"__name__":   constants.EPPInferencePoolAverageQueueSize,
+								"pod":        "epp-pod-1",
+								"model_name": "llama-3-8b",
+								"namespace":  "test-ns",
+							},
+						},
+					},
+					CollectedAt: now,
+				}
+				source.cache.Set(sourcepkg.BuildCacheKey(constants.EPPInferencePoolAverageQueueSize, nil), metric, 1*time.Hour)
+
+				cached := source.Get(constants.EPPInferencePoolAverageQueueSize, nil)
+				Expect(cached).NotTo(BeNil())
+				Expect(cached.Result.Values).To(HaveLen(1))
+
+				value := cached.Result.Values[0]
+				Expect(value.Labels["pod"]).To(Equal("epp-pod-1"))
+				Expect(value.Labels["model_name"]).To(Equal("llama-3-8b"))
+				Expect(value.Labels["namespace"]).To(Equal("test-ns"))
+			})
 		})
 	})
 
 	Describe("QueryList", func() {
-		It("should return query registry", func() {
+		It("should return empty registry initially", func() {
 			config := PodScrapingSourceConfig{
 				ServiceName:      "test-pool-epp",
 				ServiceNamespace: "test-ns",
 				MetricsPort:      9090,
 			}
-			source, err := NewPodScrapingSource(ctx, fakeClient.Build(), config)
+			source, err := NewPodScrapingSource(ctx, buildClient().Build(), config)
 			Expect(err).NotTo(HaveOccurred())
 
 			registry := source.QueryList()
 			Expect(registry).NotTo(BeNil())
 
-			// Check that default query is registered
-			query := registry.Get("all_metrics")
+			// Initially empty - metrics must be pre-registered before use
+			queries := registry.List()
+			Expect(queries).To(BeEmpty())
+		})
+
+		It("should allow pre-registration of metrics", func() {
+			config := PodScrapingSourceConfig{
+				ServiceName:      "test-pool-epp",
+				ServiceNamespace: "test-ns",
+				MetricsPort:      9090,
+			}
+			source, err := NewPodScrapingSource(ctx, buildClient().Build(), config)
+			Expect(err).NotTo(HaveOccurred())
+
+			// Pre-register expected metrics using centralized registration
+			sourceRegistry := sourcepkg.NewSourceRegistry()
+			sourceRegistry.MustRegister("test-pod-source", source)
+			registration.RegisterPodScrapingMetrics("test-pod-source", sourceRegistry)
+
+			// Verify registration
+			registry := source.QueryList()
+			query := registry.Get(constants.VLLMKvCacheUsagePerc)
 			Expect(query).NotTo(BeNil())
-			Expect(query.Name).To(Equal("all_metrics"))
+			Expect(query.Name).To(Equal(constants.VLLMKvCacheUsagePerc))
+			Expect(query.Type).To(Equal(sourcepkg.QueryTypeMetricName))
 		})
 	})
 })

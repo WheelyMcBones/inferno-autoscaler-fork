@@ -52,6 +52,12 @@ const (
 	// VLLMNumRequestsWaiting tracks the number of requests waiting in the queue.
 	// Used by saturation analyzer to detect request queue saturation.
 	VLLMNumRequestsWaiting = "vllm:num_requests_waiting"
+
+	// EPPInferencePoolAverageKvCacheUtilization tracks the average KV cache utilization reported by the EndPointPicker.
+	EPPInferencePoolAverageKvCacheUtilization = "inference_pool_average_kv_cache_utilization"
+
+	// EPPInferencePoolAverageQueueSize tracks the average queue size reported by the EndPointPicker.
+	EPPInferencePoolAverageQueueSize = "inference_pool_average_queue_size"
 )
 
 // WVA Output Metrics
