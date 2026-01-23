@@ -47,7 +47,7 @@ CONTROLLER_INSTANCE=${CONTROLLER_INSTANCE:-""}
 # llm-d Configuration
 LLM_D_OWNER=${LLM_D_OWNER:-"llm-d"}
 LLM_D_PROJECT=${LLM_D_PROJECT:-"llm-d"}
-LLM_D_RELEASE=${LLM_D_RELEASE:-"v0.3.0"}
+LLM_D_RELEASE=${LLM_D_RELEASE:-"v0.4.0"}
 LLM_D_MODELSERVICE_NAME=${LLM_D_MODELSERVICE_NAME:-"ms-$WELL_LIT_PATH_NAME-llm-d-modelservice"}
 LLM_D_EPP_NAME=${LLM_D_EPP_NAME:-"gaie-$WELL_LIT_PATH_NAME-epp"}
 CLIENT_PREREQ_DIR=${CLIENT_PREREQ_DIR:-"$WVA_PROJECT/$LLM_D_PROJECT/guides/prereq/client-setup"}
@@ -63,7 +63,6 @@ LLM_D_INFERENCE_SCHEDULER_IMG=${LLM_D_INFERENCE_SCHEDULER_IMG:-"ghcr.io/llm-d/ll
 
 # Gateway Configuration
 GATEWAY_PROVIDER=${GATEWAY_PROVIDER:-"istio"} # Options: kgateway, istio
-BENCHMARK_MODE=${BENCHMARK_MODE:-"false"} # if true, updates to Istio config for benchmark (istioBench env required in helmfile)
 # Save original value to detect if explicitly set via environment variable
 INSTALL_GATEWAY_CTRLPLANE_ORIGINAL="${INSTALL_GATEWAY_CTRLPLANE:-}"
 INSTALL_GATEWAY_CTRLPLANE="${INSTALL_GATEWAY_CTRLPLANE:-false}"
@@ -826,6 +825,7 @@ deploy_llm_d_infrastructure() {
         log_info "Skipping Gateway control plane installation (INSTALL_GATEWAY_CTRLPLANE=false)"
     fi
 
+    
     # Configuring llm-d before installation
     cd $EXAMPLE_DIR
     log_info "Configuring llm-d infrastructure"
@@ -851,9 +851,7 @@ deploy_llm_d_infrastructure() {
     # Configure llm-d-inference-simulator if needed
     if [ "$DEPLOY_LLM_D_INFERENCE_SIM" == "true" ]; then
       log_info "Deploying llm-d-inference-simulator..."
-        yq eval ".decode.containers[0].image = \"$LLM_D_INFERENCE_SIM_IMG_REPO:$LLM_D_INFERENCE_SIM_IMG_TAG\" | \
-                 .prefill.containers[0].image = \"$LLM_D_INFERENCE_SIM_IMG_REPO:$LLM_D_INFERENCE_SIM_IMG_TAG\" | \
-                 .decode.containers[0].args = [\"--time-to-first-token=$TTFT_AVERAGE_LATENCY_MS\", \"--inter-token-latency=$ITL_AVERAGE_LATENCY_MS\"] | \
+        yq eval ".decode.containers[0].args = [\"--time-to-first-token=$TTFT_AVERAGE_LATENCY_MS\", \"--inter-token-latency=$ITL_AVERAGE_LATENCY_MS\"] | \
                  .prefill.containers[0].args = [\"--time-to-first-token=$TTFT_AVERAGE_LATENCY_MS\", \"--inter-token-latency=$ITL_AVERAGE_LATENCY_MS\"]" \
                  -i "$LLM_D_MODELSERVICE_VALUES"
     else
@@ -1201,6 +1199,7 @@ verify_deployment() {
             log_success "Prometheus is running"
         else
             log_warning "Prometheus may still be starting"
+            all_good=false
         fi
     fi
 
@@ -1211,6 +1210,7 @@ verify_deployment() {
             log_success "llm-d infrastructure deployed"
         else
             log_warning "llm-d infrastructure may still be deploying"
+            all_good=false
         fi
     fi
 
@@ -1224,7 +1224,8 @@ verify_deployment() {
                 kubectl get variantautoscaling -n $LLMD_NS -o wide
             fi
         else
-            log_info "No VariantAutoscaling resources deployed yet (will be created by Helm chart)"
+            log_warning "No VariantAutoscaling resources found"
+            all_good=false
         fi
     fi
 
@@ -1242,6 +1243,7 @@ verify_deployment() {
             log_success "Prometheus Adapter is running"
         else
             log_warning "Prometheus Adapter may still be starting"
+            all_good=false
         fi
     fi
 
