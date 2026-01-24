@@ -1240,7 +1240,7 @@ func SetupTestEnvironment(image string, numNodes, gpusPerNode int, gpuTypes stri
 	gom.Expect(os.Setenv("CLUSTER_NAME", clusterName)).To(gom.Succeed())
 	setEnvIfNotSet("CLUSTER_NODES", fmt.Sprintf("%d", numNodes))
 	setEnvIfNotSet("CLUSTER_GPUS", fmt.Sprintf("%d", gpusPerNode))
-	setEnvIfNotSet("CLUSTER_GPU_TYPE", gpuTypes) // Use CLUSTER_GPU_TYPE to match Makefile
+	setEnvIfNotSet("CLUSTER_GPU_TYPE", gpuTypes)                                     // Use CLUSTER_GPU_TYPE to match Makefile
 	gom.Expect(os.Setenv("WVA_IMAGE_PULL_POLICY", "IfNotPresent")).To(gom.Succeed()) // The image is built locally by the tests
 	gom.Expect(os.Setenv("CREATE_CLUSTER", "true")).To(gom.Succeed())                // Always create a new cluster for E2E tests
 

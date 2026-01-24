@@ -30,40 +30,58 @@ func NewK8sWithGpuOperator(client client.Client) *K8sWithGpuOperator {
 	}
 }
 
-// Discover discovers GPU capacity by iterating over nodes and checking GFD labels.
-func (d *K8sWithGpuOperator) Discover(ctx context.Context) (map[string]map[string]AcceleratorModelInfo, error) {
-	// Optimization: Filter nodes server-side using LabelSelector
-	// We only care about nodes that have the NVIDIA GPU product label for now.
-	// This prevents listing thousands of CPU-only nodes in large clusters.
-	// TODO: To support AMD/Intel in the future, we need to iterate over vendors and perform multiple list calls
-	// because K8s LabelSelectors do not support OR logic across different keys (e.g. nvidia OR amd).
-	req, err := labels.NewRequirement("nvidia.com/gpu.product", selection.Exists, nil)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create label requirement: %w", err)
-	}
-	selector := labels.NewSelector().Add(*req)
-
+// listGPUOperatorNodes returns nodes that have GPU product labels for any vendor.
+// If WVA_NODE_SELECTOR is set, it is used as-is for sharding.
+func (d *K8sWithGpuOperator) listGPUOperatorNodes(ctx context.Context) ([]corev1.Node, error) {
 	// Check for WVA_NODE_SELECTOR environment variable for sharding
 	if selectorStr := os.Getenv("WVA_NODE_SELECTOR"); selectorStr != "" {
 		userSelector, err := labels.Parse(selectorStr)
 		if err != nil {
 			return nil, fmt.Errorf("invalid WVA_NODE_SELECTOR: %w", err)
 		}
-		// Merge user requirements into the existing selector
-		requirements, _ := userSelector.Requirements()
-		for _, req := range requirements {
-			selector = selector.Add(req)
+		var nodeList corev1.NodeList
+		if err := d.Client.List(ctx, &nodeList, &client.ListOptions{LabelSelector: userSelector}); err != nil {
+			return nil, fmt.Errorf("failed to list nodes: %w", err)
+		}
+		return nodeList.Items, nil
+	}
+
+	// Iterate over vendors to find nodes with GPU product labels
+	nodesByName := make(map[string]corev1.Node)
+	for _, vendor := range vendors {
+		req, err := labels.NewRequirement(vendor+"/gpu.product", selection.Exists, nil)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create label requirement: %w", err)
+		}
+		selector := labels.NewSelector().Add(*req)
+
+		var nodeList corev1.NodeList
+		if err := d.Client.List(ctx, &nodeList, &client.ListOptions{LabelSelector: selector}); err != nil {
+			return nil, fmt.Errorf("failed to list nodes: %w", err)
+		}
+		for _, node := range nodeList.Items {
+			nodesByName[node.Name] = node
 		}
 	}
 
-	var nodeList corev1.NodeList
-	if err := d.Client.List(ctx, &nodeList, &client.ListOptions{LabelSelector: selector}); err != nil {
-		return nil, fmt.Errorf("failed to list nodes: %w", err)
+	result := make([]corev1.Node, 0, len(nodesByName))
+	for _, node := range nodesByName {
+		result = append(result, node)
+	}
+
+	return result, nil
+}
+
+// Discover discovers GPU capacity by iterating over nodes and checking GFD labels.
+func (d *K8sWithGpuOperator) Discover(ctx context.Context) (map[string]map[string]AcceleratorModelInfo, error) {
+	nodeItems, err := d.listGPUOperatorNodes(ctx)
+	if err != nil {
+		return nil, err
 	}
 
 	inv := make(map[string]map[string]AcceleratorModelInfo)
 
-	for _, node := range nodeList.Items {
+	for _, node := range nodeItems {
 		nodeName := node.Name
 
 		for _, vendor := range vendors {
@@ -138,32 +156,13 @@ func (d *K8sWithGpuOperator) DiscoverUsage(ctx context.Context) (map[string]int,
 
 // discoverNodeGPUTypes returns a map of node name to GPU type (model name).
 func (d *K8sWithGpuOperator) discoverNodeGPUTypes(ctx context.Context) (map[string]string, error) {
-	// Use the same filtering as Discover()
-	req, err := labels.NewRequirement("nvidia.com/gpu.product", selection.Exists, nil)
+	nodeItems, err := d.listGPUOperatorNodes(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("failed to create label requirement: %w", err)
-	}
-	selector := labels.NewSelector().Add(*req)
-
-	// Check for WVA_NODE_SELECTOR environment variable for sharding
-	if selectorStr := os.Getenv("WVA_NODE_SELECTOR"); selectorStr != "" {
-		userSelector, err := labels.Parse(selectorStr)
-		if err != nil {
-			return nil, fmt.Errorf("invalid WVA_NODE_SELECTOR: %w", err)
-		}
-		requirements, _ := userSelector.Requirements()
-		for _, req := range requirements {
-			selector = selector.Add(req)
-		}
-	}
-
-	var nodeList corev1.NodeList
-	if err := d.Client.List(ctx, &nodeList, &client.ListOptions{LabelSelector: selector}); err != nil {
-		return nil, fmt.Errorf("failed to list nodes: %w", err)
+		return nil, err
 	}
 
 	nodeGPUType := make(map[string]string)
-	for _, node := range nodeList.Items {
+	for _, node := range nodeItems {
 		for _, vendor := range vendors {
 			prodKey := vendor + "/gpu.product"
 			if model, ok := node.Labels[prodKey]; ok {

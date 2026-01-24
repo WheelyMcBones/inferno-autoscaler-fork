@@ -19,13 +19,10 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 )
 
-// Limiter test constants - matching saturation test patterns
+// Limiter test constants
 const (
 	// GPU configurations - each node has 4 GPUs
 	gpusPerReplicaLimiter = 2 // 2 GPUs/replica, max 2 replicas on 4-GPU node
-
-	// Min GPUs per specific GPU type (one node with 4 GPUs)
-	minRequiredGPUsPerType = 4
 )
 
 // getGPUResourceName returns the GPU resource name based on E2E_GPU_TYPE env var.
@@ -35,6 +32,14 @@ func getGPUResourceName() corev1.ResourceName {
 		gpuType = "nvidia"
 	}
 	return corev1.ResourceName(gpuType + ".com/gpu")
+}
+
+func getGPUResourceType() string {
+	gpuType := os.Getenv("E2E_GPU_TYPE")
+	if gpuType == "" {
+		gpuType = "nvidia"
+	}
+	return gpuType
 }
 
 // getGPUNodeSelector returns node selector for targeting specific GPU type.
@@ -71,6 +76,9 @@ var _ = Describe("Test workload-variant-autoscaler - GPU Limiter Feature", Order
 		namespace      string
 
 		initialReplicas int32
+
+		maxGPUsOnMatchingNode int64
+		totalMatchingGPUs     int64
 	)
 
 	BeforeAll(func() {
@@ -82,7 +90,6 @@ var _ = Describe("Test workload-variant-autoscaler - GPU Limiter Feature", Order
 
 		ctx = context.Background()
 
-		// Use similar naming to saturation test
 		name = "llm-d-sim-limiter"
 		deployName = name + "-deployment"
 		serviceName = name + "-service"
@@ -96,26 +103,45 @@ var _ = Describe("Test workload-variant-autoscaler - GPU Limiter Feature", Order
 		logf.SetLogger(zap.New(zap.WriteTo(GinkgoWriter), zap.UseDevMode(true)))
 
 		gpuResourceName := getGPUResourceName()
-		gpuType := os.Getenv("E2E_GPU_TYPE")
-		if gpuType == "" {
-			gpuType = "nvidia"
-		}
+		gpuType := getGPUResourceType()
 		_, _ = fmt.Fprintf(GinkgoWriter, "GPU type for this test run: %s (resource: %s)\n", gpuType, gpuResourceName)
 
-		By(fmt.Sprintf("checking cluster has sufficient %s GPUs", gpuType))
+		// Get node selector and accelerator type for GPU targeting
+		nodeSelector, accelerator := getGPUNodeSelector()
+		_, _ = fmt.Fprintf(GinkgoWriter, "Targeting nodes with selector: %v (accelerator: %s)\n", nodeSelector, accelerator)
+
+		By("checking GPU capacity on target nodes")
 		nodes, err := k8sClient.CoreV1().Nodes().List(ctx, metav1.ListOptions{})
 		Expect(err).NotTo(HaveOccurred())
-		totalGPUs := int64(0)
+		maxGPUsOnMatchingNode = 0
+		totalMatchingGPUs = 0
+		// Check total GPUs on nodes matching the selector
 		for _, node := range nodes.Items {
+			matches := true
+			for key, val := range nodeSelector {
+				if node.Labels[key] != val {
+					matches = false
+					break
+				}
+			}
+			if !matches {
+				continue
+			}
+			// Check GPU capacity on matching node
+			// If heterogeneous GPU types are present, this counts all GPUs of the specified type
 			if gpuQty, ok := node.Status.Allocatable[gpuResourceName]; ok {
-				totalGPUs += gpuQty.Value()
+				totalMatchingGPUs += gpuQty.Value()
+				if gpuQty.Value() > maxGPUsOnMatchingNode {
+					maxGPUsOnMatchingNode = gpuQty.Value()
+				}
 			}
 		}
-		if totalGPUs < minRequiredGPUsPerType {
-			Skip(fmt.Sprintf("Cluster has only %d %s GPUs, need at least %d. Run: ./deploy/kind-emulator/setup.sh -t %s-mix -g 4",
-				totalGPUs, gpuType, minRequiredGPUsPerType, gpuType))
+		// Skip test if no nodes have enough GPUs for at least one Deployment replica
+		if maxGPUsOnMatchingNode < int64(gpusPerReplicaLimiter) {
+			Skip(fmt.Sprintf("No target node has enough GPUs for a single replica (need at least %d per node).", gpusPerReplicaLimiter))
 		}
-		_, _ = fmt.Fprintf(GinkgoWriter, "Cluster has %d %s GPUs (minimum required: %d)\n", totalGPUs, gpuType, minRequiredGPUsPerType)
+		_, _ = fmt.Fprintf(GinkgoWriter, "Target nodes have %d total %s GPUs (max on one node: %d)\n",
+			totalMatchingGPUs, gpuType, maxGPUsOnMatchingNode)
 
 		By("verifying saturation-scaling ConfigMap exists")
 		Eventually(func(g Gomega) {
@@ -137,10 +163,6 @@ enableLimiter: true`
 
 		By("ensuring unique app label for deployment")
 		utils.ValidateAppLabelUniqueness(namespace, appLabel, k8sClient, crClient)
-
-		// Get node selector and accelerator type for GPU targeting
-		nodeSelector, accelerator := getGPUNodeSelector()
-		_, _ = fmt.Fprintf(GinkgoWriter, "Targeting nodes with selector: %v (accelerator: %s)\n", nodeSelector, accelerator)
 
 		By("creating deployment with GPU resources and node selector")
 		deployment := resources.CreateLlmdSimDeploymentWithGPUAndNodeSelector(
@@ -308,11 +330,10 @@ enableLimiter: true`
 
 			_, _ = fmt.Fprintf(GinkgoWriter, "Load generation job is running\n")
 
-			// Calculate max replicas based on GPU capacity
-			// Node has 4 GPUs, with 2 GPUs/replica, max is 2 replicas
-			maxReplicasOnNode := 4 / gpusPerReplicaLimiter
-			_, _ = fmt.Fprintf(GinkgoWriter, "With %d GPUs/replica and 4 GPUs on target node, max replicas = %d\n",
-				gpusPerReplicaLimiter, maxReplicasOnNode)
+			// Calculate max replicas based on GPU capacity on target nodes
+			maxReplicasOnNode := int(maxGPUsOnMatchingNode) / gpusPerReplicaLimiter
+			_, _ = fmt.Fprintf(GinkgoWriter, "With %d GPUs/replica and %d GPUs on target node, max replicas = %d\n",
+				gpusPerReplicaLimiter, maxGPUsOnMatchingNode, maxReplicasOnNode)
 
 			By("waiting for saturation detection and scale-up decision")
 			var finalReplicas int
@@ -334,9 +355,14 @@ enableLimiter: true`
 				g.Expect(accelerator).NotTo(BeEmpty(),
 					"DesiredOptimizedAlloc.Accelerator should be populated when metrics are flowing")
 
-				// Should scale up from initial 1 replica due to saturation
-				g.Expect(finalReplicas).To(BeNumerically(">", int(initialReplicas)),
-					fmt.Sprintf("Should scale up from %d under load", initialReplicas))
+				// Should scale up from initial 1 replica only if capacity allows
+				if maxReplicasOnNode > int(initialReplicas) {
+					g.Expect(finalReplicas).To(BeNumerically(">", int(initialReplicas)),
+						fmt.Sprintf("Should scale up from %d under load", initialReplicas))
+				} else {
+					g.Expect(finalReplicas).To(Equal(int(initialReplicas)),
+						fmt.Sprintf("Should remain at %d due to GPU limit", initialReplicas))
+				}
 
 				// Limiter should cap the scale-up at max replicas for the GPU type
 				g.Expect(finalReplicas).To(BeNumerically("<=", maxReplicasOnNode),

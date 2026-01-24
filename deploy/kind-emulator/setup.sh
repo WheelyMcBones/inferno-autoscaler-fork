@@ -158,42 +158,32 @@ metadata:
 "
 }
 
-# Patch node with custom label for GPU configuration targeting
-patch_node_custom_label() {
-    local node_name="$1"
-    local label_key="$2"
-    local label_value="$3"
-    kubectl label node "${node_name}" "${label_key}=${label_value}" --overwrite
-}
-
 nodes_list=$(kubectl get nodes --no-headers -o custom-columns=":metadata.name")
 node_array=($nodes_list)
 
 for i in "${!node_array[@]}"; do
     node_name="${node_array[$i]}"
-    custom_label=""
-
     case "$gpu_type" in
         "nvidia-mix")
             # Heterogeneous NVIDIA-focused: H100, A100, AMD MI300X
             case $((i % 3)) in
                 0) current_type="nvidia"; current_model="NVIDIA-H100-SXM5-80GB"; current_memory=81920
-                   custom_label="4H100" ;;
+                         ;;
                 1) current_type="nvidia"; current_model="NVIDIA-A100-PCIE-80GB"; current_memory=81920
-                   custom_label="4A100" ;;
+                         ;;
                 2) current_type="amd";    current_model="AMD-MI300X-192G";       current_memory=196608
-                   custom_label="4MI300X" ;;
+                         ;;
             esac
             ;;
         "amd-mix")
             # Heterogeneous AMD-focused: MI300X, MI250, NVIDIA A100
             case $((i % 3)) in
                 0) current_type="amd";    current_model="AMD-MI300X-192G";       current_memory=196608
-                   custom_label="4MI300X" ;;
+                         ;;
                 1) current_type="amd";    current_model="AMD-MI250-128G";        current_memory=131072
-                   custom_label="4MI250" ;;
+                         ;;
                 2) current_type="nvidia"; current_model="NVIDIA-A100-PCIE-80GB"; current_memory=81920
-                   custom_label="4A100" ;;
+                         ;;
             esac
             ;;
         "mix")
@@ -214,10 +204,6 @@ for i in "${!node_array[@]}"; do
 
     patch_node_gpu "$node_name" "$current_type" "$gpus_per_node" "$current_model" "$current_memory"
 
-    # Apply custom label if set (for heterogeneous GPU targeting)
-    if [[ -n "${custom_label}" ]]; then
-        patch_node_custom_label "$node_name" "gpu-config" "$custom_label"
-    fi
 done
 
 # --------------------------------------------------------------------
