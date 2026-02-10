@@ -841,6 +841,12 @@ deploy_llm_d_infrastructure() {
         log_info "Updating deployment to use model: $MODEL_ID (replacing guide default: $ACTUAL_DEFAULT_MODEL)"
         yq eval "(.. | select(. == \"$ACTUAL_DEFAULT_MODEL\")) = \"$MODEL_ID\" | (.. | select(. == \"hf://$ACTUAL_DEFAULT_MODEL\")) = \"hf://$MODEL_ID\"" -i "$LLM_D_MODELSERVICE_VALUES"
 
+        # If present, update the model label using the model name
+        if [ "$(yq eval '.modelArtifacts.labels."llm-d.ai/model"' "$LLM_D_MODELSERVICE_VALUES" 2>/dev/null)" != "null" ]; then
+            log_info "Updating 'llm-d.ai/model' label to: $MODEL_NAME"
+            yq eval '.modelArtifacts.labels."llm-d.ai/model" = "'"$MODEL_NAME"'"' -i "$LLM_D_MODELSERVICE_VALUES"
+        fi
+
         # Increase model-storage volume size
         log_info "Increasing model-storage volume size for model: $MODEL_ID"
         yq eval '.modelArtifacts.size = "100Gi"' -i "$LLM_D_MODELSERVICE_VALUES"
