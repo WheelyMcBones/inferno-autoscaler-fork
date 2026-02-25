@@ -107,9 +107,6 @@ export VLLM_MAX_NUM_SEQS=64                 # vLLM max concurrent sequences (bat
 ```
 
 For a complete list of all configuration options, see the [Configuration Reference](../README.md#configuration-reference) in the main deployment guide.
-export ACCELERATOR_TYPE="A100"              # GPU type (auto-detected)
-export GATEWAY_PROVIDER="istio"             # Gateway: istio or kgateway
-```
 
 **Deployment flags** - Control which components to deploy:
 
@@ -447,7 +444,7 @@ kubectl get hpa -n llm-d-inference-scheduling
 kubectl get --raw "/apis/external.metrics.k8s.io/v1beta1/namespaces/llm-d-inference-scheduling/wva_desired_replicas" | jq
 ```
 
-### Monitor WVA Logs (See Metrics Validation!)
+### Monitor WVA Logs
 
 ```bash
 # Watch live logs
