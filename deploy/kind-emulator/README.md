@@ -193,7 +193,6 @@ kubectl apply -f ../../config/samples/
 
 ### 3. Generate Load
 
-<<<<<<< HEAD
 **Option A — Run E2E tests (recommended)**  
 The e2e suite deploys infra, creates resources, generates load, and validates scaling. No manual load tool needed.
 
@@ -220,53 +219,6 @@ export BATCH_SIZE=10
 ```
 
 Tune load with `TOTAL_REQUESTS`, `BATCH_SIZE`, and optional `BATCH_SLEEP`, `MAX_TOKENS`, `CURL_TIMEOUT` (see script header).
-=======
-Deploy a GuideLLM load generation job:
-
-```bash
-kubectl apply -f - <<EOF
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: guidellm-load-test
-  namespace: llm-d-sim
-spec:
-  backoffLimit: 4
-  template:
-    spec:
-      restartPolicy: Never
-      containers:
-      - name: guidellm
-        image: python:3.11-slim
-        command: ["/bin/sh", "-c"]
-        args:
-        - |
-          echo 'Installing dependencies...'
-          pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
-          pip install --no-cache-dir guidellm
-          echo 'Starting benchmark...'
-          guidellm benchmark \
-            --target http://infra-sim-inference-gateway:80 \
-            --rate-type constant \
-            --rate 8 \
-            --max-seconds 600 \
-            --model unsloth/Meta-Llama-3.1-8B \
-            --data prompt_tokens=128,output_tokens=128 \
-            --output-path /tmp/benchmarks.json
-        env:
-        - name: HF_HOME
-          value: /tmp
-EOF
-```
-
-Adjust parameters, if needed:
-- `--rate`: requests per second
-- `--max-seconds`: duration of the test
-- `--model`: model ID matching your deployment
-- `--data`: input/output token configuration
-
-For more information about the parameters, check the official [GuideLLM repository](https://github.com/vllm-project/guidellm?tab=readme-ov-file#common-use-cases-and-configurations).
->>>>>>> a8fcc20 (deploy(docs): updated docs)
 
 ### 4. Monitor
 
