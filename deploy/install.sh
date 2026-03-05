@@ -57,7 +57,6 @@ LLM_D_MODELSERVICE_VALUES=${LLM_D_MODELSERVICE_VALUES:-"$EXAMPLE_DIR/ms-$WELL_LI
 ITL_AVERAGE_LATENCY_MS=${ITL_AVERAGE_LATENCY_MS:-20}
 TTFT_AVERAGE_LATENCY_MS=${TTFT_AVERAGE_LATENCY_MS:-200}
 ENABLE_SCALE_TO_ZERO=${ENABLE_SCALE_TO_ZERO:-true}
-# llm-d-inference scheduler with image with flowcontrol support
 # llm-d-inference scheduler image with flowcontrol support
 LLM_D_INFERENCE_SCHEDULER_IMG=${LLM_D_INFERENCE_SCHEDULER_IMG:-"ghcr.io/llm-d/llm-d-inference-scheduler:v0.5.0"}
 
@@ -833,6 +832,7 @@ deploy_llm_d_infrastructure() {
     # Detect the actual default model from the values file (not the hardcoded DEFAULT_MODEL_ID)
     ACTUAL_DEFAULT_MODEL=$(yq eval '.modelArtifacts.name' "$LLM_D_MODELSERVICE_VALUES" 2>/dev/null || echo "$DEFAULT_MODEL_ID")
     if [ -z "$ACTUAL_DEFAULT_MODEL" ] || [ "$ACTUAL_DEFAULT_MODEL" == "null" ]; then
+        # If modelArtifacts.name is not set, fall back to DEFAULT_MODEL_ID
         ACTUAL_DEFAULT_MODEL="$DEFAULT_MODEL_ID"
     fi
 
@@ -840,12 +840,6 @@ deploy_llm_d_infrastructure() {
     if [ "$MODEL_ID" != "$ACTUAL_DEFAULT_MODEL" ] ; then
         log_info "Updating deployment to use model: $MODEL_ID (replacing guide default: $ACTUAL_DEFAULT_MODEL)"
         yq eval "(.. | select(. == \"$ACTUAL_DEFAULT_MODEL\")) = \"$MODEL_ID\" | (.. | select(. == \"hf://$ACTUAL_DEFAULT_MODEL\")) = \"hf://$MODEL_ID\"" -i "$LLM_D_MODELSERVICE_VALUES"
-
-        # If present, update the model label using the model name
-        if [ "$(yq eval '.modelArtifacts.labels."llm-d.ai/model"' "$LLM_D_MODELSERVICE_VALUES" 2>/dev/null)" != "null" ]; then
-            log_info "Updating 'llm-d.ai/model' label to: $MODEL_NAME"
-            yq eval '.modelArtifacts.labels."llm-d.ai/model" = "'"$MODEL_NAME"'"' -i "$LLM_D_MODELSERVICE_VALUES"
-        fi
 
         # Increase model-storage volume size
         log_info "Increasing model-storage volume size for model: $MODEL_ID"
@@ -874,16 +868,6 @@ deploy_llm_d_infrastructure() {
     if [ -n "$DECODE_REPLICAS" ]; then
       log_info "Setting decode replicas to $DECODE_REPLICAS"
       yq eval ".decode.replicas = $DECODE_REPLICAS" -i "$LLM_D_MODELSERVICE_VALUES"
-    fi
-
-    # Check if the guide's llm-d.ai/model label differs from what WVA's vllm-service expects.
-    # If so, we'll patch pod labels post-deploy (not pre-deploy) to avoid violating the
-    # llm-d-modelservice chart schema which disallows extra properties under modelArtifacts.
-    CURRENT_MODEL_LABEL=$(yq eval '.modelArtifacts.labels."llm-d.ai/model"' "$LLM_D_MODELSERVICE_VALUES" 2>/dev/null || echo "")
-    NEEDS_LABEL_ALIGNMENT=false
-    if [ -n "$CURRENT_MODEL_LABEL" ] && [ "$CURRENT_MODEL_LABEL" != "null" ] && [ "$CURRENT_MODEL_LABEL" != "$LLM_D_MODELSERVICE_NAME" ]; then
-      log_info "Will align llm-d.ai/model label post-deploy: '$CURRENT_MODEL_LABEL' -> '$LLM_D_MODELSERVICE_NAME'"
-      NEEDS_LABEL_ALIGNMENT=true
     fi
 
     # Auto-detect vLLM port from guide configuration and update WVA vllm-service.
