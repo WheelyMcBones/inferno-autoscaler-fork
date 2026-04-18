@@ -17,14 +17,21 @@ type Environment struct {
 }
 
 func (e *Environment) Valid() bool {
+	if e == nil {
+		return false
+	}
 	return e.Lambda > 0 &&
 		!math.IsInf(float64(e.Lambda), 0) &&
 		!math.IsNaN(float64(e.Lambda)) &&
 		e.AvgInputToks > 0 &&
+		!math.IsInf(float64(e.AvgInputToks), 0) &&
 		e.AvgOutputToks > 0 &&
+		!math.IsInf(float64(e.AvgOutputToks), 0) &&
 		e.MaxBatchSize > 0 &&
 		e.AvgTTFT > 0 &&
-		e.AvgITL > 0
+		!math.IsInf(float64(e.AvgTTFT), 0) &&
+		e.AvgITL > 0 &&
+		!math.IsInf(float64(e.AvgITL), 0)
 }
 
 func (e *Environment) GetObservations() *mat.VecDense {
